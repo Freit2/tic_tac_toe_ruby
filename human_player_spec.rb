@@ -25,7 +25,7 @@ describe HumanPlayer do
   end
 
   it "should display message to player" do
-    @human.std_out.should_receive(:print).with("\nEnter your move [0-8]: ")
+    @human.std_out.should_receive(:print).with("\nEnter your move, player 'O' [0-8]: ")
     @human.make_move
   end
 

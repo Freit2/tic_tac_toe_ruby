@@ -85,7 +85,7 @@ describe Game do
     @player1.should_receive(:make_move).and_return(0)
     @player2.should_receive(:make_move).and_return(1)
 
-    @game.board.should_receive(:display)
+    @game.board.should_receive(:display).twice
     @game.play_turn
   end
 
