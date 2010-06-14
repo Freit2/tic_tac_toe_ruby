@@ -1,7 +1,6 @@
 # tictactoe_spec.rb
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
-require 'tictactoe'
-require 'stringio'
+require 'tic_tac_toe'
 require 'human_player'
 require 'cpu_player'
 

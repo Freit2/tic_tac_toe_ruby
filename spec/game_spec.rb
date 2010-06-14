@@ -1,6 +1,5 @@
 # game_spec.rb
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
-require 'stringio'
 require 'human_player'
 require 'cpu_player'
 require 'game'
