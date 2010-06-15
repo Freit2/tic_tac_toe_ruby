@@ -11,11 +11,11 @@
          [(/X...X...X/),:X], [(/..X.X.X../),:X]]
     end
 
-    attr_reader :board, :std_out, :winner
+    attr_reader :board, :output, :winner
 
-    def initialize(std_out)
+    def initialize(output)
       @board = [].fill(0, 9) { " " }
-      @std_out = std_out
+      @output = output
     end
 
     def occupied?(space)
@@ -34,13 +34,13 @@
     end
 
     def display
-      @std_out.print "\n\n"
-      @std_out.print " #{@board[0..2].join(' | ')} "
-      @std_out.print "\n---+---+---\n"
-      @std_out.print " #{@board[3..5].join(' | ')} "
-      @std_out.print "\n---+---+---\n"
-      @std_out.print " #{@board[6..8].join(' | ')} "
-      @std_out.print "\n\n"
+      @output.print "\n\n"
+      @output.print " #{@board[0..2].join(' | ')} "
+      @output.print "\n---+---+---\n"
+      @output.print " #{@board[3..5].join(' | ')} "
+      @output.print "\n---+---+---\n"
+      @output.print " #{@board[6..8].join(' | ')} "
+      @output.print "\n\n"
     end
 
     def game_over?

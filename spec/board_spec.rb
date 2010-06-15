@@ -4,8 +4,8 @@ require 'board'
 
 describe Board do
   before(:each) do
-    @std_out = StringIO.new
-    @board = Board.new(@std_out)
+    @output = StringIO.new
+    @board = Board.new(@output)
     @x = 'X'
     @o = 'O'
   end
@@ -53,13 +53,13 @@ describe Board do
     9.times do |s|
       @board.move(s, @x)
     end
-    @board.std_out.should_receive(:print).with("\n\n")
-    @board.std_out.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
-    @board.std_out.should_receive(:print).with("\n---+---+---\n")
-    @board.std_out.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
-    @board.std_out.should_receive(:print).with("\n---+---+---\n")
-    @board.std_out.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
-    @board.std_out.should_receive(:print).with("\n\n")
+    @board.output.should_receive(:print).with("\n\n")
+    @board.output.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
+    @board.output.should_receive(:print).with("\n---+---+---\n")
+    @board.output.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
+    @board.output.should_receive(:print).with("\n---+---+---\n")
+    @board.output.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
+    @board.output.should_receive(:print).with("\n\n")
     @board.display
   end
 end

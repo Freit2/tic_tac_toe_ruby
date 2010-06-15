@@ -1,6 +1,7 @@
 # player_spec.rb
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'player'
+require 'board'
 
 describe Player do
   it "returns O for piece when creating player" do
@@ -9,7 +10,7 @@ describe Player do
   end
 
   it "should allow board to be set" do
-    board = mock('board')
+    board = Board.new(STDIN)
     player = Player.new('X')
     player.board = board
     player.board.should == board

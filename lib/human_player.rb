@@ -1,17 +1,16 @@
 require 'player'
 
 class HumanPlayer < Player
-  attr_reader :type, :std_in, :std_out
+  attr_reader :type, :input, :output
 
-  def initialize(piece, std_in, std_out)
+  def initialize(piece, input, output)
     super(piece)
-    @type = 'human'
-    @std_in = std_in
-    @std_out = std_out
+    @input = input
+    @output = output
   end
 
   def make_move()
-    @std_out.print "\nEnter your move, player '#{@piece}' [0-8]: "
-    return @std_in.gets.to_i
+    @output.print "\nEnter your move, player '#{@piece}' [0-8]: "
+    return @input.gets.to_i
   end
 end

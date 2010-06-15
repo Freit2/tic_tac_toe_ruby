@@ -6,8 +6,8 @@ require 'board'
 describe CpuPlayer do
   before(:each) do
     @cpu = CpuPlayer.new('X')
-    @std_out = StringIO.new
-    @board = Board.new(@std_out)
+    @output = StringIO.new
+    @board = Board.new(@output)
     @cpu.board = @board
   end
 

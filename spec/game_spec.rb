@@ -6,11 +6,11 @@ require 'game'
 
 describe Game do
   before(:each) do
-    @std_in = StringIO.new
-    @std_out = StringIO.new
-    @player1 = HumanPlayer.new('O', @std_in, @std_out)
+    @input = StringIO.new
+    @output = StringIO.new
+    @player1 = HumanPlayer.new('O', @input, @output)
     @player2 = CpuPlayer.new('X')
-    @board = Board.new(@std_out)
+    @board = Board.new(@output)
     @game = Game.new(@player1, @player2, @board)
   end
 
@@ -21,6 +21,21 @@ describe Game do
 
   it "should hold a board" do
     @game.board.should be(@board)
+  end
+
+  it "should return true for a valid move" do
+    9.times do |s|
+      @game.valid_move?(s).should == true
+    end
+  end
+
+  it "should return a move for human player" do
+    @player1.input.string = '1'
+    @game.get_move_from(@player1).should == 1
+  end
+
+  it "should return a move from cpu player" do
+    @game.get_move_from(@player2).should == 4
   end
 
   it "should play one turn" do
@@ -51,7 +66,7 @@ describe Game do
     @game.board.piece_in(1).should == 'O'
   end
 
-  it "should allow only nine turns" do
+  it "should allow up to nine turns" do
     @player1.should_receive(:piece).exactly(5).times.and_return('X')
     @player2.should_receive(:piece).exactly(4).times.and_return('O')
     @player1.should_receive(:make_move).and_return(0)
