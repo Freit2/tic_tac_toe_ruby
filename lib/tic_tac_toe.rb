@@ -7,11 +7,12 @@
 #  6 | 7 | 8
 
 require 'game'
+require 'board'
 require 'human_player'
 require 'cpu_player'
 
 class TicTacToe
-  attr_reader :std_in, :std_out, :player1, :player2, :game
+  attr_reader :std_in, :std_out, :player1, :player2, :game, :board
   def initialize(*args)
     @std_in = STDIN
     @std_out = STDOUT
@@ -41,8 +42,9 @@ class TicTacToe
   def play
     loop do
       choose_players
-      @game = Game.new(player1, player2, @std_out)
-      @game.play
+      @board = Board.new(@std_out)
+      @game = Game.new(player1, player2, @board)
+      @std_out.print @game.play
       play_again = ''
       loop do
         @std_out.print "\nDo you want to play again? ('y' or 'n') "

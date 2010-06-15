@@ -1,3 +1,2 @@
 class UI
-  
 end

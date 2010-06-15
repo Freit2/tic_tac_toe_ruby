@@ -43,17 +43,11 @@
 
     def display
       @std_out.print "\n\n"
-      @std_out.print " #{@board[0]} |"
-      @std_out.print " #{@board[1]} |"
-      @std_out.print " #{@board[2]}"
+      @std_out.print " #{@board[0..2].join(' | ')} "
       @std_out.print "\n---+---+---\n"
-      @std_out.print " #{@board[3]} |"
-      @std_out.print " #{@board[4]} |"
-      @std_out.print " #{@board[5]}"
+      @std_out.print " #{@board[3..5].join(' | ')} "
       @std_out.print "\n---+---+---\n"
-      @std_out.print " #{@board[6]} |"
-      @std_out.print " #{@board[7]} |"
-      @std_out.print " #{@board[8]}"
+      @std_out.print " #{@board[6..8].join(' | ')} "
       @std_out.print "\n\n"
     end
 

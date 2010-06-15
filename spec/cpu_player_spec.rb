@@ -25,6 +25,11 @@ describe CpuPlayer do
     @cpu.make_move(@board)
   end
 
+  it "should return a move from minmax algorithm" do
+    @cpu.should_receive(:get_move_from_minmax).and_return(0)
+    @cpu.make_move(@board)
+  end
+  
 #  it "should return a move from minmax algorithm" do
 #    @cpu.should_receive(:get_minmax_move).and_return(4)
 #    @cpu.make_move.should_not be_nil

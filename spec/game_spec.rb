@@ -10,7 +10,8 @@ describe Game do
     @std_out = StringIO.new
     @player1 = HumanPlayer.new('O', @std_in, @std_out)
     @player2 = CpuPlayer.new('X')
-    @game = Game.new(@player1, @player2, @std_out)
+    @board = Board.new(@std_out)
+    @game = Game.new(@player1, @player2, @board)
   end
 
   it "should hold two different players" do
@@ -97,7 +98,7 @@ describe Game do
     @player2.should_receive(:make_move).and_return(4)
     @player1.should_receive(:make_move).and_return(2)
 
-    @game.should_receive(:display_end_message)
+    @game.should_receive(:get_end_message)
     @game.play
   end
 
@@ -110,7 +111,6 @@ describe Game do
     @player2.should_receive(:make_move).and_return(4)
     @player1.should_receive(:make_move).and_return(2)
 
-    @game.std_out.should_receive(:puts).with("The winner is X.")
-    @game.play
+    @game.play.should == "The winner is X."
   end
 end

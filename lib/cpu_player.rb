@@ -38,7 +38,11 @@ class CpuPlayer < Player
     move_pos = get_winning_pattern_move(board)
     move_pos = get_blocking_pattern_move(board) if !move_pos
     move_pos = get_first_available_move(board) if !move_pos
+    get_move_from_minmax
     move_pos
+  end
+
+  def get_move_from_minmax
   end
 
   def get_winning_pattern_move(board)

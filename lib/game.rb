@@ -1,11 +1,10 @@
 require 'board'
 
 class Game
-  attr_reader :board, :std_out, :player1, :player2
+  attr_reader :board, :player1, :player2
 
-  def initialize(player1, player2, std_out)
-    @std_out = std_out
-    @board = Board.new(@std_out)
+  def initialize(player1, player2, board)
+    @board = board
     @player1 = player1
     @player2 = player2
   end
@@ -37,14 +36,14 @@ class Game
     5.times do
       play_turn
     end
-    display_end_message
+    get_end_message
   end
 
-  def display_end_message
+  def get_end_message
     if @board.winner
-      @std_out.puts "The winner is #{@board.winner}."
+      "The winner is #{@board.winner}."
     else
-      @std_out.puts "The game is a draw."
+      "The game is a draw."
     end
   end
 end

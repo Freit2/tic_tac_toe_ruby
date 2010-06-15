@@ -57,17 +57,11 @@ describe Board do
       @board.move(x, @x)
     end
     @board.std_out.should_receive(:print).with("\n\n")
-    @board.std_out.should_receive(:print).with(" #{@x} |")
-    @board.std_out.should_receive(:print).with(" #{@x} |")
-    @board.std_out.should_receive(:print).with(" #{@x}")
+    @board.std_out.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
     @board.std_out.should_receive(:print).with("\n---+---+---\n")
-    @board.std_out.should_receive(:print).with(" #{@x} |")
-    @board.std_out.should_receive(:print).with(" #{@x} |")
-    @board.std_out.should_receive(:print).with(" #{@x}")
+    @board.std_out.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
     @board.std_out.should_receive(:print).with("\n---+---+---\n")
-    @board.std_out.should_receive(:print).with(" #{@x} |")
-    @board.std_out.should_receive(:print).with(" #{@x} |")
-    @board.std_out.should_receive(:print).with(" #{@x}")
+    @board.std_out.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
     @board.std_out.should_receive(:print).with("\n\n")
     @board.display
   end
