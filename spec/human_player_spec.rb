@@ -7,11 +7,10 @@ describe HumanPlayer do
     @std_in = StringIO.new
     @std_out = StringIO.new
     @human = HumanPlayer.new('O', @std_in, @std_out)
-    @test_move = 4
   end
 
-  it "should be able to return type of player" do
-    @human.type.should == 'human'
+  it "should inherit from Player" do
+    HumanPlayer.ancestors.include?(Player).should == true
   end
 
   it "should not make a nil move" do
@@ -19,16 +18,12 @@ describe HumanPlayer do
   end
 
   it "should return a move from std in" do
-    @std_in.string = @test_move.to_s
-    @human.make_move.should == @test_move
+    @std_in.string = '4'
+    @human.make_move.should == 4
   end
 
   it "should display message to player" do
-    @human.std_out.should_receive(:print).with("\nEnter your move, player 'O' [0-8]: ")
     @human.make_move
-  end
-
-  it "should allow arguments to be accepted" do
-    @human.make_move(0, 1, 2, 3)
+    @std_out.string.should == "\nEnter your move, player 'O' [0-8]: "
   end
 end

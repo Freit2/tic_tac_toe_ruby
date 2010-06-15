@@ -6,25 +6,25 @@ require 'cpu_player'
 
 describe TicTacToe do
   before(:each) do
-    @std_in = StringIO.new
-    @std_out = StringIO.new
-    @ttt = TicTacToe.new(@std_in, @std_out)
+    @input = StringIO.new
+    @output = StringIO.new
+    @ttt = TicTacToe.new(@input, @output)
   end
   
   it "should be able to create a new instance" do
-    lambda { TicTacToe.new }.should_not raise_error
+    lambda { TicTacToe.new(@input, @output) }.should_not raise_error
   end
 
   it "should allow change to stdin" do
-    ttt = TicTacToe.new
-    ttt.std_in.should == STDIN
-    @ttt.std_in.should == @std_in
+    ttt = TicTacToe.new(STDIN, STDOUT)
+    ttt.input.should == STDIN
+    @ttt.input.should == @input
   end
 
   it "should allow change to stdout" do
-    ttt = TicTacToe.new
-    ttt.std_out.should == STDOUT
-    @ttt.std_out.should == @std_out
+    ttt = TicTacToe.new(STDIN, STDOUT)
+    ttt.output.should == STDOUT
+    @ttt.output.should == @output
   end
 
 #  it "should ask player types for both players" do
@@ -40,9 +40,9 @@ describe TicTacToe do
 #  end
 
   it "should return player" do
-    @ttt.std_in.string = "h"
+    @ttt.input.string = "h"
     @ttt.ask_for_player('O').instance_of?(HumanPlayer)
-    @ttt.std_in.string = "c"
+    @ttt.input.string = "c"
     @ttt.ask_for_player('X').instance_of?(CpuPlayer)
   end
 

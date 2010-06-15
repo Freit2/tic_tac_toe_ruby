@@ -6,37 +6,46 @@ class Game
   def initialize(player1, player2, board)
     @board = board
     @player1 = player1
+    @player1.board = @board
     @player2 = player2
+    @player2.board = @board
+  end
+
+  def valid_move?(space)
+    if (0..8) === space
+      return (@board.occupied?(space)) ? false : true
+    end
+    return false
   end
 
   def get_move_from(player)
     loop do
-      move = player.make_move(@board)
-      if (0..8) === move
+      move = player.make_move
+      if valid_move?(move)
         return move
       end
     end
   end
 
-  def play_turn
-    unless @board.game_over?
-      player1_move = get_move_from(@player1)
-      @board.move(player1_move, @player1.piece)
-      @board.display
-    end
-
-    unless @board.game_over?
-      player2_move = get_move_from(@player2)
-      @board.move(player2_move, @player2.piece)
+  def make_move(player)
+    if !@board.game_over?
+      player_move = get_move_from(player)
+      @board.move(player_move, player.piece)
       @board.display
     end
   end
 
+  def play_turn
+    make_move(@player1)
+    make_move(@player2)
+  end
+
   def play
+    @board.display
     5.times do
       play_turn
     end
-    get_end_message
+    return get_end_message
   end
 
   def get_end_message

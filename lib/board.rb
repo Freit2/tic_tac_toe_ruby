@@ -10,8 +10,7 @@
          [(/.X..X..X./),:X], [(/..X..X..X/),:X],
          [(/X...X...X/),:X], [(/..X.X.X../),:X]]
     end
-    
-    # will go away after minmax algo
+
     attr_reader :board, :std_out, :winner
 
     def initialize(std_out)
@@ -20,22 +19,15 @@
     end
 
     def occupied?(space)
-      if valid_move?(space)
-        return (@board.at(space) == " ") ? false : true
-      end
-      false
+      return (@board.at(space) == " ") ? false : true
     end
 
     def piece_in(space)
-      @board.at(space)
-    end
-
-    def valid_move?(space)
-      (0..8) === space
+      return @board.at(space)
     end
 
     def move(space, piece)
-      if valid_move?(space)
+      if !occupied?(space)
         @board.delete_at(space)
         @board.insert(space, piece)
       end
@@ -66,6 +58,6 @@
         @winner = (array.last === :X) ? 'X' : 'O'
         return true
       end
-      false
+      return false
     end
   end

@@ -19,8 +19,8 @@ describe Game do
     @game.player2.should be(@player2)
   end
 
-  it "should hold a board instance" do
-    @game.board.instance_of?(Board) == true
+  it "should hold a board" do
+    @game.board.should be(@board)
   end
 
   it "should play one turn" do

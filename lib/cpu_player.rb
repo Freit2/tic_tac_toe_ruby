@@ -1,74 +1,72 @@
 require 'player'
 
 class CpuPlayer < Player
-  module Patterns
-    Winning =
-      [[(/ OO....../),0],[(/O..O.. ../),6],
-       [(/......OO /),8],[(/.. ..O..O/),2],
-       [(/ ..O..O../),0],[(/...... OO/),6],
-       [(/..O..O.. /),8],[(/OO ....../),2],
-       [(/ ...O...O/),0],[(/..O.O. ../),6],
-       [(/O...O... /),8],[(/.. .O.O../),2],
-       [(/O O....../),1],[(/O.. ..O../),3],
-       [(/......O O/),7],[(/..O.. ..O/),5],
-       [(/. ..O..O./),1],[(/... OO.../),3],
-       [(/.O..O.. ./),7],[(/...OO .../),5]]
-    Blocking =
-      [[(/  X . X  /),1],[(/ XX....../),0],[(/X..X.. ../),6],
-       [(/......XX /),8],[(/.. ..X..X/),2],[(/ ..X..X../),0],
-       [(/...... XX/),6],[(/..X..X.. /),8],[(/XX ....../),2],
-       [(/ ...X...X/),0],[(/..X.X. ../),6],[(/X...X... /),8],
-       [(/.. .X.X../),2],[(/X X....../),1],[(/X.. ..X../),3],
-       [(/......X X/),7],[(/..X.. ..X/),5],[(/. ..X..X./),1],
-       [(/... XX.../),3],[(/.X..X.. ./),7],[(/...XX .../),5],
-       [(/ X X.. ../),0],[(/ ..X.. X /),6],[(/.. ..X X /),8],
-       [(/ X ..X.. /),2],[(/  XX.. ../),0],[(/X.. .. X /),6],
-       [(/.. .XX   /),8],[(/X  ..X.. /),2],[(/ X  ..X../),0],
-       [(/ ..X..  X/),6],[(/..X..  X /),8],[(/X  ..X.. /),2]]
-  end
-
-  attr_reader :type
-
+  attr_reader :winning_patterns, :blocking_patterns
+   
   def initialize(piece)
     super(piece)
-    @type = 'cpu'
+    set_patterns(piece)
   end
 
-  def make_move(board)
-    move_pos = get_winning_pattern_move(board)
-    move_pos = get_blocking_pattern_move(board) if !move_pos
-    move_pos = get_first_available_move(board) if !move_pos
-    get_move_from_minmax
-    move_pos
+  def make_move()
+    move_pos = get_winning_pattern_move
+    move_pos = get_blocking_pattern_move if !move_pos
+    move_pos = get_first_available_move if !move_pos
+    return move_pos
   end
 
-  def get_move_from_minmax
-  end
-
-  def get_winning_pattern_move(board)
+  def get_winning_pattern_move
     move_pos = nil
-    array = Patterns::Winning.find { |p| p.first =~ board.board.join }
+    array = @winning_patterns.find { |p| p.first =~ @board.board.join }
     if array
       move_pos = array.last
     end
-    move_pos
+    return move_pos
   end
 
-  def get_blocking_pattern_move(board)
+  def get_blocking_pattern_move
     move_pos = nil
-    array = Patterns::Blocking.find { |p| p.first =~ board.board.join }
+    array = @blocking_patterns.find { |p| p.first =~ @board.board.join }
     if array
       move_pos = array.last
     end
-    move_pos
+    return move_pos
   end
 
-  def get_first_available_move(board)
-    if !board.occupied?(4)
+  def get_first_available_move
+    if !@board.occupied?(4)
       move_pos = 4
     else
-      move_pos = board.board.index(' ')
+      move_pos = @board.board.index(' ')
     end
-    move_pos
+    return move_pos
+  end
+
+  private
+  def set_patterns(p)
+    @winning_patterns =
+      [[(/ #{p}#{p}....../),0],[(/#{p}..#{p}.. ../),6],
+       [(/......#{p}#{p} /),8],[(/.. ..#{p}..#{p}/),2],
+       [(/ ..#{p}..#{p}../),0],[(/...... #{p}#{p}/),6],
+       [(/..#{p}..#{p}.. /),8],[(/#{p}#{p} ....../),2],
+       [(/ ...#{p}...#{p}/),0],[(/..#{p}.#{p}. ../),6],
+       [(/#{p}...#{p}... /),8],[(/.. .#{p}.#{p}../),2],
+       [(/#{p} #{p}....../),1],[(/#{p}.. ..#{p}../),3],
+       [(/......#{p} #{p}/),7],[(/..#{p}.. ..#{p}/),5],
+       [(/. ..#{p}..#{p}./),1],[(/... #{p}#{p}.../),3],
+       [(/.#{p}..#{p}.. ./),7],[(/...#{p}#{p} .../),5]]
+    o = (p == 'O') ? 'X' : 'O'
+    @blocking_patterns =
+      [[(/  #{o} . #{o}  /),1],[(/ #{o}#{o}....../),0],[(/#{o}..#{o}.. ../),6],
+       [(/......#{o}#{o} /),8],[(/.. ..#{o}..#{o}/),2],[(/ ..#{o}..#{o}../),0],
+       [(/...... #{o}#{o}/),6],[(/..#{o}..#{o}.. /),8],[(/#{o}#{o} ....../),2],
+       [(/ ...#{o}...#{o}/),0],[(/..#{o}.#{o}. ../),6],[(/#{o}...#{o}... /),8],
+       [(/.. .#{o}.#{o}../),2],[(/#{o} #{o}....../),1],[(/#{o}.. ..#{o}../),3],
+       [(/......#{o} #{o}/),7],[(/..#{o}.. ..#{o}/),5],[(/. ..#{o}..#{o}./),1],
+       [(/... #{o}#{o}.../),3],[(/.#{o}..#{o}.. ./),7],[(/...#{o}#{o} .../),5],
+       [(/ #{o} #{o}.. ../),0],[(/ ..#{o}.. #{o} /),6],[(/.. ..#{o} #{o} /),8],
+       [(/ #{o} ..#{o}.. /),2],[(/  #{o}#{o}.. ../),0],[(/#{o}.. .. #{o} /),6],
+       [(/.. .#{o}#{o}   /),8],[(/#{o}  ..#{o}.. /),2],[(/ #{o}  ..#{o}../),0],
+       [(/ ..#{o}..  #{o}/),6],[(/..#{o}..  #{o} /),8],[(/#{o}  ..#{o}.. /),2]]
   end
 end

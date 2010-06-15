@@ -10,8 +10,8 @@ class HumanPlayer < Player
     @std_out = std_out
   end
 
-  def make_move(*args)
+  def make_move()
     @std_out.print "\nEnter your move, player '#{@piece}' [0-8]: "
-    @std_in.gets.to_i
+    return @std_in.gets.to_i
   end
 end

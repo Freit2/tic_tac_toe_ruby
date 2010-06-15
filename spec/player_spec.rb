@@ -7,6 +7,13 @@ describe Player do
     player = Player.new('O')
     player.piece.should == 'O'
   end
+
+  it "should allow board to be set" do
+    board = mock('board')
+    player = Player.new('X')
+    player.board = board
+    player.board.should == board
+  end
 end
 
 
