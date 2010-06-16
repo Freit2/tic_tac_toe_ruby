@@ -9,6 +9,7 @@
 require File.expand_path(File.dirname(__FILE__)) + "/init" 
 require 'game'
 require 'board'
+require 'ui'
 require 'human_player'
 require 'cpu_player'
 
@@ -17,42 +18,43 @@ class TicTacToe
   def initialize(input, output)
     @input = input
     @output = output
+    @ui = UI.new(@input, @output)
   end
 
   def ask_for_player(piece)
     player_type = ""
     loop do
-      @output.print "\nChoose player type for '#{piece}' ('h' for human or 'c' for cpu) "
-      player_type = @input.gets.chomp
+      player_type = @ui.get_player_type(piece)
       break if player_type == "h" || player_type == "c"
     end
     if player_type == 'h'
-      HumanPlayer.new(piece, @input, @output)
+      return HumanPlayer.new(piece)
     else
-      CpuPlayer.new(piece)
+      return CpuPlayer.new(piece)
     end
   end
 
   def choose_players
     @player1 = ask_for_player('O')
     @player2 = ask_for_player('X')
+    @player1.ui = @ui
+    @player2.ui = @ui
   end
   
   def play
     loop do
       choose_players
-      @board = Board.new(@output)
-      @game = Game.new(player1, player2, @board)
-      @output.print @game.play
+      @board = Board.new()
+      @game = Game.new(player1, player2, @board, @ui)
+      @game.play
       play_again = ''
       loop do
-        @output.print "\nDo you want to play again? ('y' or 'n') "
-        play_again = @input.gets.chomp
+        play_again = @ui.get_play_again
         break if play_again == 'y' || play_again == 'n'
       end
       break if play_again == 'n'
     end
-    @output.print "\nThanks for playing!"
+    @ui.display_exit_message
   end
 end
 

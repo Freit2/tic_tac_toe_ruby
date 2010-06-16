@@ -1,10 +1,11 @@
-require 'board'
+require 'ui'
 
 class Game
-  attr_reader :board, :player1, :player2
+  attr_reader :board, :ui, :player1, :player2
 
-  def initialize(player1, player2, board)
+  def initialize(player1, player2, board, ui)
     @board = board
+    @ui = ui
     @player1 = player1
     @player1.board = @board
     @player2 = player2
@@ -31,7 +32,7 @@ class Game
     if !@board.game_over?
       player_move = get_move_from(player)
       @board.move(player_move, player.piece)
-      @board.display
+      @ui.display_board(@board)
     end
   end
 
@@ -41,18 +42,18 @@ class Game
   end
 
   def play
-    @board.display
+    @ui.display_board(@board)
     5.times do
       play_turn
     end
-    return get_end_message
+    display_end_message
   end
 
-  def get_end_message
+  def display_end_message
     if @board.winner
-      "The winner is #{@board.winner}."
+      @ui.display_winner(@board.winner)
     else
-      "The game is a draw."
+      @ui.display_draw_message
     end
   end
 end

@@ -9,6 +9,7 @@ class CpuPlayer < Player
   end
 
   def make_move()
+    @ui.display_message("Player '#{@piece}' makes a move")
     move_pos = get_winning_pattern_move
     move_pos = get_blocking_pattern_move if !move_pos
     move_pos = get_first_available_move if !move_pos

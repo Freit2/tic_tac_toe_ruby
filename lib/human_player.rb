@@ -1,16 +1,12 @@
 require 'player'
 
 class HumanPlayer < Player
-  attr_reader :type, :input, :output
-
-  def initialize(piece, input, output)
+  def initialize(piece)
     super(piece)
-    @input = input
-    @output = output
   end
 
   def make_move()
-    @output.print "\nEnter your move, player '#{@piece}' [0-8]: "
-    return @input.gets.to_i
+    @ui.display_message("\nEnter your move, player '#{@piece}' [0-8]: ")
+    return @ui.get_input.to_i
   end
 end

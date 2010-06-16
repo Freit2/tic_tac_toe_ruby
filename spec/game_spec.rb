@@ -1,17 +1,22 @@
 # game_spec.rb
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
+require 'game'
 require 'human_player'
 require 'cpu_player'
-require 'game'
+require 'board'
+require 'ui'
 
 describe Game do
   before(:each) do
     @input = StringIO.new
     @output = StringIO.new
-    @player1 = HumanPlayer.new('O', @input, @output)
+    @board = Board.new()
+    @ui = UI.new(@input, @output)
+    @player1 = HumanPlayer.new('O')
     @player2 = CpuPlayer.new('X')
-    @board = Board.new(@output)
-    @game = Game.new(@player1, @player2, @board)
+    @player1.ui = @ui
+    @player2.ui = @ui
+    @game = Game.new(@player1, @player2, @board, @ui)
   end
 
   it "should hold two different players" do
@@ -23,6 +28,10 @@ describe Game do
     @game.board.should be(@board)
   end
 
+  it "should hold a ui" do
+    @game.ui.should be(@ui)
+  end
+
   it "should return true for a valid move" do
     9.times do |s|
       @game.valid_move?(s).should == true
@@ -30,7 +39,7 @@ describe Game do
   end
 
   it "should return a move for human player" do
-    @player1.input.string = '1'
+    @ui.input.string = '1'
     @game.get_move_from(@player1).should == 1
   end
 
@@ -100,7 +109,7 @@ describe Game do
     @player1.should_receive(:make_move).and_return(0)
     @player2.should_receive(:make_move).and_return(1)
 
-    @game.board.should_receive(:display).twice
+    @game.ui.should_receive(:display_board).twice
     @game.play_turn
   end
 
@@ -113,19 +122,7 @@ describe Game do
     @player2.should_receive(:make_move).and_return(4)
     @player1.should_receive(:make_move).and_return(2)
 
-    @game.should_receive(:get_end_message)
+    @game.should_receive(:display_end_message)
     @game.play
-  end
-
-  it "should display winner via std_out" do
-    @player1.should_receive(:piece).exactly(3).times.and_return('X')
-    @player2.should_receive(:piece).exactly(2).times.and_return('O')
-    @player1.should_receive(:make_move).and_return(0)
-    @player2.should_receive(:make_move).and_return(3)
-    @player1.should_receive(:make_move).and_return(1)
-    @player2.should_receive(:make_move).and_return(4)
-    @player1.should_receive(:make_move).and_return(2)
-
-    @game.play.should == "The winner is X."
   end
 end

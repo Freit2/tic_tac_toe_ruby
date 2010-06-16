@@ -1,6 +1,10 @@
   class Board
-    module Pattern
-      Won = 
+    attr_reader :board, :size, :winner
+
+    def initialize(size=9)
+      @size = size
+      @board = [].fill(0, @size) { " " }
+      @won_patterns =
         [[(/OOO....../),:O], [(/...OOO.../),:O],
          [(/......OOO/),:O], [(/O..O..O../),:O],
          [(/.O..O..O./),:O], [(/..O..O..O/),:O],
@@ -11,11 +15,8 @@
          [(/X...X...X/),:X], [(/..X.X.X../),:X]]
     end
 
-    attr_reader :board, :output, :winner
-
-    def initialize(output)
-      @board = [].fill(0, 9) { " " }
-      @output = output
+    def [](index)
+      return @board[index]
     end
 
     def occupied?(space)
@@ -33,18 +34,8 @@
       end
     end
 
-    def display
-      @output.print "\n\n"
-      @output.print " #{@board[0..2].join(' | ')} "
-      @output.print "\n---+---+---\n"
-      @output.print " #{@board[3..5].join(' | ')} "
-      @output.print "\n---+---+---\n"
-      @output.print " #{@board[6..8].join(' | ')} "
-      @output.print "\n\n"
-    end
-
     def game_over?
-      unless someone_win?
+      if !someone_win?
         if @board.index(" ")
           return false
         end
@@ -53,7 +44,7 @@
     end
 
     def someone_win?
-      array = Pattern::Won.find { |p| p.first =~ @board.join }
+      array = @won_patterns.find { |p| p.first =~ @board.join }
       if array
         @winner = (array.last === :X) ? 'X' : 'O'
         return true

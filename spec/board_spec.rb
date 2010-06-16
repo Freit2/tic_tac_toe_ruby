@@ -4,10 +4,13 @@ require 'board'
 
 describe Board do
   before(:each) do
-    @output = StringIO.new
-    @board = Board.new(@output)
+    @board = Board.new()
     @x = 'X'
     @o = 'O'
+  end
+
+  it "returns size for board" do
+    @board.size.should == 9
   end
 
   it "occupies space if move is made" do
@@ -47,19 +50,5 @@ describe Board do
     @board.move(1, @o)
     @board.piece_in(0).should == @x
     @board.piece_in(1).should == @o
-  end
-
-  it "should have display print board on std_out" do
-    9.times do |s|
-      @board.move(s, @x)
-    end
-    @board.output.should_receive(:print).with("\n\n")
-    @board.output.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
-    @board.output.should_receive(:print).with("\n---+---+---\n")
-    @board.output.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
-    @board.output.should_receive(:print).with("\n---+---+---\n")
-    @board.output.should_receive(:print).with(" #{@x} | #{@x} | #{@x} ")
-    @board.output.should_receive(:print).with("\n\n")
-    @board.display
   end
 end
