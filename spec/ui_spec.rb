@@ -8,7 +8,17 @@ describe UI do
     @output = StringIO.new
     @ui = UI.new(@input, @output)
   end
+
+  it "should get input from user" do
+    @input.string == "hello world"
+    @ui.get_input.should.to_s == "hello world"
+  end
   
+  it "should display message" do
+    @ui.display_message('hello world')
+    @ui.output.string.should == 'hello world'
+  end
+
   it "should return player type from user" do
     @input.string = 'h'
     @ui.get_player_type('X').should == 'h'
@@ -34,8 +44,8 @@ describe UI do
     @ui.output.string.should == message
   end
 
-  it "should display message" do
-    @ui.display_message('hello world')
-    @ui.output.string.should == 'hello world'
+  it "should display winner" do
+    @ui.display_winner('X')
+    @ui.output.string.should == "The winner is X."
   end
 end

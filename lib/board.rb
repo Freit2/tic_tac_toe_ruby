@@ -19,6 +19,14 @@
       return @board[index]
     end
 
+    def to_s
+      return @board.join
+    end
+    
+    def index(piece)
+      return @board.index(piece)
+    end
+
     def occupied?(space)
       return (@board.at(space) == " ") ? false : true
     end
@@ -40,7 +48,7 @@
           return false
         end
       end
-      true
+      return true
     end
 
     def someone_win?

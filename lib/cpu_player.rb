@@ -18,7 +18,7 @@ class CpuPlayer < Player
 
   def get_winning_pattern_move
     move_pos = nil
-    array = @winning_patterns.find { |p| p.first =~ @board.board.join }
+    array = @winning_patterns.find { |p| p.first =~ @board.to_s }
     if array
       move_pos = array.last
     end
@@ -27,7 +27,7 @@ class CpuPlayer < Player
 
   def get_blocking_pattern_move
     move_pos = nil
-    array = @blocking_patterns.find { |p| p.first =~ @board.board.join }
+    array = @blocking_patterns.find { |p| p.first =~ @board.to_s }
     if array
       move_pos = array.last
     end
@@ -38,7 +38,7 @@ class CpuPlayer < Player
     if !@board.occupied?(4)
       move_pos = 4
     else
-      move_pos = @board.board.index(' ')
+      move_pos = @board.index(' ')
     end
     return move_pos
   end
