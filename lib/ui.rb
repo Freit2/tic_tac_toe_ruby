@@ -16,7 +16,7 @@ class UI
 
   def get_player_type(piece)
     display_message("\nChoose player type for '#{piece}' " +
-      "('h' for human or 'c' for cpu) ")
+      "('h' for human or 'c' for cpu or 'm' for minmax cpu) ")
     return get_input.to_s.chomp
   end
 

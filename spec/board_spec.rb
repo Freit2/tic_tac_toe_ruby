@@ -4,7 +4,7 @@ require 'board'
 
 describe Board do
   before(:each) do
-    @board = Board.new()
+    @board = Board.new
     @x = 'X'
     @o = 'O'
   end
@@ -13,12 +13,18 @@ describe Board do
     @board.size.should == 9
   end
 
-  it "occupies space if move is made" do
+  it "should accept existing board array" do
+    board = [@x, @o, @x, @o, @x, @o, @o, @o, @x]
+    new_board = Board.new(board)
+    new_board.to_s.should == "XOXOXOOOX"
+  end
+
+  it "occupies square if move is made" do
     @board.move(0, @x)
     @board.occupied?(0).should == true
   end
 
-  it "does not occupy space if space is already occupied" do
+  it "does not occupy square if square is already occupied" do
     @board.move(0, @x)
     @board.move(0, @o)
     @board.piece_in(0).should == @x
@@ -34,6 +40,7 @@ describe Board do
     @board.move(6, @x)
     @board.move(7, @x)
     @board.move(8, @o)
+    @board.winner.should be_nil
     @board.game_over?.should == true
   end
 
@@ -41,8 +48,14 @@ describe Board do
     @board.move(0, @x)
     @board.move(1, @x)
     @board.move(2, @x)
-    @board.someone_win?.should == true
     @board.winner.should == @x
+    @board.someone_win?.should == true
+  end
+
+  it "should return true for a valid move" do
+    9.times do |s|
+      @board.valid_move?(s).should == true
+    end
   end
 
   it "returns pieces for specific squares" do
@@ -50,5 +63,11 @@ describe Board do
     @board.move(1, @o)
     @board.piece_in(0).should == @x
     @board.piece_in(1).should == @o
+  end
+
+  it "returns an array of empty squares" do
+    @board.get_empty_squares.size.should == 9
+    @board.move(0, @x)
+    @board.get_empty_squares.size.should == 8
   end
 end

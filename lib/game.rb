@@ -12,17 +12,10 @@ class Game
     @player2.board = @board
   end
 
-  def valid_move?(space)
-    if (0..8) === space
-      return (@board.occupied?(space)) ? false : true
-    end
-    return false
-  end
-
   def get_move_from(player)
     loop do
       move = player.make_move
-      if valid_move?(move)
+      if @board.valid_move?(move)
         return move
       end
     end

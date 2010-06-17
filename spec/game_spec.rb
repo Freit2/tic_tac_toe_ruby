@@ -10,7 +10,7 @@ describe Game do
   before(:each) do
     @input = StringIO.new
     @output = StringIO.new
-    @board = Board.new()
+    @board = Board.new
     @ui = UI.new(@input, @output)
     @player1 = HumanPlayer.new('O')
     @player2 = CpuPlayer.new('X')
@@ -30,12 +30,6 @@ describe Game do
 
   it "should hold a ui" do
     @game.ui.should be(@ui)
-  end
-
-  it "should return true for a valid move" do
-    9.times do |s|
-      @game.valid_move?(s).should == true
-    end
   end
 
   it "should return a move for human player" do

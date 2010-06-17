@@ -10,7 +10,7 @@ describe CpuPlayer do
     @ui = UI.new(StringIO.new, StringIO.new)
     @cpu = CpuPlayer.new('X')
     @cpu.ui = @ui
-    @board = Board.new()
+    @board = Board.new
     @cpu.board = @board
   end
 

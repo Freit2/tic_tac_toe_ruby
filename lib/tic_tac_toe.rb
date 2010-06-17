@@ -4,9 +4,11 @@ require 'board'
 require 'ui'
 require 'human_player'
 require 'cpu_player'
+require 'min_max_player'
 
 class TicTacToe
   attr_reader :input, :output, :player1, :player2, :game, :board
+
   def initialize(input, output)
     @input = input
     @output = output
@@ -17,12 +19,17 @@ class TicTacToe
     player_type = ""
     loop do
       player_type = @ui.get_player_type(piece)
-      break if player_type == "h" || player_type == "c"
+      break if player_type == "h" ||
+        player_type == "c" ||
+        player_type == "m"
     end
-    if player_type == 'h'
+    case player_type
+    when 'h'
       return HumanPlayer.new(piece)
-    else
+    when 'c'
       return CpuPlayer.new(piece)
+    when 'm'
+      return MinMaxPlayer.new(piece)
     end
   end
 
@@ -36,7 +43,7 @@ class TicTacToe
   def play
     loop do
       choose_players
-      @board = Board.new()
+      @board = Board.new
       @game = Game.new(player1, player2, @board, @ui)
       @game.play
       play_again = ''
