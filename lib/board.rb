@@ -1,16 +1,17 @@
 class Board
-  attr_reader :board, :size, :winner
+  attr_reader :board, :size
+  attr_accessor :winner
 
   def initialize(board=nil, size=9)
     @won_patterns =
-      [[(/OOO....../),:O], [(/...OOO.../),:O],
-       [(/......OOO/),:O], [(/O..O..O../),:O],
-       [(/.O..O..O./),:O], [(/..O..O..O/),:O],
-       [(/O...O...O/),:O], [(/..O.O.O../),:O],
-       [(/XXX....../),:X], [(/...XXX.../),:X],
-       [(/......XXX/),:X], [(/X..X..X../),:X],
-       [(/.X..X..X./),:X], [(/..X..X..X/),:X],
-       [(/X...X...X/),:X], [(/..X.X.X../),:X]]
+      [[(/OOO....../), :O], [(/...OOO.../), :O],
+       [(/......OOO/), :O], [(/O..O..O../), :O],
+       [(/.O..O..O./), :O], [(/..O..O..O/), :O],
+       [(/O...O...O/), :O], [(/..O.O.O../), :O],
+       [(/XXX....../), :X], [(/...XXX.../), :X],
+       [(/......XXX/), :X], [(/X..X..X../), :X],
+       [(/.X..X..X./), :X], [(/..X..X..X/), :X],
+       [(/X...X...X/), :X], [(/..X.X.X../), :X]]
     if board
       @size = board.size
       @board = board.dup
@@ -71,10 +72,8 @@ class Board
   end
 
   def game_over?
-    if !someone_win?
-      if @board.index(" ")
-        return false
-      end
+    if !someone_win? && @board.index(" ")
+      return false
     end
     return true
   end
@@ -87,6 +86,7 @@ class Board
   end
 
   def someone_win?
+    find_winner
     if @winner
       return true
     end
