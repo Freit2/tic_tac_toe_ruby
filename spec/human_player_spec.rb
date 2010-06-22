@@ -1,4 +1,3 @@
-# human_player_spec.rb
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"   
 require 'human_player'
 require 'ui'

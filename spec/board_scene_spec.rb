@@ -1,8 +1,8 @@
-require File.expand_path(File.dirname(__FILE__) + "/../spec_helper")
+require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 
-describe "Board" do
+describe "Board Scene" do
 
-  uses_limelight :scene => "board", :hidden => true
+  uses_scene "board_scene", :hidden => true
 
   it "should have three rows" do
     scene.children.size.should == 3
@@ -22,9 +22,5 @@ describe "Board" do
         id += 1
       end
     end
-  end
-
-  it "should " do
-
   end
 end

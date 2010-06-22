@@ -1,4 +1,3 @@
-# player_spec.rb
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'player'
 require 'board'

@@ -1,4 +1,3 @@
-# game_spec.rb
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'game'
 require 'human_player'
