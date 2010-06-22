@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"   
 require 'human_player'
-require 'ui'
+require 'std_ui'
 
 describe HumanPlayer do
   before(:each) do
     @input = StringIO.new
     @output = StringIO.new
-    @ui = UI.new(@input, @output)
+    @ui = StdUI.new(@input, @output)
     @human = HumanPlayer.new('O')
     @human.ui = @ui
   end

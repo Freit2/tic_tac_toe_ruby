@@ -1,4 +1,4 @@
-require 'ui'
+require 'std_ui'
 
 class Game
   attr_reader :board, :ui, :player1, :player2

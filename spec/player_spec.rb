@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'player'
 require 'board'
-require 'ui'
+require 'std_ui'
 
 describe Player do
   it "returns O for piece when creating player" do
@@ -17,7 +17,7 @@ describe Player do
   end
 
   it "should allow ui to be set" do
-    ui = UI.new(STDIN, STDOUT)
+    ui = StdUI.new(STDIN, STDOUT)
     player = Player.new('X')
     player.ui = ui
     player.ui.should == ui

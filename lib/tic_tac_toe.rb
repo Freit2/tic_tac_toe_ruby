@@ -1,18 +1,16 @@
 require File.expand_path(File.dirname(__FILE__)) + "/init" 
 require 'game'
 require 'board'
-require 'ui'
+require 'std_ui'
 require 'human_player'
 require 'cpu_player'
 require 'min_max_player'
 
 class TicTacToe
-  attr_reader :input, :output, :player1, :player2, :game, :board
+  attr_reader :ui, :player1, :player2, :game, :board
 
-  def initialize(input, output)
-    @input = input
-    @output = output
-    @ui = UI.new(@input, @output)
+  def initialize(ui = StdUI.new)
+    @ui = ui
   end
 
   def ask_for_player(piece)
@@ -58,5 +56,5 @@ class TicTacToe
 end
 
 if $0 == __FILE__
-  TicTacToe.new(STDIN, STDOUT).play
+  TicTacToe.new().play
 end

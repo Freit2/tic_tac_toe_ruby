@@ -3,14 +3,14 @@ require 'game'
 require 'human_player'
 require 'cpu_player'
 require 'board'
-require 'ui'
+require 'std_ui'
 
 describe Game do
   before(:each) do
     @input = StringIO.new
     @output = StringIO.new
     @board = Board.new
-    @ui = UI.new(@input, @output)
+    @ui = StdUI.new(@input, @output)
     @player1 = HumanPlayer.new('O')
     @player2 = CpuPlayer.new('X')
     @player1.ui = @ui

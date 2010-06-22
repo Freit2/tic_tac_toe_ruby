@@ -1,6 +1,5 @@
 require 'player'
 require 'board'
-require 'ui'
 
 class MinMaxPlayer < Player
 

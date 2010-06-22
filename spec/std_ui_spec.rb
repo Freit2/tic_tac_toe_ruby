@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
-require 'ui'
+require 'std_ui'
 require 'stringio'
 
-describe UI do
+describe StdUI do
   before(:each) do
     @input = StringIO.new
     @output = StringIO.new
-    @ui = UI.new(@input, @output)
+    @ui = StdUI.new(@input, @output)
   end
 
   it "should get input from user" do

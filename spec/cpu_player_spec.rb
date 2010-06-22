@@ -1,12 +1,12 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"   
 require 'cpu_player'
 require 'board'
-require 'ui'
+require 'std_ui'
 require 'stringio'
 
 describe CpuPlayer do
   before(:each) do
-    @ui = UI.new(StringIO.new, StringIO.new)
+    @ui = StdUI.new(StringIO.new, StringIO.new)
     @cpu = CpuPlayer.new('X')
     @cpu.ui = @ui
     @board = Board.new

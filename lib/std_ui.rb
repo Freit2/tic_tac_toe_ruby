@@ -1,7 +1,7 @@
-class UI
+class StdUI
   attr_reader :input, :output
   
-  def initialize(input, output)
+  def initialize(input=STDIN, output=STDOUT)
     @input = input
     @output = output
   end

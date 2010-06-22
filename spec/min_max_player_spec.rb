@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'min_max_player.rb'
 require 'board'
-require 'ui'
+require 'std_ui'
 require 'stringio'
 
 describe MinMaxPlayer do
@@ -9,7 +9,7 @@ describe MinMaxPlayer do
     @x = 'X'
     @o = 'O'
     @b = ' '
-    @ui = UI.new(StringIO.new, StringIO.new)
+    @ui = StdUI.new(StringIO.new, StringIO.new)
     @min_max = MinMaxPlayer.new(@x)
     @min_max.ui = @ui
     @board = Board.new

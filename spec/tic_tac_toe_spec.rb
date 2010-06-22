@@ -2,28 +2,18 @@ require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'tic_tac_toe'
 require 'human_player'
 require 'cpu_player'
+require 'std_ui'
 
 describe TicTacToe do
   before(:each) do
     @input = StringIO.new
     @output = StringIO.new
-    @ttt = TicTacToe.new(@input, @output)
+    @ui = StdUI.new(@input, @output)
+    @ttt = TicTacToe.new(@ui)
   end
   
   it "should be able to create a new instance" do
-    lambda { TicTacToe.new(@input, @output) }.should_not raise_error
-  end
-
-  it "should allow change to stdin" do
-    ttt = TicTacToe.new(STDIN, STDOUT)
-    ttt.input.should == STDIN
-    @ttt.input.should == @input
-  end
-
-  it "should allow change to stdout" do
-    ttt = TicTacToe.new(STDIN, STDOUT)
-    ttt.output.should == STDOUT
-    @ttt.output.should == @output
+    lambda { TicTacToe.new }.should_not raise_error
   end
 
 #  it "should ask player types for both players" do
@@ -39,14 +29,9 @@ describe TicTacToe do
 #  end
 
   it "should return player" do
-    @ttt.input.string = "h"
+    @ttt.ui.input.string = "h"
     @ttt.ask_for_player('O').instance_of?(HumanPlayer)
-    @ttt.input.string = "c"
+    @ttt.ui.input.string = "c"
     @ttt.ask_for_player('X').instance_of?(CpuPlayer)
   end
-
-#  it "should play a new game on start" do
-#    @ttt.game.instance_of?(Game)
-#    @ttt.play
-#  end
 end
