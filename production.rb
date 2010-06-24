@@ -4,33 +4,40 @@
 
 module Production
 
+  attr_reader :tic_tac_toe
+
 #  # Define this method if you want the production name to be different from the default, directory name.
 #  def name
 #    return Tic Tac Toe
 #  end
 #
-#  # Returns the minimum version of limelight required to run this production.  Default: "0.0.0"
-#  # If the version of limelight used to open this production is less than the minimum, 
-#  # an error will be displayed (starting with version 0.4.0).
-#  #
-#  def minimum_limelight_version
-#    return "0.5.5"
-#  end
-#
-#  # Hook #1.  Called when the production is newly created, before any loading has been done.
-#  # This is a good place to require needed files and instantiate objects in the business layer.
-#  def production_opening
-#  end
-#
+  # Returns the minimum version of limelight required to run this production.  Default: "0.0.0"
+  # If the version of limelight used to open this production is less than the minimum,
+  # an error will be displayed (starting with version 0.4.0).
+  #
+  def minimum_limelight_version
+    return "0.5.5"
+  end
+
+  # Hook #1.  Called when the production is newly created, before any loading has been done.
+  # This is a good place to require needed files and instantiate objects in the business layer.
+  def production_opening
+    $: << File.expand_path(File.dirname(__FILE__) + "/lib")
+    require 'tic_tac_toe'
+  end
+
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
 #  # any scenes have been opened.
 #  def production_loaded
 #  end
-#
-#  # Hook #3.  Called when the production, and all the scenes, have fully opened.
-#  def production_opened
-#  end
-#
+
+  # Hook #3.  Called when the production, and all the scenes, have fully opened.
+  def production_opened
+    default_scene = theater["default"].current_scene
+    @tic_tac_toe = TicTacToe.new(default_scene)
+    # load players to comboboxes
+  end
+
 #  # The system will call this methods when it wishes to close the production, perhaps when the user quits the
 #  # application.  By default the production will always return true. You may override this behavior by re-implenting
 #  # the methods here.

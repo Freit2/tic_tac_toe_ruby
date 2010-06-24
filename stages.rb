@@ -10,8 +10,8 @@
 #  end
 
 stage "default" do
-  default_scene "board_scene"
-  title "skim's tic tac toe"
-  location :center, :center
+  default_scene "default_scene"
+  title "Limelight Tic Tac Toe"
+  location [:center, :center]
   size [500, 700]
 end

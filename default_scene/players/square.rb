@@ -1,5 +1,6 @@
 module Square
   def mouse_clicked(event)
+    @piece = 'X'
     if self.text == ''
       self.text = @piece
       if @piece == 'X'

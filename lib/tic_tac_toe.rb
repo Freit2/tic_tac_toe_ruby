@@ -7,7 +7,7 @@ require 'cpu_player'
 require 'min_max_player'
 
 class TicTacToe
-  attr_reader :ui, :player1, :player2, :game, :board
+  attr_reader :ui, :player_o, :player_x, :game, :board
 
   def initialize(ui = StdUI.new)
     @ui = ui
@@ -32,17 +32,17 @@ class TicTacToe
   end
 
   def choose_players
-    @player1 = ask_for_player('O')
-    @player2 = ask_for_player('X')
-    @player1.ui = @ui
-    @player2.ui = @ui
+    @player_o = ask_for_player('O')
+    @player_x = ask_for_player('X')
+    @player_o.ui = @ui
+    @player_x.ui = @ui
   end
   
   def play
     loop do
       choose_players
       @board = Board.new
-      @game = Game.new(player1, player2, @board, @ui)
+      @game = Game.new(@player_o, @player_x, @board, @ui)
       @game.play
       play_again = ''
       loop do

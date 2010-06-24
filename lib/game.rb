@@ -1,15 +1,15 @@
 require 'std_ui'
 
 class Game
-  attr_reader :board, :ui, :player1, :player2
+  attr_reader :board, :ui, :player_o, :player_x
 
-  def initialize(player1, player2, board, ui)
+  def initialize(player_o, player_x, board, ui)
     @board = board
     @ui = ui
-    @player1 = player1
-    @player1.board = @board
-    @player2 = player2
-    @player2.board = @board
+    @player_o = player_o
+    @player_o.board = @board
+    @player_x = player_x
+    @player_x.board = @board
   end
 
   def get_move_from(player)
@@ -30,8 +30,8 @@ class Game
   end
 
   def play_turn
-    make_move(@player1)
-    make_move(@player2)
+    make_move(@player_o)
+    make_move(@player_x)
   end
 
   def play
