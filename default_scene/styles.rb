@@ -29,7 +29,7 @@ label {
   right_margin 20
 }
 
-player {
+player_selection {
   width 150
 }
 

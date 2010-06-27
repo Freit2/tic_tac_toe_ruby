@@ -4,7 +4,8 @@
 
 module Production
 
-  attr_reader :tic_tac_toe
+  attr_reader :player_o, :player_x, :game, :board,
+              :players, @player_o_def, @player_x_def
 
 #  # Define this method if you want the production name to be different from the default, directory name.
 #  def name
@@ -23,7 +24,14 @@ module Production
   # This is a good place to require needed files and instantiate objects in the business layer.
   def production_opening
     $: << File.expand_path(File.dirname(__FILE__) + "/lib")
-    require 'tic_tac_toe'
+    require 'game'
+    require 'board'
+    require 'human_player'
+    require 'cpu_player'
+    require 'min_max_player'
+    @players = ['human', 'cpu', 'minmax']
+    @player_o_def = @players[0]
+    @player_x_def = @players[2]
   end
 
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
@@ -33,9 +41,7 @@ module Production
 
   # Hook #3.  Called when the production, and all the scenes, have fully opened.
   def production_opened
-    default_scene = theater["default"].current_scene
-    @tic_tac_toe = TicTacToe.new(default_scene)
-    # load players to comboboxes
+    
   end
 
 #  # The system will call this methods when it wishes to close the production, perhaps when the user quits the

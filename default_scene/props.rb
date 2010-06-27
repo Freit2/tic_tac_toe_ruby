@@ -4,34 +4,36 @@
 # For more information see: http://limelightwiki.8thlight.com/index.php/A_Cook%27s_Tour_of_Limelight#PropBuilder_DSL
 
 menu do
-  label :text => 'Player 1'
-  player :players => 'combo_box', :choices => ['human', 'semi-weak cpu', 'unbeatable cpu'], :value => 'human'
+  label :text => 'Player O'
+  player_selection :id => 'player_o_type', :players => 'combo_box',
+                   :choices => @players, :value => @player_o_def
 end
 
 menu do
-  label :text => 'Player 2'
-  player :players => 'combo_box', :choices => ['human', 'semi-weak cpu', 'unbeatable cpu'], :value => 'unbeatable cpu'
+  label :text => 'Player X'
+  player_selection :id => 'player_x_type', :players => 'combo_box',
+                   :choices => @players, :value => @player_x_def
 end
 
 menu do
-  menu_item :text => "Start", :action => "scene.start"
-  menu_item :text => "Exit", :action => "scene.close"
+  menu_item :text => "Start", :id => 'start_button', :action => "scene.start"
+  menu_item :text => "Exit", :id => 'exit_button', :action => "scene.close"
 end
 
 row do
-  square :id => "square_0"
-  square :id => "square_1"
-  square :id => "square_2"
+  (0..2).each do |s|
+    square :id => "square_#{s}"
+  end
 end
 
 row do
-  square :id => "square_3"
-  square :id => "square_4"
-  square :id => "square_5"
+  (3..5).each do |s|
+    square :id => "square_#{s}"
+  end
 end
 
 row do
-  square :id => "square_6"
-  square :id => "square_7"
-  square :id => "square_8"
+  (6..8).each do |s|
+    square :id => "square_#{s}"
+  end
 end

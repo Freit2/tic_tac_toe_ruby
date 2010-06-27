@@ -41,6 +41,7 @@ class TicTacToe
   def play
     loop do
       choose_players
+      # START
       @board = Board.new
       @game = Game.new(@player_o, @player_x, @board, @ui)
       @game.play
@@ -56,5 +57,5 @@ class TicTacToe
 end
 
 if $0 == __FILE__
-  TicTacToe.new().play
+  TicTacToe.new.play
 end

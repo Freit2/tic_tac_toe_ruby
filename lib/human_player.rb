@@ -6,7 +6,6 @@ class HumanPlayer < Player
   end
 
   def make_move()
-    @ui.display_message("\nEnter your move, player '#{@piece}' [0-8]: ")
-    return @ui.get_input.to_i
+    return @ui.get_human_player_move(@piece)
   end
 end
