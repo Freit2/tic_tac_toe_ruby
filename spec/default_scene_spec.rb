@@ -91,10 +91,30 @@ describe "Default Scene" do
     scene.player_x.ui.should == scene
   end
 
+  it "should display board" do
+    board = Board.new(['X','X','X','X','X','O','O','O','O'])
+    scene.display_board(board)
+    scene.square_0.text.should == 'X'
+    scene.square_1.text.should == 'X'
+    scene.square_2.text.should == 'X'
+    scene.square_3.text.should == 'X'
+    scene.square_4.text.should == 'X'
+    scene.square_5.text.should == 'O'
+    scene.square_6.text.should == 'O'
+    scene.square_7.text.should == 'O'
+    scene.square_8.text.should == 'O'
+  end
+
   it "should play new game" do
     scene.should_receive(:play_new_game)
 
     scene.play_new_game
+  end
+
+  it "should enable new game button on try again" do
+    scene.start_button.disable
+    scene.display_try_again
+    scene.start_button.enabled.should == true
   end
 
   it "should close" do

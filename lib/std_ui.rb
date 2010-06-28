@@ -1,5 +1,6 @@
 class StdUI
   attr_reader :input, :output
+  attr_accessor :current_player
   
   def initialize(input=STDIN, output=STDOUT)
     @input = input
@@ -31,7 +32,7 @@ class StdUI
   end
 
   def display_cpu_move_message(piece)
-    display_message("Player '#{piece}' makes a move\n")
+    display_message("Player '#{piece}' is making a move\n")
   end
 
   def display_board(board)
