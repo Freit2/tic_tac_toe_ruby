@@ -7,6 +7,15 @@ class MinMaxPlayer < Player
     super(piece)
   end
 
+  def make_move
+    @ui.display_cpu_move_message(@piece)
+    if @board.get_empty_squares.size == @board.size
+      return rand(@board.size)
+    end
+    get_best_move(@board, @piece, 1)
+    return @best_move
+  end
+
   def get_opponent(piece)
     return piece === 'O' ? 'X' : 'O'
   end
@@ -41,14 +50,5 @@ class MinMaxPlayer < Player
       end
       return best_score
     end
-  end
-
-  def make_move
-    @ui.display_message("Player '#{@piece}' makes a move\n")
-    if @board.get_empty_squares.size == @board.size
-      return rand(@board.size)
-    end
-    get_best_move(@board, @piece, 1)
-    return @best_move
   end
 end

@@ -14,6 +14,17 @@ default_scene {
   height "100%"
 }
 
+status {
+  width '100%'
+  horizontal_alignment :center
+  vertical_alignment :top
+  bottom_padding 50
+  font_size 15
+  font_face :arial
+  font_style :bold
+  text_color :green
+}
+
 menu {
   width '100%'
   horizontal_alignment :center
@@ -34,10 +45,10 @@ player_selection {
 }
 
 menu_item {
-  width 100
+  width 150
   right_margin 20
   padding 10
-  border_color :white
+  border_color "#2661da"
   border_width 1
   rounded_corner_radius 5
   text_color "#2661da"
@@ -46,7 +57,7 @@ menu_item {
   font_style :bold
   horizontal_alignment :center
   hover {
-    background_color :light_grey
+    background_color :light_green
   }
 }
 
@@ -59,14 +70,14 @@ row {
 square {
   height 130
   width 130
-  border_color :white
+  border_color "#2661da"
   border_width 1
   horizontal_alignment :center
   vertical_alignment :bottom
   gradient :on
   font_size 120
   hover {
-    background_color :green
+    background_color :light_green
     border_width 1
   }
 }

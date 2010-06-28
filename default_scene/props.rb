@@ -3,21 +3,23 @@
 #
 # For more information see: http://limelightwiki.8thlight.com/index.php/A_Cook%27s_Tour_of_Limelight#PropBuilder_DSL
 
+status :id => 'status'
+
 menu do
   label :text => 'Player O'
   player_selection :id => 'player_o_type', :players => 'combo_box',
-                   :choices => @players, :value => @player_o_def
+                   :choices => ['human', 'cpu', 'minmax'], :value => 'human'
 end
 
 menu do
   label :text => 'Player X'
   player_selection :id => 'player_x_type', :players => 'combo_box',
-                   :choices => @players, :value => @player_x_def
+                   :choices => ['human', 'cpu', 'minmax'], :value => 'minmax'
 end
 
 menu do
-  menu_item :text => "Start", :id => 'start_button', :action => "scene.start"
-  menu_item :text => "Exit", :id => 'exit_button', :action => "scene.close"
+  menu_item :id => 'start_button', :text => "New Game", :action => "scene.play_new_game"
+  menu_item :id => 'exit_button', :text => "Exit", :action => "scene.close"
 end
 
 row do

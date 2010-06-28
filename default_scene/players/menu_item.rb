@@ -1,5 +1,6 @@
 module MenuItem
 
+  attr_reader :enabled
   attr_accessor :action
 
   def casted

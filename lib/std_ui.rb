@@ -30,6 +30,10 @@ class StdUI
     return get_input.to_i
   end
 
+  def display_cpu_move_message(piece)
+    display_message("Player '#{piece}' makes a move\n")
+  end
+
   def display_board(board)
       board_line = "\n---+---+---\n"
       message = "\n\n #{board[0..2].join(' | ')} " +

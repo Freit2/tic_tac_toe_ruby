@@ -4,9 +4,6 @@
 
 module Production
 
-  attr_reader :player_o, :player_x, :game, :board,
-              :players, @player_o_def, @player_x_def
-
 #  # Define this method if you want the production name to be different from the default, directory name.
 #  def name
 #    return Tic Tac Toe
@@ -29,9 +26,6 @@ module Production
     require 'human_player'
     require 'cpu_player'
     require 'min_max_player'
-    @players = ['human', 'cpu', 'minmax']
-    @player_o_def = @players[0]
-    @player_x_def = @players[2]
   end
 
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
@@ -39,10 +33,10 @@ module Production
 #  def production_loaded
 #  end
 
-  # Hook #3.  Called when the production, and all the scenes, have fully opened.
-  def production_opened
-    
-  end
+#  # Hook #3.  Called when the production, and all the scenes, have fully opened.
+#  def production_opened
+#
+#  end
 
 #  # The system will call this methods when it wishes to close the production, perhaps when the user quits the
 #  # application.  By default the production will always return true. You may override this behavior by re-implenting
