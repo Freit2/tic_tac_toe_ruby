@@ -9,23 +9,6 @@ describe "Default Scene" do
 
   uses_scene "default_scene", :hidden => true
 
-  before do
-    #scene.player.casted
-    #scene.player_selection.casted
-  end
-
-  it "should play new game" do
-    scene.should_receive(:play_new_game)
-
-    scene.play_new_game
-  end
-
-  it "should close" do
-    scene.stage.should_receive(:close)
-
-    scene.close
-  end
-
   it "should have a status prop" do
     count = 0
     scene.children.each do |p|
@@ -77,6 +60,18 @@ describe "Default Scene" do
     scene.status.text.should == 'test message'
   end
 
+  it "should return specific player" do
+    human = scene.get_player('human', 'O')
+    human.class.name.should == 'HumanPlayer'
+    human.piece.should == 'O'
+    cpu = scene.get_player('cpu', 'X')
+    cpu.class.name.should == 'CpuPlayer'
+    cpu.piece.should == 'X'
+    minmax = scene.get_player('minmax', 'O')
+    minmax.class.name.should == 'MinMaxPlayer'
+    minmax.piece.should == 'O'
+  end
+
   it "should default to human and minmax players" do
     scene.player_o_type.text.should == 'human'
     scene.player_x_type.text.should == 'minmax'
@@ -89,32 +84,23 @@ describe "Default Scene" do
     scene.player_x.class.name.should == 'MinMaxPlayer'
   end
 
-  it "should start with enabled menu items" do
-    scene.start_button.enabled.should == true
-    scene.exit_button.enabled.should == true
+  it "should have player hold default_scene UI" do
+    scene.create_players
+    
+    scene.player_o.ui.should == scene
+    scene.player_x.ui.should == scene
   end
 
-  it "should start with disabled squares" do
-    (0..8).each do |s|
-      instance_eval("scene.square_#{s}.enabled").should == false
-      instance_eval("scene.square_#{s}.hover_style").should == nil
-      instance_eval("scene.square_#{s}.style.text_color").should == '#808080ff'
-    end
+  it "should play new game" do
+    scene.should_receive(:play_new_game)
+
+    scene.play_new_game
   end
 
-  it "should disable start button on new game" do
-    scene.start_button.disable
-    scene.start_button.enabled.should == false
-    scene.start_button.hover_style.should == nil
-    scene.start_button.style.text_color.should == '#808080ff'
-  end
+  it "should close" do
+    scene.stage.should_receive(:close)
 
-  it "should enable squares on new game" do
-    scene.enable_squares
-    (0..8).each do |s|
-      instance_eval("scene.square_#{s}.enabled").should == true
-      instance_eval("scene.square_#{s}.hover_style").should_not == nil
-    end
+    scene.close
   end
-
+  
 end

@@ -23,6 +23,7 @@ class Game
 
   def make_move(player)
     if !@board.game_over?
+      @ui.current_player = player
       player_move = get_move_from(player)
       @board.move(player_move, player.piece)
       @ui.display_board(@board)

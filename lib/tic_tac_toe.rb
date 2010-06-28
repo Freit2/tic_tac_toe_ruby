@@ -41,7 +41,6 @@ class TicTacToe
   def play
     loop do
       choose_players
-      # START
       @board = Board.new
       @game = Game.new(@player_o, @player_x, @board, @ui)
       @game.play

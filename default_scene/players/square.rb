@@ -7,15 +7,17 @@ module Square
     disable
   end
 
-  def mouse_clicked(event)
-    if @enabled
-      @piece = 'X'
-      if self.text == ''
-        self.text = @piece
-        if @piece == 'X'
-          self.style.text_color = :blue
-        else
-          self.style.text_color = :red
+  def mouse_clicked(e)
+    if @enabled && scene.player_allowed && self.text == ' '
+      self.text = scene.current_player.piece
+      if self.text == 'X'
+        self.style.text_color = :blue
+      else
+        self.style.text_color = :red
+      end
+      (0..8).each do |s|
+        if self.id == "square_#{s}"
+          scene.move = s
         end
       end
     end

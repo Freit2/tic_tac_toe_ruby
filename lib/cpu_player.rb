@@ -8,7 +8,7 @@ class CpuPlayer < Player
     set_patterns(piece)
   end
 
-  def make_move()
+  def make_move
     @ui.display_cpu_move_message(@piece)
     move_pos = get_winning_pattern_move
     move_pos = get_blocking_pattern_move if !move_pos

@@ -5,7 +5,7 @@ class HumanPlayer < Player
     super(piece)
   end
 
-  def make_move()
+  def make_move
     return @ui.get_human_player_move(@piece)
   end
 end
