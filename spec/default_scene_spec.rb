@@ -2,6 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'game'
 require 'board'
 require 'human_player'
+require 'easy_cpu_player'
 require 'cpu_player'
 require 'min_max_player'
 
@@ -64,17 +65,20 @@ describe "Default Scene" do
     human = scene.get_player('human', 'O')
     human.class.name.should == 'HumanPlayer'
     human.piece.should == 'O'
-    cpu = scene.get_player('cpu', 'X')
-    cpu.class.name.should == 'CpuPlayer'
-    cpu.piece.should == 'X'
-    minmax = scene.get_player('minmax', 'O')
-    minmax.class.name.should == 'MinMaxPlayer'
-    minmax.piece.should == 'O'
+    easy_cpu = scene.get_player('easy cpu', 'X')
+    easy_cpu.class.name.should == 'EasyCpuPlayer'
+    easy_cpu.piece.should == 'X'
+    medium_cpu = scene.get_player('medium cpu', 'X')
+    medium_cpu.class.name.should == 'CpuPlayer'
+    medium_cpu.piece.should == 'X'
+    unbeatable_cpu = scene.get_player('unbeatable cpu', 'O')
+    unbeatable_cpu.class.name.should == 'MinMaxPlayer'
+    unbeatable_cpu.piece.should == 'O'
   end
 
   it "should default to human and minmax players" do
     scene.player_o_type.text.should == 'human'
-    scene.player_x_type.text.should == 'minmax'
+    scene.player_x_type.text.should == 'unbeatable cpu'
   end
 
   it "should create player instances" do

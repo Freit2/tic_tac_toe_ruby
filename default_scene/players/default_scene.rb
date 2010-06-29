@@ -26,9 +26,11 @@ module DefaultScene
     case player
       when 'human'
         return HumanPlayer.new(piece)
-      when 'cpu'
+      when 'easy cpu'
+        return EasyCpuPlayer.new(piece)
+      when 'medium cpu'
         return CpuPlayer.new(piece)
-      when 'minmax'
+      when 'unbeatable cpu'
         return MinMaxPlayer.new(piece)
     end
   end

@@ -8,13 +8,13 @@ status :id => 'status'
 menu do
   label :text => 'Player O'
   player_selection :id => 'player_o_type', :players => 'combo_box',
-                   :choices => ['human', 'cpu', 'minmax'], :value => 'human'
+                   :choices => ['human', 'easy cpu', 'medium cpu', 'unbeatable cpu'], :value => 'human'
 end
 
 menu do
   label :text => 'Player X'
   player_selection :id => 'player_x_type', :players => 'combo_box',
-                   :choices => ['human', 'cpu', 'minmax'], :value => 'minmax'
+                   :choices => ['human', 'easy cpu', 'medium cpu', 'unbeatable cpu'], :value => 'unbeatable cpu'
 end
 
 menu do
