@@ -10,11 +10,7 @@ module Square
   def mouse_clicked(e)
     if @enabled && scene.player_allowed && self.text == ' '
       self.text = scene.current_player.piece
-      if self.text == 'X'
-        self.style.text_color = :blue
-      else
-        self.style.text_color = :red
-      end
+      self.style.text_color = scene.piece_color(self.text)
       (0..8).each do |s|
         if self.id == "square_#{s}"
           scene.move = s

@@ -70,15 +70,16 @@ module DefaultScene
     status.text = message
   end
 
+  def piece_color(piece)
+    return :blue if piece == 'X'
+    return :red
+  end
+
   def display_board(board)
     (0...board.size).each do |s|
       square = instance_eval("scene.square_#{s}")
       square.text = board[s]
-      if board[s] == 'X'
-        square.style.text_color = :blue
-      else
-        square.style.text_color = :red
-      end
+      square.style.text_color = piece_color(board[s])
     end
   end
 
@@ -89,7 +90,7 @@ module DefaultScene
 
   def display_cpu_move_message(piece)
     display_message("Player '#{piece}' is making a move")
-    sleep(2)
+    sleep(1.5)
   end
 
   def display_winner(winner)

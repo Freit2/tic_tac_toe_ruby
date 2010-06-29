@@ -91,6 +91,11 @@ describe "Default Scene" do
     scene.player_x.ui.should == scene
   end
 
+  it "should return correct piece color" do
+    scene.piece_color('X').should == :blue
+    scene.piece_color('O').should == :red
+  end
+
   it "should display board" do
     board = Board.new(['X','X','X','X','X','O','O','O','O'])
     scene.display_board(board)
