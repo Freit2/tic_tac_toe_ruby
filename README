@@ -1,4 +1,6 @@
-To run the game in standard stream (stdio), type: ruby lib/tic_tac_toe.rb
+To run the game in standard stream (stdio), type: 
+
+ruby lib/tic_tac_toe.rb
 
 Move positions are:
 
@@ -8,4 +10,16 @@ Move positions are:
  ---+---+---
   6 | 7 | 8
 
-Note: Limelight UI is in the works.
+To run on Limelight UI, you must have the following installed:
+
+* JRuby
+* Limelight gem
+* Limelight binary (*.dmg, *.exe)
+
+See here for more information: http://limelight.8thlight.com/main/download
+
+Once installed, navigate to the cloned repo and type:
+
+limelight open .
+
+The '.' is needed to run the program.
