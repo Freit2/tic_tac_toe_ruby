@@ -1,7 +1,7 @@
 module DefaultScene
 
-  attr_reader :player_o, :player_x, :board, :player_allowed
-  attr_accessor :current_player, :move
+  attr_reader :player_o, :player_x
+  attr_accessor :board, :current_player, :move, :player_allowed
   prop_reader :status, :player_o_type, :player_x_type, :start_button, :exit_button,
               :square_0, :square_1, :square_2, :square_3, :square_4, :square_5,
               :square_6, :square_7, :square_8
@@ -10,14 +10,20 @@ module DefaultScene
     @player_allowed = false
   end
 
+  def clear_squares
+    (0...@board.size).each do |s|
+      instance_eval("square_#{s}").text = ""
+    end
+  end
+
   def enable_squares
-    (0..8).each do |s|
+    (0...@board.size).each do |s|
       instance_eval("square_#{s}.enable")
     end
   end
 
   def disable_squares
-    (0..8).each do |s|
+    (0...@board.size).each do |s|
       instance_eval("square_#{s}.disable")
     end
   end
@@ -43,9 +49,10 @@ module DefaultScene
   end
 
   def play_new_game
+    @board = Board.new
+    clear_squares
     start_button.disable
     create_players
-    @board = Board.new
     enable_squares
     @game_thread = Thread.new do
       begin
@@ -72,17 +79,12 @@ module DefaultScene
     status.text = message
   end
 
-  def piece_color(piece)
-    return :blue if piece == 'X'
-    return :red
+  def piece_color
+    return (current_player.piece == 'X') ? :light_blue : :crimson
   end
 
   def display_board(board)
-    (0...board.size).each do |s|
-      square = instance_eval("scene.square_#{s}")
-      square.text = board[s]
-      square.style.text_color = piece_color(board[s])
-    end
+    instance_eval("square_#{board.last_move}").animate_move if board.last_move
   end
 
   def get_human_player_move(piece)
@@ -92,7 +94,7 @@ module DefaultScene
 
   def display_cpu_move_message(piece)
     display_message("Player '#{piece}' is making a move")
-    sleep(1.5)
+    sleep(0.5)
   end
 
   def display_winner(winner)
@@ -106,7 +108,7 @@ module DefaultScene
   end
 
   def display_try_again
-    sleep(2)
+    sleep(1.5)
     display_message("Click New Game to try again or Exit")
     start_button.enable
   end

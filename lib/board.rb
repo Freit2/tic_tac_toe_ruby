@@ -1,5 +1,5 @@
 class Board
-  attr_reader :board, :size
+  attr_reader :board, :size, :last_move
   attr_accessor :winner
 
   def initialize(board=nil, size=9)
@@ -50,6 +50,7 @@ class Board
     if !occupied?(square)
       @board.delete_at(square)
       @board.insert(square, piece)
+      @last_move = square
       find_winner
     end
   end

@@ -115,5 +115,7 @@ describe MinMaxPlayer do
 
     @min_max.make_move.should == 2
   end
+
+  it "should return rotated moves"
 end
 

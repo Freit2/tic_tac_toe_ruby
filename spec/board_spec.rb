@@ -69,4 +69,13 @@ describe Board do
     @board.move(0, @x)
     @board.get_empty_squares.size.should == 8
   end
+
+  it "returns last move" do
+    @board.move(0, @x)
+    @board.last_move.should == 0
+    @board.move(1, @o)
+    @board.last_move.should == 1
+    @board.move(0, @o)
+    @board.last_move.should == 1
+  end
 end

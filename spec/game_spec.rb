@@ -37,7 +37,10 @@ describe Game do
   end
 
   it "should return a move from cpu player" do
+    @player_x.should_receive(:rand).and_return(1)
     @game.get_move_from(@player_x).should == 4
+    @player_x.should_receive(:rand).twice.and_return(0)
+    @game.get_move_from(@player_x).should == 0
   end
 
   it "should play one turn" do
