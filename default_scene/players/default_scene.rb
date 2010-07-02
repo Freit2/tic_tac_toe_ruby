@@ -2,9 +2,7 @@ module DefaultScene
 
   attr_reader :player_o, :player_x
   attr_accessor :board, :current_player, :move, :player_allowed
-  prop_reader :status, :player_o_type, :player_x_type, :start_button, :exit_button,
-              :square_0, :square_1, :square_2, :square_3, :square_4, :square_5,
-              :square_6, :square_7, :square_8
+  prop_reader :status, :player_o_type, :player_x_type, :start_button, :exit_button
 
   def scene_opened(e)
     @player_allowed = false
@@ -12,19 +10,19 @@ module DefaultScene
 
   def clear_squares
     (0...@board.size).each do |s|
-      instance_eval("square_#{s}").text = ""
+      find("square_#{s}").text = ""
     end
   end
 
   def enable_squares
     (0...@board.size).each do |s|
-      instance_eval("square_#{s}.enable")
+      find("square_#{s}").enable
     end
   end
 
   def disable_squares
     (0...@board.size).each do |s|
-      instance_eval("square_#{s}.disable")
+      find("square_#{s}").disable
     end
   end
 
@@ -80,11 +78,11 @@ module DefaultScene
   end
 
   def piece_color
-    return (current_player.piece == 'X') ? :light_blue : :crimson
+    return (current_player.piece == 'X') ? :royal_blue : :crimson
   end
 
   def display_board(board)
-    instance_eval("square_#{board.last_move}").animate_move if board.last_move
+    find("square_#{board.last_move}").animate_move if board.last_move
   end
 
   def get_human_player_move(piece)

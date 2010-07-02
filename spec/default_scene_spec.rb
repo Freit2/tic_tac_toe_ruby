@@ -103,7 +103,7 @@ describe "Default Scene" do
     scene.current_player = @h
     scene.piece_color.should == :crimson
     scene.current_player = @c
-    scene.piece_color.should == :light_blue
+    scene.piece_color.should == :royal_blue
   end
 
   it "should play new game" do
@@ -121,11 +121,11 @@ describe "Default Scene" do
   it "should clear squares" do
     scene.board = Board.new
     (0...scene.board.size).each do |s|
-      instance_eval("scene.square_#{s}").text = 'X'
+      scene.find("square_#{s}").text = 'X'
     end
     scene.clear_squares
     (0...scene.board.size).each do |s|
-      instance_eval("scene.square_#{s}").text.strip.should == ''
+      scene.find("square_#{s}").text.strip.should == ''
     end
   end
 

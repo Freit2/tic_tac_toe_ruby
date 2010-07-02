@@ -3,7 +3,7 @@ class Board
   attr_accessor :winner
 
   def initialize(board=nil, size=9)
-    @won_patterns =
+    @winning_patterns =
       [[(/OOO....../), :O], [(/...OOO.../), :O],
        [(/......OOO/), :O], [(/O..O..O../), :O],
        [(/.O..O..O./), :O], [(/..O..O..O/), :O],
@@ -58,7 +58,7 @@ class Board
   def get_empty_squares
     array = []
     @board.size.times do |s|
-      if @board[s] == ' '
+      if @board[s].strip == ''
         array << s
       end
     end
@@ -80,7 +80,7 @@ class Board
   end
 
   def find_winner
-    array = @won_patterns.find { |p| p.first =~ @board.join }
+    array = @winning_patterns.find { |p| p.first =~ @board.join }
     if array
       @winner = (array.last === :X) ? 'X' : 'O'
     end

@@ -6,31 +6,31 @@ class MinMaxPlayer < Player
 
   def initialize(piece)
     super(piece)
-    @best_moves = []
   end
 
   def make_move
     @ui.display_cpu_move_message(@piece)
-#    if @board.get_empty_squares.size == @board.size
-#      return [0,2,6,8].at(rand(4))
-#    end
+    if @board.get_empty_squares.size == @board.size
+      return rand(@board.size)
+    end
     get_best_move(@board, @piece, 1)
     moves = get_mirrored_moves
     puts moves.inspect
     return moves[rand(moves.size)]
+    #return @best_move
   end
 
   def get_opponent(piece)
     return piece === 'O' ? 'X' : 'O'
   end
 
-  def evaluate_score(board, piece)
+  def evaluate_score(board, piece, depth)
     opponent = get_opponent(piece)
     case board.winner
     when piece
-      return 1
+      return (depth == 2) ? 2 : 1
     when opponent
-      return -1
+      return (depth == 2) ? -2 : -1
     else
       return 0
     end
@@ -38,7 +38,7 @@ class MinMaxPlayer < Player
 
   def get_best_move(board, piece, depth)
     if board.game_over?
-      return evaluate_score(board, piece)
+      return evaluate_score(board, piece, depth)
     else
       best_score = -999
       opponent = get_opponent(piece)
@@ -47,6 +47,9 @@ class MinMaxPlayer < Player
         temp_board = Board.new(board.to_a)
         temp_board.move(s, piece)
         score = -get_best_move(temp_board, opponent, depth + 1)
+        if depth == 1
+          puts "move: #{s}, score: #{score}"
+        end
         if score > best_score
           best_score = score
           @best_move = s if depth == 1
