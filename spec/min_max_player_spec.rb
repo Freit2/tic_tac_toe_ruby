@@ -179,13 +179,15 @@ describe MinMaxPlayer do
   end
 
   it "should use mirrored moves method" do
+    @board.move(0, @x)
+
     @min_max.should_receive(:get_mirrored_moves).and_return(0)
     @min_max.make_move
   end
 
   it "should return rotated moves" do
     @board.move(0, @o)
-    @board.best_move = 2
+    @min_max.best_move = 2
 
     @min_max.get_mirrored_moves.should == [6,2]
   end
