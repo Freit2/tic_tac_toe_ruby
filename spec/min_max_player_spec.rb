@@ -186,10 +186,10 @@ describe MinMaxPlayer do
   end
 
   it "should return rotated moves" do
-    @board.move(0, @o)
-    @min_max.best_move = 2
+    @board.move(4, @o)
+    @min_max.best_move = 0
 
-    @min_max.get_mirrored_moves.should == [6,2]
+    @min_max.get_mirrored_moves.sort.should == [0, 2, 6, 8]
   end
 end
 

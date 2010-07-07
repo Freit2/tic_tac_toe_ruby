@@ -4,6 +4,14 @@ require 'board'
 require 'std_ui'
 
 describe Player do
+
+  context "creating players for a name and piece" do
+#    it "gives you human player for 'H'" do
+#      player = Player.create("H")
+#      player.class.should == HumanPlayer
+#    end
+  end
+  
   it "returns O for piece when creating player" do
     player = Player.new('O')
     player.piece.should == 'O'

@@ -5,4 +5,5 @@ class Player
   def initialize(piece)
     @piece = piece
   end
+
 end
