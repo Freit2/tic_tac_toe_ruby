@@ -1,4 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
+require 'board'
 
 describe "Square Players" do
 
@@ -90,5 +91,26 @@ describe "Square Players" do
     scene.move.should == nil
   end
 
-  it "should show player's piece hovered over empty space transparently"
+  it "should show player's piece hovered over empty space transparently" do
+    scene.enable_squares
+    scene.player_allowed = true
+    @human.should_receive(:piece).twice.and_return('O')
+    scene.should_receive(:current_player).twice.and_return(@human)
+    square = scene.find("square_0")
+    square.mouse_entered(nil)
+    square.text.should == 'O'
+    square.style.transparency.should == '81%'
+  end
+
+  it "should not hover player's piece when mouse exited" do
+    scene.enable_squares
+    scene.player_allowed = true
+    @human.should_receive(:piece).twice.and_return('O')
+    scene.should_receive(:current_player).twice.and_return(@human)
+    square = scene.find("square_0")
+    square.mouse_entered(nil)
+    square.mouse_exited(nil)
+    square.text.should_not == 'O'
+    square.style.transparency.should == '0%'
+  end
 end

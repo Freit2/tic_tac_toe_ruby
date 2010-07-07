@@ -29,10 +29,24 @@ describe MinMaxPlayer do
     @board.move(0, @x)
     @board.move(1, @x)
     @board.move(2, @x)
+    @min_max.evaluate_score(@board, @x, 3).should == 1
+  end
+
+  it "should return 2 if Max is winner in depth 2" do
+    @board.move(0, @x)
+    @board.move(1, @x)
+    @board.move(2, @x)
     @min_max.evaluate_score(@board, @x, 2).should == 2
   end
 
   it "should return -1 if Min is winner" do
+    @board.move(0, @o)
+    @board.move(1, @o)
+    @board.move(2, @o)
+    @min_max.evaluate_score(@board, @x, 3).should == -1
+  end
+
+  it "should return -2 if Min is winner" do
     @board.move(0, @o)
     @board.move(1, @o)
     @board.move(2, @o)
@@ -43,10 +57,24 @@ describe MinMaxPlayer do
     @board.move(0, @x)
     @board.move(1, @x)
     @board.move(2, @x)
+    @min_max.evaluate_score(@board, @o, 3).should == -1
+  end
+
+  it "should return -2 if Max is winner in depth 2 (from Min POV)" do
+    @board.move(0, @x)
+    @board.move(1, @x)
+    @board.move(2, @x)
     @min_max.evaluate_score(@board, @o, 2).should == -2
   end
 
   it "should return 1 if Min is winner (from Min POV)" do
+    @board.move(0, @o)
+    @board.move(1, @o)
+    @board.move(2, @o)
+    @min_max.evaluate_score(@board, @o, 3).should == 1
+  end
+
+  it "should return 1 if Min is winner in depth 2 (from Min POV)" do
     @board.move(0, @o)
     @board.move(1, @o)
     @board.move(2, @o)
@@ -55,7 +83,7 @@ describe MinMaxPlayer do
 
   it "should return 0 if no one is winner" do
     board = Board.new([@x, @x, @o, @o, @x, @x, @x, @o, @o])
-    @min_max.evaluate_score(board, @x, 2).should == 0
+    @min_max.evaluate_score(board, @x, 5).should == 0
   end
 
   it "should make winning move, scenario 1" do
@@ -135,6 +163,31 @@ describe MinMaxPlayer do
     @min_max.make_move.should_not == 4
   end
 
-  it "should return rotated moves"
+  it "should return a move fast, scenario 1" do
+    @board.move(0, @o)
+
+    before = Time.new
+    @min_max.make_move
+    (Time.new - before).should < 1
+  end
+
+  it "should use alpha beta pruning" do
+    @board.move(0, @o)
+
+    @min_max.should_receive(:get_alpha_beta_move)
+    @min_max.make_move
+  end
+
+  it "should use mirrored moves method" do
+    @min_max.should_receive(:get_mirrored_moves).and_return(0)
+    @min_max.make_move
+  end
+
+  it "should return rotated moves" do
+    @board.move(0, @o)
+    @board.best_move = 2
+
+    @min_max.get_mirrored_moves.should == [6,2]
+  end
 end
 

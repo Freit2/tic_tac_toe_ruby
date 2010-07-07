@@ -106,10 +106,25 @@ describe "Default Scene" do
     scene.piece_color.should == :royal_blue
   end
 
-  it "should play new game" do
-    scene.should_receive(:play_new_game)
-
+  it "should create a new Board instance on new game" do
+    board = scene.board
     scene.play_new_game
+    scene.board.should_not == board
+  end
+
+  it "should receive method calls on new game" do
+    scene.should_receive(:clear_squares)
+    scene.should_receive(:create_players)
+    scene.should_receive(:enable_squares)
+    scene.should_receive(:start_game_thread)
+    scene.play_new_game
+  end
+
+  it "should create game on new thread" do
+    Game.should_receive(:new).and_return(game = mock("game"))
+    game.should_receive(:play)
+
+    scene.start_game_thread
   end
 
   it "should enable new game button on try again" do
@@ -134,5 +149,14 @@ describe "Default Scene" do
 
     scene.close
   end
-  
+
+  it "should still be animating" do
+    scene.board = Board.new
+    scene.board.move(0, 'X')
+    scene.board.move(1, 'X')
+    scene.board.move(2, 'X')
+    scene.board.game_over?
+    scene.animate_win
+    scene.animation.running?.should == true
+  end
 end

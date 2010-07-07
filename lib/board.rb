@@ -1,17 +1,17 @@
 class Board
-  attr_reader :board, :size, :last_move
-  attr_accessor :winner
+  attr_reader :winning_patterns, :board, :size,
+              :winner, :win_moves, :last_move
 
   def initialize(board=nil, size=9)
     @winning_patterns =
-      [[(/OOO....../), :O], [(/...OOO.../), :O],
-       [(/......OOO/), :O], [(/O..O..O../), :O],
-       [(/.O..O..O./), :O], [(/..O..O..O/), :O],
-       [(/O...O...O/), :O], [(/..O.O.O../), :O],
-       [(/XXX....../), :X], [(/...XXX.../), :X],
-       [(/......XXX/), :X], [(/X..X..X../), :X],
-       [(/.X..X..X./), :X], [(/..X..X..X/), :X],
-       [(/X...X...X/), :X], [(/..X.X.X../), :X]]
+      [[(/OOO....../), [0,1,2], :O], [(/...OOO.../), [3,4,5], :O],
+       [(/......OOO/), [6,7,8], :O], [(/O..O..O../), [0,3,6], :O],
+       [(/.O..O..O./), [1,4,7], :O], [(/..O..O..O/), [2,5,8], :O],
+       [(/O...O...O/), [0,4,8], :O], [(/..O.O.O../), [2,4,6], :O],
+       [(/XXX....../), [0,1,2], :X], [(/...XXX.../), [3,4,5], :X],
+       [(/......XXX/), [6,7,8], :X], [(/X..X..X../), [0,3,6], :X],
+       [(/.X..X..X./), [1,4,7], :X], [(/..X..X..X/), [2,5,8], :X],
+       [(/X...X...X/), [0,4,8], :X], [(/..X.X.X../), [2,4,6], :X]]
     if board
       @size = board.size
       @board = board.dup
@@ -83,6 +83,7 @@ class Board
     array = @winning_patterns.find { |p| p.first =~ @board.join }
     if array
       @winner = (array.last === :X) ? 'X' : 'O'
+      @win_moves = array[1]
     end
   end
 

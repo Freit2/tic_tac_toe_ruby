@@ -1,7 +1,7 @@
 module DefaultScene
 
-  attr_reader :player_o, :player_x
-  attr_accessor :board, :current_player, :move, :player_allowed
+  attr_reader :player_o, :player_x, :animation
+  attr_accessor :game, :board, :current_player, :move, :player_allowed
   prop_reader :status, :player_o_type, :player_x_type, :start_button, :exit_button
 
   def scene_opened(e)
@@ -48,11 +48,16 @@ module DefaultScene
 
   def play_new_game
     @board = Board.new
+    @animation.stop if @animation
     clear_squares
     start_button.disable
     create_players
     enable_squares
-    @game_thread = Thread.new do
+    start_game_thread
+  end
+
+  def start_game_thread
+    Thread.new do
       begin
         @game = Game.new(@player_o, @player_x, @board, self)
         @game.play
@@ -67,7 +72,7 @@ module DefaultScene
     @player_allowed = true
     @move = nil
     while (@move == nil)
-      sleep(0.25)
+      sleep(0.1)
     end
     @player_allowed = false
     return @move
@@ -92,11 +97,23 @@ module DefaultScene
 
   def display_cpu_move_message(piece)
     display_message("Player '#{piece}' is making a move")
-    sleep(0.5)
+    sleep(0.1)
+  end
+
+  def animate_win
+    colors = [:red, :orange, :yellow, :green, :blue, :purple]
+    i = 0
+    @animation = animate(:updates_per_second => 12) do
+      @board.win_moves.each do |s|
+        find("square_#{s}").style.text_color = colors[i]
+      end
+      i = (i+1 == colors.size) ? 0 : (i+1)
+    end
   end
 
   def display_winner(winner)
     display_message("The winner is #{winner}.")
+    animate_win
     display_try_again
   end
 

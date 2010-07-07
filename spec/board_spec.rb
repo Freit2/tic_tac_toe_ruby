@@ -48,6 +48,7 @@ describe Board do
     @board.move(1, @x)
     @board.move(2, @x)
     @board.winner.should == @x
+    @board.win_moves.should == [0,1,2]
     @board.someone_win?.should == true
   end
 
@@ -77,5 +78,13 @@ describe Board do
     @board.last_move.should == 1
     @board.move(0, @o)
     @board.last_move.should == 1
+  end
+
+  it "should have winning patterns with three elements" do
+    @board.winning_patterns.each do |w|
+      w.size.should == 3
+      w[1].class.should == Array
+      w[1].size.should == 3
+    end
   end
 end
