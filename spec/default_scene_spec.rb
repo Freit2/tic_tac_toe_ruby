@@ -105,8 +105,8 @@ describe "Default Scene" do
   it "should create game on new thread" do
     Game.should_receive(:new).and_return(scene.game = mock("game"))
     scene.game.should_receive(:play)
-
     scene.start_game_thread
+    sleep(0.1)
   end
 
   it "should enable new game button on try again" do
