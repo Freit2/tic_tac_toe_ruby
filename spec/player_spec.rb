@@ -26,7 +26,7 @@ describe Player do
 
       it "gives you medium cpu player for 'U'" do
       player = Player.create('U', 'X')
-      player.class.should == MinMaxPlayer
+      player.class.should == NegamaxPlayer
       player.piece.should == 'X'
     end
   end

@@ -18,8 +18,8 @@ class Player
       require 'cpu_player'
       return CpuPlayer.new(piece)
     when 'U'
-      require 'min_max_player'
-      return MinMaxPlayer.new(piece)
+      require 'negamax_player'
+      return NegamaxPlayer.new(piece)
     end
   end
 end

@@ -67,7 +67,7 @@ describe "Default Scene" do
     scene.create_players
 
     scene.player_o.class.name.should == 'HumanPlayer'
-    scene.player_x.class.name.should == 'MinMaxPlayer'
+    scene.player_x.class.name.should == 'NegamaxPlayer'
   end
 
   it "should have player hold default_scene UI" do

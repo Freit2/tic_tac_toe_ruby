@@ -24,6 +24,6 @@ describe TicTacToe do
     @ttt.ui.input.string = "m"
     @ttt.ask_for_player('X').instance_of?(CpuPlayer)
     @ttt.ui.input.string = "u"
-    @ttt.ask_for_player('X').instance_of?(MinMaxPlayer)
+    @ttt.ask_for_player('X').instance_of?(NegamaxPlayer)
   end
 end

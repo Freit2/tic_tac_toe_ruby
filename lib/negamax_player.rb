@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__)) + "/init"
 require 'player'
 require 'board'
 
-class MinMaxPlayer < Player
+class NegamaxPlayer < Player
 
   attr_accessor :best_move
 
