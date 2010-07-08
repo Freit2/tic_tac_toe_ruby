@@ -15,7 +15,6 @@ class MinMaxPlayer < Player
     if @board.get_empty_squares.size == @board.size
       return rand(@board.size)
     end
-    #get_min_max_move(@board, @max, 1)
     get_alpha_beta_move(@board, @piece, 1, -999, 999)
     moves = get_rotated_moves
     return moves[rand(moves.size)]
@@ -54,26 +53,6 @@ class MinMaxPlayer < Player
         break if alpha >= beta
       end
       return alpha
-    end
-  end
-
-  def get_min_max_move(board, piece, depth)
-    if board.game_over?
-      return evaluate_score(board, piece, depth)
-    else
-      best_score = -999
-      opponent = get_opponent(piece)
-      empty_squares = board.get_empty_squares
-      empty_squares.each do |s|
-        temp_board = Board.new(board.to_a)
-        temp_board.move(s, piece)
-        score = -get_min_max_move(temp_board, opponent, depth + 1)
-        if score > best_score
-          best_score = score
-          @best_move = s if depth == 1
-        end
-      end
-      return best_score
     end
   end
 
