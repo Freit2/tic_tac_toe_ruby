@@ -23,10 +23,7 @@ module Production
     $: << File.expand_path(File.dirname(__FILE__) + "/lib")
     require 'game'
     require 'board'
-    require 'human_player'
-    require 'easy_cpu_player'
-    require 'cpu_player'
-    require 'min_max_player'
+    require 'player'
   end
 
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before

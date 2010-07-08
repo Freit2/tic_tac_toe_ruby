@@ -26,22 +26,9 @@ module DefaultScene
     end
   end
 
-  def get_player(player, piece)
-    case player
-      when 'human'
-        return HumanPlayer.new(piece)
-      when 'easy cpu'
-        return EasyCpuPlayer.new(piece)
-      when 'medium cpu'
-        return CpuPlayer.new(piece)
-      when 'unbeatable cpu'
-        return MinMaxPlayer.new(piece)
-    end
-  end
-
   def create_players
-    @player_o = get_player(player_o_type.text, 'O')
-    @player_x = get_player(player_x_type.text, 'X')
+    @player_o = Player.create(player_o_type.text[0,1], 'O')
+    @player_x = Player.create(player_x_type.text[0,1], 'X')
     @player_o.ui = self
     @player_x.ui = self
   end

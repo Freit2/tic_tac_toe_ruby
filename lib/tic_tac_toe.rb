@@ -31,10 +31,7 @@ class TicTacToe
     player_type = ""
     loop do
       player_type = @ui.get_player_type(piece)
-      break if player_type == "h" ||
-        player_type == "e" ||
-        player_type == "m" ||
-        player_type == "u"
+      break if player_type =~ /^h$|^e$|^m$|^u$/
     end
     return get_player(player_type, piece)
   end

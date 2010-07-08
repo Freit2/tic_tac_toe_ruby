@@ -1,10 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'game'
 require 'board'
-require 'human_player'
-require 'easy_cpu_player'
-require 'cpu_player'
-require 'min_max_player'
+require 'player'
 
 describe "Default Scene" do
 
@@ -61,21 +58,6 @@ describe "Default Scene" do
     scene.status.text.should == 'test message'
   end
 
-  it "should return specific player" do
-    human = scene.get_player('human', 'O')
-    human.class.name.should == 'HumanPlayer'
-    human.piece.should == 'O'
-    easy_cpu = scene.get_player('easy cpu', 'X')
-    easy_cpu.class.name.should == 'EasyCpuPlayer'
-    easy_cpu.piece.should == 'X'
-    medium_cpu = scene.get_player('medium cpu', 'X')
-    medium_cpu.class.name.should == 'CpuPlayer'
-    medium_cpu.piece.should == 'X'
-    unbeatable_cpu = scene.get_player('unbeatable cpu', 'O')
-    unbeatable_cpu.class.name.should == 'MinMaxPlayer'
-    unbeatable_cpu.piece.should == 'O'
-  end
-
   it "should default to human and minmax players" do
     scene.player_o_type.text.should == 'human'
     scene.player_x_type.text.should == 'unbeatable cpu'
@@ -121,7 +103,8 @@ describe "Default Scene" do
   end
 
   it "should create game on new thread" do
-    Game.should_receive(:new).and_return(game = mock("game"))
+    game = mock("game")
+    Game.should_receive(:new).and_return(game)
     game.should_receive(:play)
 
     scene.start_game_thread
