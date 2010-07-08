@@ -2,8 +2,8 @@ require 'rake'
 require 'spec/rake/spectask'
 
 desc "Run all examples"
-Spec::Rake::SpecTask.new('spec') do |t|
-  t.spec_files = FileList['spec/**/*.rb']
+Spec::Rake::SpecTask.new(:spec) do |t|
+  t.spec_files = FileList['spec/**/*_spec.rb']
   t.libs = ["lib"]
   t.spec_opts = ["--format specdoc"]
 end

@@ -26,4 +26,11 @@ describe TicTacToe do
     @ttt.ui.input.string = "u"
     @ttt.ask_for_player('X').instance_of?(NegamaxPlayer)
   end
+
+  it "should create players" do
+    @ttt.ui.input.string = "h\nu"
+    @ttt.create_players
+
+    @ttt.ui.should == @ui
+  end
 end
