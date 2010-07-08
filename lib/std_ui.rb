@@ -17,7 +17,7 @@ class StdUI
 
   def get_player_type(piece)
     display_message("\nChoose player type for '#{piece}' " +
-      "('h' for human or 'c' for cpu or 'm' for minmax cpu) ")
+      "('h' for human or 'e' for easy cpu, 'm' for  medium cpu or 'u' for unbeatable cpu) ")
     return get_input.to_s.chomp
   end
 

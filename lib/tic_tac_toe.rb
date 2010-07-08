@@ -3,6 +3,7 @@ require 'game'
 require 'board'
 require 'std_ui'
 require 'human_player'
+require 'easy_cpu_player'
 require 'cpu_player'
 require 'min_max_player'
 
@@ -13,22 +14,26 @@ class TicTacToe
     @ui = ui
   end
 
+  def get_player(type, piece)
+    case type
+    when 'h'
+      return HumanPlayer.new(piece)
+    when 'e'
+      return EasyCpuPlayer.new(piece)
+    when 'm'
+      return CpuPlayer.new(piece)
+    when 'u'
+      return MinMaxPlayer.new(piece)
+    end
+  end
+
   def ask_for_player(piece)
     player_type = ""
     loop do
       player_type = @ui.get_player_type(piece)
-      break if player_type == "h" ||
-        player_type == "c" ||
-        player_type == "m"
+      break if player_type =~ /^h$|^e$|^m$|^u$/
     end
-    case player_type
-    when 'h'
-      return HumanPlayer.new(piece)
-    when 'c'
-      return CpuPlayer.new(piece)
-    when 'm'
-      return MinMaxPlayer.new(piece)
-    end
+    return get_player(player_type, piece)
   end
 
   def choose_players

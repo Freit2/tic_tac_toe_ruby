@@ -1,9 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'game'
 require 'board'
-require 'human_player'
-require 'cpu_player'
-require 'min_max_player'
+require 'player'
 
 describe "Default Scene" do
 
@@ -60,21 +58,9 @@ describe "Default Scene" do
     scene.status.text.should == 'test message'
   end
 
-  it "should return specific player" do
-    human = scene.get_player('human', 'O')
-    human.class.name.should == 'HumanPlayer'
-    human.piece.should == 'O'
-    cpu = scene.get_player('cpu', 'X')
-    cpu.class.name.should == 'CpuPlayer'
-    cpu.piece.should == 'X'
-    minmax = scene.get_player('minmax', 'O')
-    minmax.class.name.should == 'MinMaxPlayer'
-    minmax.piece.should == 'O'
-  end
-
   it "should default to human and minmax players" do
     scene.player_o_type.text.should == 'human'
-    scene.player_x_type.text.should == 'minmax'
+    scene.player_x_type.text.should == 'unbeatable cpu'
   end
 
   it "should create player instances" do
@@ -91,24 +77,37 @@ describe "Default Scene" do
     scene.player_x.ui.should == scene
   end
 
-  it "should display board" do
-    board = Board.new(['X','X','X','X','X','O','O','O','O'])
-    scene.display_board(board)
-    scene.square_0.text.should == 'X'
-    scene.square_1.text.should == 'X'
-    scene.square_2.text.should == 'X'
-    scene.square_3.text.should == 'X'
-    scene.square_4.text.should == 'X'
-    scene.square_5.text.should == 'O'
-    scene.square_6.text.should == 'O'
-    scene.square_7.text.should == 'O'
-    scene.square_8.text.should == 'O'
+  it "should return correct piece color" do
+    @h = mock('human')
+    @c = mock('cpu')
+    @h.should_receive(:piece).and_return('O')
+    @c.should_receive(:piece).and_return('X')
+    scene.current_player = @h
+    scene.piece_color.should == :crimson
+    scene.current_player = @c
+    scene.piece_color.should == :royal_blue
   end
 
-  it "should play new game" do
-    scene.should_receive(:play_new_game)
-
+  it "should create a new Board instance on new game" do
+    board = scene.board
     scene.play_new_game
+    scene.board.should_not == board
+  end
+
+  it "should receive method calls on new game" do
+    scene.should_receive(:clear_squares)
+    scene.should_receive(:create_players)
+    scene.should_receive(:enable_squares)
+    scene.should_receive(:start_game_thread)
+    scene.play_new_game
+  end
+
+  it "should create game on new thread" do
+    game = mock("game")
+    Game.should_receive(:new).and_return(game)
+    game.should_receive(:play)
+
+    scene.start_game_thread
   end
 
   it "should enable new game button on try again" do
@@ -117,10 +116,30 @@ describe "Default Scene" do
     scene.start_button.enabled.should == true
   end
 
+  it "should clear squares" do
+    scene.board = Board.new
+    (0...scene.board.size).each do |s|
+      scene.find("square_#{s}").text = 'X'
+    end
+    scene.clear_squares
+    (0...scene.board.size).each do |s|
+      scene.find("square_#{s}").text.strip.should == ''
+    end
+  end
+
   it "should close" do
     scene.stage.should_receive(:close)
 
     scene.close
   end
-  
+
+  it "should still be animating" do
+    scene.board = Board.new
+    scene.board.move(0, 'X')
+    scene.board.move(1, 'X')
+    scene.board.move(2, 'X')
+    scene.board.game_over?
+    scene.animate_win
+    scene.animation.running?.should == true
+  end
 end

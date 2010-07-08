@@ -45,4 +45,12 @@ describe CpuPlayer do
     @board.move(4, 'X')
     @cpu.get_first_available_move.should == 1
   end
+  
+  it "should return a random move" do
+    @cpu.should_receive(:rand).and_return(0)
+    @cpu.should_receive(:rand).and_return(5)
+    @board.move(0, 'X')
+    @board.move(1, 'X')
+    @cpu.make_move.should == 5
+  end
 end

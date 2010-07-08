@@ -13,6 +13,7 @@ class CpuPlayer < Player
     move_pos = get_winning_pattern_move
     move_pos = get_blocking_pattern_move if !move_pos
     move_pos = get_first_available_move if !move_pos
+    return rand(@board.size) if rand(3) == 0
     return move_pos
   end
 
