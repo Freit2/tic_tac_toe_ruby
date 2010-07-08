@@ -36,7 +36,7 @@ class TicTacToe
       play_again = ''
       loop do
         play_again = @ui.get_play_again
-        break if play_again == 'y' || play_again == 'n'
+        break if play_again =~ /^y$|^n$/
       end
       break if play_again == 'n'
     end

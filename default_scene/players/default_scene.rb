@@ -8,6 +8,10 @@ module DefaultScene
     @player_allowed = false
   end
 
+  def close
+    stage.close
+  end
+
   def clear_squares
     (0...@board.size).each do |s|
       find("square_#{s}").text = ""
@@ -114,9 +118,4 @@ module DefaultScene
     display_message("Click New Game to try again or Exit")
     start_button.enable
   end
-
-  def close
-    stage.close
-  end
-
 end
