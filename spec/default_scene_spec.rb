@@ -103,9 +103,8 @@ describe "Default Scene" do
   end
 
   it "should create game on new thread" do
-    game = mock("game")
-    Game.should_receive(:new).and_return(game)
-    game.should_receive(:play)
+    Game.should_receive(:new).and_return(scene.game = mock("game"))
+    scene.game.should_receive(:play)
 
     scene.start_game_thread
   end
