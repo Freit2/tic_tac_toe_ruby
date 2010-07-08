@@ -74,7 +74,7 @@ describe MinMaxPlayer do
     @min_max.evaluate_score(@board, @o, 3).should == 1
   end
 
-  it "should return 1 if Min is winner in depth 2 (from Min POV)" do
+  it "should return 2 if Min is winner in depth 2 (from Min POV)" do
     @board.move(0, @o)
     @board.move(1, @o)
     @board.move(2, @o)
@@ -171,6 +171,12 @@ describe MinMaxPlayer do
     (Time.new - before).should < 1
   end
 
+  it "should return a move fast, scenario 2" do
+    before = Time.new
+    @min_max.make_move
+    (Time.new - before).should < 1
+  end
+
   it "should use alpha beta pruning" do
     @board.move(0, @o)
 
@@ -178,10 +184,10 @@ describe MinMaxPlayer do
     @min_max.make_move
   end
 
-  it "should use mirrored moves method" do
+  it "should use rotated moves method" do
     @board.move(0, @x)
 
-    @min_max.should_receive(:get_mirrored_moves).and_return(0)
+    @min_max.should_receive(:get_rotated_moves).and_return(0)
     @min_max.make_move
   end
 
@@ -189,7 +195,7 @@ describe MinMaxPlayer do
     @board.move(4, @o)
     @min_max.best_move = 0
 
-    @min_max.get_mirrored_moves.sort.should == [0, 2, 6, 8]
+    @min_max.get_rotated_moves.sort.should == [0, 2, 6, 8]
   end
 end
 

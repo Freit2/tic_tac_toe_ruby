@@ -17,7 +17,7 @@ class MinMaxPlayer < Player
     end
     #get_min_max_move(@board, @max, 1)
     get_alpha_beta_move(@board, @piece, 1, -999, 999)
-    moves = get_mirrored_moves
+    moves = get_rotated_moves
     return moves[rand(moves.size)]
   end
 
@@ -77,8 +77,8 @@ class MinMaxPlayer < Player
     end
   end
 
-  def get_mirrored_moves
-    mirrored_moves = []
+  def get_rotated_moves
+    rotated_moves = []
     array_template = (0...@board.size).to_a
     array = @board.to_a.dup
     3.times do
@@ -89,10 +89,10 @@ class MinMaxPlayer < Player
                array[3..5].reverse,
                array[6..8].reverse].transpose.flatten
       if @board.to_a == array
-        mirrored_moves << array_template[@best_move]
+        rotated_moves << array_template[@best_move]
       end
     end
 
-    return mirrored_moves << @best_move
+    return rotated_moves << @best_move
   end
 end
