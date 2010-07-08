@@ -20,7 +20,7 @@ class TicTacToe
     return Player.create(player_type, piece)
   end
 
-  def choose_players
+  def create_players
     @player_o = ask_for_player('O')
     @player_x = ask_for_player('X')
     @player_o.ui = @ui
@@ -29,7 +29,7 @@ class TicTacToe
   
   def play
     loop do
-      choose_players
+      create_players
       @board = Board.new
       @game = Game.new(@player_o, @player_x, @board, @ui)
       @game.play
