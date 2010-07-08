@@ -1,6 +1,6 @@
 module DefaultScene
 
-  attr_reader :player_o, :player_x, :animation
+  attr_reader :player_o, :player_x, :animation, :thread
   attr_accessor :game, :board, :current_player, :move, :player_allowed
   prop_reader :status, :player_o_type, :player_x_type, :start_button, :exit_button
 
@@ -48,7 +48,7 @@ module DefaultScene
   end
 
   def start_game_thread
-    Thread.new do
+    @thread = Thread.new do
       begin
         @game = Game.new(@player_o, @player_x, @board, self)
         @game.play
