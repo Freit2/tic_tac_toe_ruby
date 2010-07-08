@@ -99,7 +99,7 @@ module DefaultScene
   end
 
   def display_winner(winner)
-    display_message("The winner is #{winner}.")
+    display_message("The winner is #{winner}!!!")
     animate_win
     display_try_again
   end
