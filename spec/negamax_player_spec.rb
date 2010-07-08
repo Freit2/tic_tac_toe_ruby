@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'negamax_player.rb'
 require 'board'
 require 'std_ui'
-require 'stringio'
 
 describe NegamaxPlayer do
   before(:each) do

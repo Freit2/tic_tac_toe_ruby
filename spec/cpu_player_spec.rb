@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'cpu_player'
 require 'board'
 require 'std_ui'
-require 'stringio'
 
 describe CpuPlayer do
   before(:each) do

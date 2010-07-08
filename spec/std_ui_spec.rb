@@ -1,6 +1,5 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'std_ui'
-require 'stringio'
 
 describe StdUI do
   before(:each) do
