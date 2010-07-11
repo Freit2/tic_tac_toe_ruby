@@ -44,8 +44,7 @@ class StdUI
   def get_board(board)
     board_line = "\n#{([].fill(0, board.row_size) { "---" }).join('+')}\n"
     array = []
-    rows = board.rows
-    rows.each do |r|
+    board.rows.each do |r|
       array << r.join(' | ')
     end
     return "\n\n #{array.join(" #{board_line} ")} \n\n"
