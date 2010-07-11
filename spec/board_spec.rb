@@ -24,24 +24,34 @@ describe Board do
     board_2.row_size.should == Math.sqrt(16).to_i
   end
 
+  it "should return board rows in array" do
+    board = Board.new([@x, @o, @x, @o, @x, @o, @o, @o, @x])
+    board.rows.should == [[@x, @o, @x], [@o, @x, @o], [@o, @o, @x]]
+
+    board_2 = Board.new([@x, @o, @x, @o, @x, @o, @o, @x,
+                         @x, @o, @x, @o, @x, @o, @o, @x])
+    board_2.rows.should == [[@x, @o, @x, @o], [@x, @o, @o, @x],
+                            [@x, @o, @x, @o], [@x, @o, @o, @x]]
+  end
+
   it "should accept existing board array" do
     board = [@x, @o, @x, @o, @x, @o, @o, @o, @x]
     new_board = Board.new(board)
     new_board.to_s.should == "XOXOXOOOX"
   end
 
-  it "occupies square if move is made" do
+  it "should occupy square if move is made" do
     @board.move(0, @x)
     @board.occupied?(0).should == true
   end
 
-  it "does not occupy square if square is already occupied" do
+  it "should not occupy square if square is already occupied" do
     @board.move(0, @x)
     @board.move(0, @o)
     @board.piece_in(0).should == @x
   end
 
-  it "returns true if game is over" do
+  it "should return true if game is over" do
     @board.move(0, @x)
     @board.move(1, @o)
     @board.move(2, @x)
@@ -55,7 +65,7 @@ describe Board do
     @board.game_over?.should == true
   end
 
-  it "returns true if someone wins" do
+  it "should return true if someone wins" do
     @board.move(0, @x)
     @board.move(1, @x)
     @board.move(2, @x)
@@ -70,20 +80,20 @@ describe Board do
     end
   end
 
-  it "returns pieces for specific squares" do
+  it "should return pieces for specific squares" do
     @board.move(0, @x)
     @board.move(1, @o)
     @board.piece_in(0).should == @x
     @board.piece_in(1).should == @o
   end
 
-  it "returns an array of empty squares" do
+  it "should return an array of empty squares" do
     @board.get_empty_squares.size.should == 9
     @board.move(0, @x)
     @board.get_empty_squares.size.should == 8
   end
 
-  it "returns last move" do
+  it "should return last move" do
     @board.move(0, @x)
     @board.last_move.should == 0
     @board.move(1, @o)

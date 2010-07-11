@@ -42,18 +42,17 @@ class StdUI
   end
 
   def get_board(board)
-    #board_line = "\n#{([].fill(0, board.row_size) { "---" }).join('+')}\n"
-    #board_layout = 
-    #return
+    board_line = "\n#{([].fill(0, board.row_size) { "---" }).join('+')}\n"
+    array = []
+    rows = board.rows
+    rows.each do |r|
+      array << r.join(' | ')
+    end
+    return "\n\n #{array.join(" #{board_line} ")} \n\n"
   end
 
   def display_board(board)
-      board_line = "\n---+---+---\n"
-      message = "\n\n #{board[0..2].join(' | ')} " +
-        "#{board_line} #{board[3..5].join(' | ')} " +
-        "#{board_line} #{board[6..8].join(' | ')} \n\n"
-      
-      display_message(message)
+      display_message(get_board(board))
   end
 
   def display_exit_message

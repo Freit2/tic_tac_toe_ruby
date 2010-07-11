@@ -26,6 +26,16 @@ class Board
     return @board[index]
   end
 
+  def rows
+    array = []
+    start = 0
+    (1..@row_size).each do |r|
+      array << @board[start...@row_size*r]
+      start = @row_size*r
+    end
+    return array
+  end
+
   def to_a
     return @board.dup
   end

@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'std_ui'
+require 'board'
 
 describe StdUI do
   before(:each) do
@@ -38,14 +39,30 @@ describe StdUI do
     @ui.get_play_again.should == 'y'
   end
 
-  it "should display board" do
-    board = [].fill(0, 9) { @x }
+  it "should return board" do
+    board = Board.new([].fill(0, 9) { @x })
     board_line = "\n---+---+---\n"
     message = "\n\n #{board[0..2].join(' | ')} " +
       "#{board_line} #{board[3..5].join(' | ')} " +
       "#{board_line} #{board[6..8].join(' | ')} \n\n"
+
+    @ui.get_board(board).should == message
+
+    board_2 = Board.new([].fill(0, 16) { @x })
+    board_line = "\n---+---+---+---\n"
+    message = "\n\n #{board_2[0..3].join(' | ')} " +
+      "#{board_line} #{board_2[4..7].join(' | ')} " +
+      "#{board_line} #{board_2[8..11].join(' | ')} " +
+      "#{board_line} #{board_2[12..15].join(' | ')} \n\n"
+
+    @ui.get_board(board_2).should == message
+  end
+
+  it "should display board" do
+    board = mock("board")
+    @ui.should_receive(:get_board).and_return(board)
+    @ui.should_receive(:display_message).with(board)
     @ui.display_board(board)
-    @ui.output.string.should == message
   end
 
   it "should display winner" do
