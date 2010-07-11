@@ -15,9 +15,15 @@ class StdUI
     @output.print message
   end
 
+  def get_board_type
+    display_message("\nChoose board type (enter '3' for 3x3 or '4' for 4x4)")
+    return get_input.to_s.chomp
+  end
+
   def get_player_type(piece)
     display_message("\nChoose player type for '#{piece}' " +
-      "('h' for human or 'e' for easy cpu, 'm' for  medium cpu or 'u' for unbeatable cpu) ")
+      "(enter 'h' for human or 'e' for easy cpu, " +
+      "'m' for  medium cpu or 'u' for unbeatable cpu) ")
     return get_input.to_s.chomp
   end
 
@@ -33,6 +39,12 @@ class StdUI
 
   def display_cpu_move_message(piece)
     display_message("Player '#{piece}' is making a move\n")
+  end
+
+  def get_board(board)
+    #board_line = "\n#{([].fill(0, board.row_size) { "---" }).join('+')}\n"
+    #board_layout = 
+    #return
   end
 
   def display_board(board)

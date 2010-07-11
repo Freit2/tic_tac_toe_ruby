@@ -18,6 +18,11 @@ describe StdUI do
     @ui.output.string.should == 'hello world'
   end
 
+  it "should return board type from user" do
+    @input.string = '3'
+    @ui.get_board_type.should == '3'
+  end
+
   it "should return player type from user" do
     @input.string = 'h'
     @ui.get_player_type('X').should == 'h'

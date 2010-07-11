@@ -8,13 +8,20 @@ describe Board do
     @o = 'O'
   end
 
-  it "returns default size for board" do
+  it "should return default size for board" do
     @board.size.should == 9
   end
 
-  it "returns size for board" do
+  it "should return size for board" do
     board = Board.new(nil, 16)
     board.size.should == 16
+  end
+
+  it "should return row size for board" do
+    @board.row_size.should == 3
+
+    board_2 = Board.new(nil, 16)
+    board_2.row_size.should == Math.sqrt(16).to_i
   end
 
   it "should accept existing board array" do

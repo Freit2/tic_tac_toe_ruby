@@ -1,5 +1,5 @@
 class Board
-  attr_reader :winning_patterns, :board, :size,
+  attr_reader :winning_patterns, :board, :size, :row_size,
               :winner, :win_moves, :last_move
 
   def initialize(board=nil, size=9)
@@ -13,13 +13,13 @@ class Board
        [(/.X..X..X./), [1,4,7], :X], [(/..X..X..X/), [2,5,8], :X],
        [(/X...X...X/), [0,4,8], :X], [(/..X.X.X../), [2,4,6], :X]]
     if board
-      @size = board.size
       @board = board.dup
       find_winner
     else
-      @size = size
-      @board = [].fill(0, @size) { " " }
+      @board = [].fill(0, size) { " " }
     end
+    @size = @board.size
+    @row_size = Math.sqrt(@size).to_i
   end
 
   def [](index)
@@ -66,7 +66,7 @@ class Board
   end
 
   def valid_move?(square)
-    if (0..@size-1) === square
+    if (0...@size) === square
       return (occupied?(square)) ? false : true
     end
     return false

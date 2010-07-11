@@ -5,13 +5,14 @@ require 'std_ui'
 require 'player'
 
 class TicTacToe
-  attr_reader :ui, :player_o, :player_x, :game, :board
+  attr_reader :ui, :player_o, :player_x
+  attr_accessor :game, :board
 
   def initialize(ui = StdUI.new)
     @ui = ui
   end
 
-  def ask_for_player(piece)
+  def get_player(piece)
     player_type = ""
     loop do
       player_type = @ui.get_player_type(piece)
@@ -21,26 +22,39 @@ class TicTacToe
   end
 
   def create_players
-    @player_o = ask_for_player('O')
-    @player_x = ask_for_player('X')
+    @player_o = get_player('O')
+    @player_x = get_player('X')
     @player_o.ui = @ui
     @player_x.ui = @ui
+  end
+
+  def get_board
+    board_type = ""
+    loop do
+      board_type = @ui.get_board_type
+      break if board_type =~ /^3$|^4$/
+    end
+    return board_type == '4' ? Board.new(nil, 16) : Board.new
   end
   
   def play
     loop do
       create_players
-      @board = Board.new
+      @board = get_board
       @game = Game.new(@player_o, @player_x, @board, @ui)
       @game.play
-      play_again = ''
-      loop do
-        play_again = @ui.get_play_again
-        break if play_again =~ /^y$|^n$/
-      end
-      break if play_again == 'n'
+      break if !play_again?
     end
     @ui.display_exit_message
+  end
+
+  def play_again?
+    play_again = ''
+    loop do
+      play_again = @ui.get_play_again
+      break if play_again =~ /^y$|^n$/
+    end
+    return play_again == 'y' ? true : false
   end
 end
 
