@@ -104,6 +104,7 @@ class Board
     return false
   end
 
+  private
   def set_patterns
     case @size
     when 9

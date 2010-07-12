@@ -45,7 +45,8 @@ class NegamaxPlayer < Player
       empty_squares.each do |s|
         temp_board = Board.new(board.to_a)
         temp_board.move(s, piece)
-        score = -get_alpha_beta_move(temp_board, opponent, depth + 1, -beta, -alpha)
+        score = -get_alpha_beta_move(temp_board, opponent,
+                depth + 1, -beta, -alpha)
         if score > alpha
           alpha = score
           @best_move = s if depth == 1
