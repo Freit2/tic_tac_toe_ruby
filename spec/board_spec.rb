@@ -24,6 +24,13 @@ describe Board do
     board_2.row_size.should == Math.sqrt(16).to_i
   end
 
+  it "should return ranges for board" do
+    @board.ranges.should == [(0...3), (3...6), (6...9)]
+    
+    board = Board.new(nil, 16)
+    board.ranges.should == [(0...4), (4...8), (8...12), (12...16)]
+  end
+
   it "should return board rows in array" do
     board = Board.new([@x, @o, @x, @o, @x, @o, @o, @o, @x])
     board.rows.should == [[@x, @o, @x], [@o, @x, @o], [@o, @o, @x]]

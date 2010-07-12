@@ -58,20 +58,25 @@ class NegamaxPlayer < Player
 
   def get_rotated_moves
     rotated_moves = []
-    array_template = (0...@board.size).to_a
+    template = (0...@board.size).to_a
+    new_template = []
     array = @board.to_a.dup
+    new_array = []
     3.times do
-      array_template = [array_template[0..2].reverse,
-                        array_template[3..5].reverse,
-                        array_template[6..8].reverse].transpose.flatten
-      array = [array[0..2].reverse,
-               array[3..5].reverse,
-               array[6..8].reverse].transpose.flatten
-      if @board.to_a == array
-        rotated_moves << array_template[@best_move]
+      @board.ranges.each do |r|
+        new_template << template[r].reverse
+        new_array << array[r].reverse
       end
+      new_template = new_template.transpose.flatten
+      new_array = new_array.transpose.flatten
+      if @board.to_a == new_array
+        rotated_moves << new_template[@best_move]
+      end
+      template = new_template.dup
+      array = new_array.dup
+      new_template.clear
+      new_array.clear
     end
-
     return rotated_moves << @best_move
   end
 end

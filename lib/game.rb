@@ -37,7 +37,7 @@ class Game
 
   def play
     @ui.display_board(@board)
-    5.times do
+    (@board.size/2).round.times do
       play_turn
     end
     display_end_message

@@ -16,7 +16,7 @@ class StdUI
   end
 
   def get_board_type
-    display_message("\nChoose board type (enter '3' for 3x3 or '4' for 4x4)")
+    display_message("\nChoose board type (enter '3' for 3x3 or '4' for 4x4) ")
     return get_input.to_s.chomp
   end
 
@@ -33,7 +33,7 @@ class StdUI
   end
 
   def get_human_player_move(piece)
-    display_message("\nEnter your move, player '#{piece}' [0-8]: ")
+    display_message("\nEnter your move, player '#{piece}': ")
     return get_input.to_i
   end
 
