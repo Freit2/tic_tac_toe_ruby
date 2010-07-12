@@ -8,6 +8,12 @@ describe Board do
     @o = 'O'
   end
 
+  it "should set winning patterns" do
+    @board.winning_patterns.size.should == 16
+    board = Board.new(nil, 16)
+    board.winning_patterns.size.should == 20
+  end
+
   it "should return default size for board" do
     @board.size.should == 9
   end

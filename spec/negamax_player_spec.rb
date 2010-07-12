@@ -138,6 +138,24 @@ describe NegamaxPlayer do
     @negamax.make_move.should == 7
   end
 
+  it "should make winning move, scenario 6" do
+    board = Board.new(nil, 16)
+    @negamax.board = board
+    board.move(0, @o)
+    board.move(1, @x)
+    board.move(2, @o)
+    board.move(3, @x)
+    board.move(5, @o)
+    board.move(6, @x)
+    board.move(9, @o)
+    board.move(10,@o)
+    board.move(11,@x)
+    board.move(12,@o)
+    board.move(15,@x)
+
+    @negamax.make_move.should == 7
+  end
+
   it "should make blocking move, scenario 1" do
     @board.move(0, @x)
     @board.move(3, @o)
@@ -160,6 +178,22 @@ describe NegamaxPlayer do
     @board.move(3, @x)
 
     @negamax.make_move.should_not == 4
+  end
+
+  it "should make blocking move, scenario 4" do
+    board = Board.new(nil, 16)
+    @negamax.board = board
+    board.move(0, @o)
+    board.move(1, @x)
+    board.move(4, @o)
+    board.move(2, @x)
+    board.move(8, @o)
+    board.move(3, @o)
+    board.move(7, @o)
+    board.move(2, @x)
+    board.move(6, @x)
+
+    @negamax.make_move.should == 12
   end
 
   it "should return a move fast, scenario 1" do
