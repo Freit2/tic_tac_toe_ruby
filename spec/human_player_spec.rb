@@ -26,6 +26,6 @@ describe HumanPlayer do
 
   it "should display message to player" do
     @human.make_move
-    @output.string.should == "\nEnter your move, player 'O' [0-8]: "
+    @output.string.should == "\nEnter your move, player 'O': "
   end
 end
