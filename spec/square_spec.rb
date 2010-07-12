@@ -6,7 +6,9 @@ describe "Square Players" do
   uses_scene "default_scene", :hidden => true
 
   before do
-    scene.board = Board.new
+    scene.remove_squares
+    scene.create_board
+    scene.build_squares
     (0...scene.board.size).each do |s|
       scene.find("square_#{s}").casted
     end

@@ -6,6 +6,12 @@
 status :id => 'status'
 
 menu do
+  label :text => 'Board'
+  board_selection :id => 'board_selection', :players => 'combo_box',
+                  :choices => ['3x3', '4x4'], :value => '3x3'
+end
+
+menu do
   label :text => 'Player O'
   player_selection :id => 'player_o_type', :players => 'combo_box',
                    :choices => ['human', 'easy cpu', 'medium cpu', 'unbeatable cpu'], :value => 'human'
@@ -20,22 +26,4 @@ end
 menu do
   menu_item :id => 'start_button', :text => "New Game", :action => "scene.play_new_game"
   menu_item :id => 'exit_button', :text => "Exit", :action => "scene.close"
-end
-
-row do
-  (0..2).each do |s|
-    square :id => "square_#{s}"
-  end
-end
-
-row do
-  (3..5).each do |s|
-    square :id => "square_#{s}"
-  end
-end
-
-row do
-  (6..8).each do |s|
-    square :id => "square_#{s}"
-  end
 end

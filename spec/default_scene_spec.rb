@@ -18,7 +18,7 @@ describe "Default Scene" do
     count.should == 1
   end
 
-  it "should have three menu props" do
+  it "should have four menu props" do
     count = 0
     scene.children.each do |p|
       if p.name == "menu"
@@ -26,27 +26,7 @@ describe "Default Scene" do
       end
     end
 
-    count.should == 3
-  end
-
-  it "should have three squares for each row" do
-    scene.children.each do |p|
-      if p.name == "row"
-        p.children.size.should == 3
-      end
-    end
-  end
-
-  it "should have squares with ids from 0-8" do
-    id = 0
-    scene.children.each do |p|
-      if p.name == "row"
-        p.children.each do |s|
-          s.id.should == "square_#{id}"
-          id += 1
-        end
-      end
-    end
+    count.should == 4
   end
 
   it "should have a blank status text" do
@@ -56,6 +36,55 @@ describe "Default Scene" do
   it "should display status message" do
     scene.display_message('test message')
     scene.status.text.should == 'test message'
+  end
+
+  it "should default to 3x3 board" do
+    scene.find('board_selection').text.should == '3x3'
+  end
+
+  it "should create default board" do
+    scene.create_board
+    scene.build_squares
+
+    id = 0
+    scene.children.each do |p|
+      if p.name == "row"
+        p.children.size.should == 3
+        p.children.each do |s|
+          s.id.should == "square_#{id}"
+          id += 1
+        end
+      end
+    end
+  end
+
+  it "should create 4x4 board" do
+    scene.find('board_selection').text = '4x4'
+    scene.create_board
+    scene.build_squares
+
+    id = 0
+    scene.children.each do |p|
+      if p.name == "row"
+        p.children.size.should == 4
+        p.children.each do |s|
+          s.id.should == "square_#{id}"
+          id += 1
+        end
+      end
+    end
+  end
+
+  it "should remove board from scene" do
+    scene.create_board
+    scene.build_squares
+    scene.remove_squares
+  
+    scene.children.each do |p|
+      if p.name == "row"
+        p.children.size.should == 0
+      end
+    end
   end
 
   it "should default to human and minmax players" do
@@ -95,6 +124,9 @@ describe "Default Scene" do
   end
 
   it "should receive method calls on new game" do
+    scene.should_receive(:remove_squares)
+    scene.should_receive(:create_board)
+    scene.should_receive(:build_squares)
     scene.should_receive(:clear_squares)
     scene.should_receive(:create_players)
     scene.should_receive(:enable_squares)
@@ -117,6 +149,7 @@ describe "Default Scene" do
 
   it "should clear squares" do
     scene.board = Board.new
+    scene.build_squares
     (0...scene.board.size).each do |s|
       scene.find("square_#{s}").text = 'X'
     end
@@ -134,6 +167,7 @@ describe "Default Scene" do
 
   it "should still be animating" do
     scene.board = Board.new
+    scene.build_squares
     scene.board.move(0, 'X')
     scene.board.move(1, 'X')
     scene.board.move(2, 'X')

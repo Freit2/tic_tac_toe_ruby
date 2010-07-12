@@ -13,5 +13,5 @@ stage "default" do
   default_scene "default_scene"
   title "Limelight Tic Tac Toe"
   location [:center, :center]
-  size [500, 700]
+  size [625, 825]
 end

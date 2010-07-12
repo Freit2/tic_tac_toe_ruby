@@ -12,6 +12,26 @@ module DefaultScene
     stage.close
   end
 
+  def build_squares
+    @board.ranges.each do |r|
+      scene.build do
+        row do
+          r.each do |s|
+            square :id => "square_#{s}"
+          end
+        end
+      end
+    end
+  end
+
+  def remove_squares
+    scene.children.each do |p|
+      if p.name == "row"
+        p.remove_all
+      end
+    end
+  end
+
   def clear_squares
     (0...@board.size).each do |s|
       find("square_#{s}").text = ""
@@ -37,9 +57,16 @@ module DefaultScene
     @player_x.ui = self
   end
 
+  def create_board
+    board_size = find('board_selection').text[0,1].to_i ** 2
+    @board = Board.new(nil, board_size)
+  end
+
   def play_new_game
-    @board = Board.new
     @animation.stop if @animation
+    remove_squares
+    create_board
+    build_squares
     clear_squares
     start_button.disable
     create_players
