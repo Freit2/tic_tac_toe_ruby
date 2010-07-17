@@ -39,8 +39,8 @@ class TicTacToe
   
   def play
     loop do
-      create_players
       @board = get_board
+      create_players
       @game = Game.new(@player_o, @player_x, @board, @ui)
       @game.play
       break if !play_again?
