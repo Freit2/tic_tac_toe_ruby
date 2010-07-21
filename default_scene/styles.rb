@@ -5,9 +5,10 @@
 # For a complete listing of style attributes see: http://limelightwiki.8thlight.com/index.php/Style_Attributes
 
 default_scene {
-  background_color :white
-  secondary_background_color :black
-  gradient :on
+  #background_color :white
+  #secondary_background_color :black
+  #gradient :on
+  background_image "images/background_nuclei.jpg"
   horizontal_alignment :center
   vertical_alignment :center
   width "100%"
@@ -20,7 +21,7 @@ status {
   vertical_alignment :top
   bottom_padding 50
   font_size 15
-  font_face :arial
+  font_face :helvetica
   font_style :bold
   text_color :green
 }
@@ -34,9 +35,9 @@ menu {
 
 label {
   font_size 20
-  font_face :arial
+  font_face :helvetica
   font_style :bold
-  text_color "#2661da"
+  text_color :dim_grey
   right_margin 20
 }
 
@@ -48,16 +49,17 @@ menu_item {
   width 150
   right_margin 20
   padding 10
-  border_color "#2661da"
+  border_color :dim_grey
   border_width 1
   rounded_corner_radius 5
-  text_color "#2661da"
+  text_color :dim_grey
   font_size 20
-  font_face :arial
+  font_face :helvetica
   font_style :bold
   horizontal_alignment :center
+  background_color :white
   hover {
-    background_color :light_green
+    background_color :light_grey
   }
 }
 
@@ -76,6 +78,8 @@ square {
   vertical_alignment :bottom
   gradient :on
   font_size 120
+  font_face :helvetica
+  background_color :white
   hover {
     background_color :light_green
     border_width 1

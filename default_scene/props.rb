@@ -6,24 +6,24 @@
 status :id => 'status'
 
 menu do
-  label :text => 'Board'
+  label :text => 'board'
   board_selection :id => 'board_selection', :players => 'combo_box',
                   :choices => ['3x3', '4x4'], :value => '3x3'
 end
 
 menu do
-  label :text => 'Player O'
+  label :text => 'player O'
   player_selection :id => 'player_o_type', :players => 'combo_box',
                    :choices => ['human', 'easy cpu', 'medium cpu', 'unbeatable cpu'], :value => 'human'
 end
 
 menu do
-  label :text => 'Player X'
+  label :text => 'player X'
   player_selection :id => 'player_x_type', :players => 'combo_box',
                    :choices => ['human', 'easy cpu', 'medium cpu', 'unbeatable cpu'], :value => 'unbeatable cpu'
 end
 
 menu do
-  menu_item :id => 'start_button', :text => "New Game", :action => "scene.play_new_game"
-  menu_item :id => 'exit_button', :text => "Exit", :action => "scene.close"
+  menu_item :id => 'start_button', :text => "new game", :action => "scene.play_new_game"
+  menu_item :id => 'exit_button', :text => "exit", :action => "scene.close"
 end
