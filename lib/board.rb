@@ -1,6 +1,7 @@
 class Board
   attr_reader :winning_patterns, :board, :size, :row_size,
-              :winner, :win_moves, :last_move
+              :win_moves, :last_move
+  attr_accessor :winner
 
   def initialize(board=nil, size=9)
     if board
@@ -57,11 +58,15 @@ class Board
 
   def move(square, piece)
     if !occupied?(square)
-      @board.delete_at(square)
-      @board.insert(square, piece)
+      @board[square] = piece
       @last_move = square
       find_winner
     end
+  end
+
+  def clear(square)
+    @board[square] = " "
+    @winner = nil
   end
 
   def get_empty_squares

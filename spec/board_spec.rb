@@ -122,4 +122,21 @@ describe Board do
       w[1].size.should == 3
     end
   end
+
+  it "should clear move" do
+    @board.move(0, @x)
+    @board.clear(0)
+
+    @board.to_s.should == "         "
+  end
+
+  it "should clear winner" do
+    @board.winner = @o
+    @board.move(0, @o)
+    @board.move(1, @o)
+    @board.move(2, @o)
+    @board.clear(1)
+
+    @board.winner.should == nil
+  end
 end
