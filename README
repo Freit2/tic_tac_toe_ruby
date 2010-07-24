@@ -1,3 +1,8 @@
+Requires Homebrew and MongoDB
+
+brew install mongodb
+gem install mongo
+
 To run the game in standard stream (stdio), type: 
 
 ruby lib/tic_tac_toe.rb
