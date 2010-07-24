@@ -1,23 +1,25 @@
 require File.expand_path(File.dirname(__FILE__)) + "/init" 
 require 'player'
 require 'board'
+require 'rubygems'
+require 'mongo'
 
 class NegamaxPlayer < Player
 
-  attr_accessor :best_move
+  attr_accessor :best_moves
 
   def initialize(piece)
     super(piece)
+    @coll = Mongo::Connection.new.db("ttt2").collection("boards")
   end
 
   def make_move
+    @best_moves = [].fill(0, @board.size) { -999 }
     @ui.display_cpu_move_message(@piece)
-    if @board.get_empty_squares.size == @board.size
-      return rand(@board.size)
-    end
     get_alpha_beta_move(@board, @piece, 1, -999, 999)
-    moves = get_rotated_moves
-    return moves[rand(moves.size)]
+    #puts @best_moves.inspect
+    #return best_random_move
+    return @best_move
   end
 
   def get_opponent(piece)
@@ -44,9 +46,15 @@ class NegamaxPlayer < Player
       empty_squares = board.get_empty_squares
       empty_squares.each do |s|
         board.move(s, piece)
-        score = -get_alpha_beta_move(board, opponent,
-                depth + 1, -beta, -alpha)
+        #bson = @coll.find_one("board" => board.to_s, "piece" => piece)
+        #score = bson && bson["score"]
+        #if !score
+          score = -get_alpha_beta_move(board, opponent,
+                  depth + 1, -beta, -alpha)
+          #@coll.insert({"board" => board.to_s, "piece" => piece, "score" => score})
+        #end
         board.clear(s)
+        #@best_moves[s] = score
         if score > alpha
           alpha = score
           @best_move = s if depth == 1
@@ -55,6 +63,20 @@ class NegamaxPlayer < Player
       end
       return alpha
     end
+  end
+
+  def indexes_of_max(array)
+    max = array.max
+    returning [] do |indexes|
+      array.each_with_index do |e, i|
+        indexes << i if e == max
+      end
+    end
+  end
+
+  def best_random_move
+    indexes = indexes_of_max(@best_moves)
+    return indexes[rand(indexes.size)]
   end
 
   def get_rotated_moves

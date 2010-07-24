@@ -217,18 +217,30 @@ describe NegamaxPlayer do
     @negamax.make_move
   end
 
-  it "should use rotated moves method" do
-    @board.move(0, @x)
+#  it "should use rotated moves method" do
+#    @board.move(0, @x)
+#
+#    @negamax.should_receive(:get_rotated_moves).and_return(0)
+#    @negamax.make_move
+#  end
+#
+#  it "should return rotated moves" do
+#    @board.move(4, @o)
+#    @negamax.best_move = 0
+#
+#    @negamax.get_rotated_moves.sort.should == [0, 2, 6, 8]
+#  end
 
-    @negamax.should_receive(:get_rotated_moves).and_return(0)
-    @negamax.make_move
+  it "should return indexes of max" do
+    array = [0,1,1,0]
+    @negamax.indexes_of_max(array).should == [1,2]
   end
 
-  it "should return rotated moves" do
-    @board.move(4, @o)
-    @negamax.best_move = 0
+  it "should return the best random move" do
+    @negamax.best_moves = [0, 1, 0, 0, 1, 0, 1, 0, -1]
+    @negamax.should_receive(:rand).and_return(1)
 
-    @negamax.get_rotated_moves.sort.should == [0, 2, 6, 8]
+    @negamax.best_random_move.should == 4
   end
 end
 
