@@ -146,7 +146,7 @@ describe NegamaxPlayer do
     board.move(1, @x)
     board.move(2, @o)
     board.move(3, @x)
-    board.move(5, @o)
+    board.move(4, @o)
     board.move(6, @x)
     board.move(9, @o)
     board.move(10,@o)
@@ -187,13 +187,12 @@ describe NegamaxPlayer do
     @negamax.board = board
     board.move(0, @o)
     board.move(1, @x)
-    board.move(4, @o)
     board.move(2, @x)
-    board.move(8, @o)
     board.move(3, @o)
-    board.move(7, @o)
-    board.move(2, @x)
+    board.move(4, @o)
     board.move(6, @x)
+    board.move(7, @o)
+    board.move(8, @o)
 
     @negamax.make_move.should == 12
   end
@@ -223,20 +222,6 @@ describe NegamaxPlayer do
     @negamax.make_move
   end
 
-#  it "should use rotated moves method" do
-#    @board.move(0, @x)
-#
-#    @negamax.should_receive(:get_rotated_moves).and_return(0)
-#    @negamax.make_move
-#  end
-#
-#  it "should return rotated moves" do
-#    @board.move(4, @o)
-#    @negamax.best_move = 0
-#
-#    @negamax.get_rotated_moves.sort.should == [0, 2, 6, 8]
-#  end
-
   it "should return indexes of max" do
     array = [0,1,1,0]
     @negamax.indexes_of_max(array).should == [1,2]
@@ -247,6 +232,32 @@ describe NegamaxPlayer do
     @negamax.should_receive(:rand).and_return(1)
 
     @negamax.best_random_move.should == 4
+  end
+
+  it "should be set @documents as an empty array" do
+    @negamax.documents.class.should == Array
+    @negamax.documents.size.should == 0
+  end
+
+  it "should clear @documents" do
+    @negamax.documents << 1 << 2 << 3
+    @negamax.should_receive(:memoize_negamax)
+    @negamax.coll.should_receive(:insert)
+    @negamax.should_receive(:best_random_move).and_return(0)
+    @negamax.make_move
+
+    @negamax.documents.size.should == 0
+  end
+
+  it "should return score from hash in @documents" do
+    @negamax.documents << {"board" => 1, "piece" => 2, "score" => 999}
+    @negamax.get_score_from_hash(1, 2).should == 999
+  end
+
+  it "should return score from hash in mongoDB" do
+    @negamax.coll.should_receive(:find_one).and_return({"board" => 1, "
+      piece" => 2, "score" => 999})
+    @negamax.get_score_from_hash(1, 2).should == 999
   end
 end
 
