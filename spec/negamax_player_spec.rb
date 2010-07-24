@@ -90,8 +90,9 @@ describe NegamaxPlayer do
     @board.move(1, @o)
     @board.move(2, @x)
     @board.move(3, @o)
+    @negamax.should_receive(:rand).and_return(1)
 
-    @negamax.make_move.should == 4
+    @negamax.make_move.should == 8
   end
 
   it "should make winning move, scenario 2" do
@@ -167,6 +168,7 @@ describe NegamaxPlayer do
     @board.move(0, @x)
     @board.move(4, @o)
     @board.move(8, @o)
+    @negamax.should_receive(:rand).and_return(0)
 
     @negamax.make_move.should == 2
   end
@@ -205,15 +207,19 @@ describe NegamaxPlayer do
   end
 
   it "should return a move fast, scenario 2" do
+    negamax = NegamaxPlayer.new(@o)
+    negamax.ui = @ui
+    negamax.board = @board
+
     before = Time.new
-    @negamax.make_move
+    negamax.make_move
     (Time.new - before).should < 1
   end
 
   it "should use alpha beta pruning" do
     @board.move(0, @o)
 
-    @negamax.should_receive(:get_alpha_beta_move)
+    @negamax.should_receive(:memoize_negamax)
     @negamax.make_move
   end
 
@@ -237,7 +243,7 @@ describe NegamaxPlayer do
   end
 
   it "should return the best random move" do
-    @negamax.best_moves = [0, 1, 0, 0, 1, 0, 1, 0, -1]
+    @negamax.scores = [0, 1, 0, 0, 1, 0, 1, 0, -1]
     @negamax.should_receive(:rand).and_return(1)
 
     @negamax.best_random_move.should == 4

@@ -6,20 +6,20 @@ require 'mongo'
 
 class NegamaxPlayer < Player
 
-  attr_accessor :best_moves
+  attr_accessor :scores
 
   def initialize(piece)
     super(piece)
-    @coll = Mongo::Connection.new.db("ttt2").collection("boards")
+    @max = piece
+    @coll = Mongo::Connection.new.db("ttt").collection("boards")
   end
 
   def make_move
-    @best_moves = [].fill(0, @board.size) { -999 }
     @ui.display_cpu_move_message(@piece)
-    get_alpha_beta_move(@board, @piece, 1, -999, 999)
-    #puts @best_moves.inspect
-    #return best_random_move
-    return @best_move
+    @scores = [].fill(0, @board.size) { -999 }
+    memoize_negamax(@board, @piece, 1)
+    #puts @scores.inspect
+    return best_random_move
   end
 
   def get_opponent(piece)
@@ -38,30 +38,31 @@ class NegamaxPlayer < Player
     end
   end
 
-  def get_alpha_beta_move(board, piece, depth, alpha, beta)
+  def memoize_negamax(board, piece, depth)
     if board.game_over?
       return evaluate_score(board, piece, depth)
     else
+      best_score = -999
       opponent = get_opponent(piece)
       empty_squares = board.get_empty_squares
       empty_squares.each do |s|
         board.move(s, piece)
-        #bson = @coll.find_one("board" => board.to_s, "piece" => piece)
-        #score = bson && bson["score"]
-        #if !score
-          score = -get_alpha_beta_move(board, opponent,
-                  depth + 1, -beta, -alpha)
-          #@coll.insert({"board" => board.to_s, "piece" => piece, "score" => score})
-        #end
-        board.clear(s)
-        #@best_moves[s] = score
-        if score > alpha
-          alpha = score
-          @best_move = s if depth == 1
+        bson = @coll.find_one("board" => board.to_s, "piece" => piece)
+        score = bson && bson["score"]
+        if !score
+          score = -memoize_negamax(board, opponent,
+                  depth + 1)
+          @coll.insert({"board" => board.to_s, "piece" => piece, "score" => score})
+        elsif (piece == @max && score == 1 && depth == 1)
+          score = [evaluate_score(board, piece, 2), score].max
         end
-        break if alpha >= beta
+        board.clear(s)
+        @scores[s] = score if depth == 1
+        if score > best_score
+          best_score = score
+        end
       end
-      return alpha
+      return best_score
     end
   end
 
@@ -75,7 +76,7 @@ class NegamaxPlayer < Player
   end
 
   def best_random_move
-    indexes = indexes_of_max(@best_moves)
+    indexes = indexes_of_max(@scores)
     return indexes[rand(indexes.size)]
   end
 
