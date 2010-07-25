@@ -60,7 +60,6 @@ class NegamaxPlayer < Player
       best_score = -999
       opponent = get_opponent(piece)
       empty_squares = board.get_empty_squares
-      #empty_squares = [1] if depth == 1
       empty_squares.each do |s|
         board.move(s, piece)
         score = get_score_from_hash(board.to_s, piece)
