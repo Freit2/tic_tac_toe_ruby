@@ -251,13 +251,30 @@ describe NegamaxPlayer do
 
   it "should return score from hash in @documents" do
     @negamax.documents << {"board" => 1, "piece" => 2, "score" => 999}
+
     @negamax.get_score_from_hash(1, 2).should == 999
   end
 
   it "should return score from hash in mongoDB" do
     @negamax.coll.should_receive(:find_one).and_return({"board" => 1, "
       piece" => 2, "score" => 999})
+
     @negamax.get_score_from_hash(1, 2).should == 999
+  end
+
+  it "should store hash to @documents and not mongoDB" do
+    @negamax.coll.should_not_receive(:insert)
+    @negamax.documents.should_not_receive(:clear)
+
+    @negamax.store_hash(@board.to_s, 'X', 1)
+  end
+
+  it "should store hash to @documents, then to mongoDB" do
+    @negamax.documents = [].fill(0, 75) { " " }
+    @negamax.coll.should_receive(:insert)
+    @negamax.documents.should_receive(:clear)
+    
+    @negamax.store_hash(@board.to_s, 'X', 1)
   end
 end
 

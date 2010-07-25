@@ -21,7 +21,7 @@ class NegamaxPlayer < Player
     @documents.clear
     @scores = [].fill(0, @board.size) { -999 }
     memoize_negamax(@board, @piece, 1)
-    #puts @scores.inspect
+    puts @scores.inspect
     @coll.insert(@documents)
     return best_random_move
   end
@@ -43,7 +43,8 @@ class NegamaxPlayer < Player
   end
 
   def get_score_from_hash(board, piece)
-    hash = @documents.select { |h| h["board"] == board && h["piece"] == piece }[0]
+    hash = @documents.select { |h| h["board"] == board &&
+      h["piece"] == piece }[0]
     if !hash
       bson = @coll.find_one("board" => board, "piece" => piece)
       score = bson && bson["score"]
@@ -51,6 +52,15 @@ class NegamaxPlayer < Player
       score = hash["score"]
     end
     return score
+  end
+
+  def store_hash(board, piece, score)
+    @documents << {"board" => board,
+      "piece" => piece, "score" => score}
+    if @documents.size > 75
+      @coll.insert(@documents)
+      @documents.clear
+    end
   end
 
   def memoize_negamax(board, piece, depth)
@@ -65,11 +75,7 @@ class NegamaxPlayer < Player
         score = get_score_from_hash(board.to_s, piece)
         if !score
           score = -memoize_negamax(board, opponent, depth + 1)
-          @documents << {"board" => board.to_s, "piece" => piece, "score" => score}
-          if @documents.size > 75
-            @coll.insert(@documents)
-            @documents.clear
-          end
+          store_hash(board.to_s, piece, score)
         elsif (piece == @max && score == 1 && depth == 1)
           score = [evaluate_score(board, piece, 2), score].max
         end
