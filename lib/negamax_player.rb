@@ -96,28 +96,4 @@ class NegamaxPlayer < Player
     indexes = indexes_of_max(@scores)
     return indexes[rand(indexes.size)]
   end
-
-  def get_rotated_moves
-    rotated_moves = []
-    template = (0...@board.size).to_a
-    new_template = []
-    array = @board.to_a.dup
-    new_array = []
-    3.times do
-      @board.ranges.each do |r|
-        new_template << template[r].reverse
-        new_array << array[r].reverse
-      end
-      new_template = new_template.transpose.flatten
-      new_array = new_array.transpose.flatten
-      if @board.to_a == new_array
-        rotated_moves << new_template[@best_move]
-      end
-      template = new_template.dup
-      array = new_array.dup
-      new_template.clear
-      new_array.clear
-    end
-    return rotated_moves << @best_move
-  end
 end
