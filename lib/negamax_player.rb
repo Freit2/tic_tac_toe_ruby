@@ -21,7 +21,7 @@ class NegamaxPlayer < Player
     @documents.clear
     @scores = [].fill(0, @board.size) { -999 }
     memoize_negamax(@board, @piece, 1)
-    puts @scores.inspect
+    #puts @scores.inspect
     @coll.insert(@documents)
     return best_random_move
   end
