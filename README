@@ -1,6 +1,11 @@
-Requires Homebrew and MongoDB
+Requires MongoDB and mongo gem
+
+Install MongoDB from here: http://www.mongodb.org/downloads or if you have homebrew installed, type:
 
 brew install mongodb
+
+Install mongo gem:
+
 gem install mongo
 
 To run the game in standard stream (stdio), type: 
@@ -14,6 +19,14 @@ Move positions are:
   3 | 4 | 5
  ---+---+---
   6 | 7 | 8
+
+  0 | 1 | 2 | 3
+ ---+---+---+---
+  4 | 5 | 6 | 7
+ ---+---+---+---
+  8 | 9 | 10| 11
+ ---+---+---+---
+  12| 13| 14| 15
 
 To run on Limelight UI, you must have the following installed:
 
