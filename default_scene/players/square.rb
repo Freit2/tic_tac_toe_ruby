@@ -39,7 +39,6 @@ module Square
   end
 
   def mouse_exited(e)
-    #puts style.transparency
     if style.transparency == "81%"
       self.text = ""
       style.transparency = 0

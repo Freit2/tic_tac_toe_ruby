@@ -8,8 +8,24 @@ module DefaultScene
     @player_allowed = false
   end
 
+  def start
+    @animation.stop if @animation
+    remove_squares
+    create_board
+    build_squares
+    clear_squares
+    create_players
+    enable_squares
+    start_game_thread
+  end
+
+  def open_options_scene
+    production.producer.open_scene("options_scene", production.theater["options"])
+  end
+
   def close
-    stage.close
+    open_options_scene
+    stage.hide
   end
 
   def build_squares
@@ -25,10 +41,17 @@ module DefaultScene
   end
 
   def remove_squares
+    children_to_remove = []
     scene.children.each do |p|
       if p.name == "row"
-        p.remove_all
+        p.children.each do |s|
+          children_to_remove << s
+        end
+        children_to_remove << p
       end
+    end
+    children_to_remove.each do |p|
+      scene.remove(p)
     end
   end
 
@@ -51,27 +74,15 @@ module DefaultScene
   end
 
   def create_players
-    @player_o = Player.create(player_o_type.text[0,1], 'O')
-    @player_x = Player.create(player_x_type.text[0,1], 'X')
+    @player_o = Player.create(production.player_o[0,1], 'O')
+    @player_x = Player.create(production.player_x[0,1], 'X')
     @player_o.ui = self
     @player_x.ui = self
   end
 
   def create_board
-    board_size = find('board_selection').text[0,1].to_i ** 2
+    board_size = production.board_selection[0,1].to_i ** 2
     @board = Board.new(nil, board_size)
-  end
-
-  def play_new_game
-    @animation.stop if @animation
-    remove_squares
-    create_board
-    build_squares
-    clear_squares
-    start_button.disable
-    create_players
-    enable_squares
-    start_game_thread
   end
 
   def start_game_thread
@@ -96,26 +107,12 @@ module DefaultScene
     return @move
   end
 
-  def display_message(message)
-    status.text = message
-  end
-
   def piece_color
     return (current_player.piece == 'X') ? :royal_blue : :crimson
   end
 
   def display_board(board)
     find("square_#{board.last_move}").animate_move if board.last_move
-  end
-
-  def get_human_player_move(piece)
-    display_message("Your move player '#{piece}'")
-    return wait_for_move
-  end
-
-  def display_cpu_move_message(piece)
-    display_message("Player '#{piece}' is making a move")
-    sleep(0.1)
   end
 
   def animate_win
@@ -127,6 +124,20 @@ module DefaultScene
       end
       i = (i+1 == colors.size) ? 0 : (i+1)
     end
+  end
+
+  def display_message(message)
+    status.text = message
+  end
+
+  def get_human_player_move(piece)
+    display_message("Your move player '#{piece}'")
+    return wait_for_move
+  end
+
+  def display_cpu_move_message(piece)
+    display_message("Player '#{piece}' is making a move")
+    sleep(0.1)
   end
 
   def display_winner(winner)
@@ -143,6 +154,5 @@ module DefaultScene
   def display_try_again
     sleep(1.5)
     display_message("Click New Game to try again or Exit")
-    start_button.enable
   end
 end

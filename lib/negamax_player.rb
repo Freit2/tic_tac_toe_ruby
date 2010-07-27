@@ -1,8 +1,12 @@
 require File.expand_path(File.dirname(__FILE__)) + "/init" 
 require 'player'
 require 'board'
-require 'rubygems'
-require 'mongo'
+begin
+  require 'mongo'
+rescue LoadError
+  require 'rubygems'
+  require 'mongo'
+end
 
 class NegamaxPlayer < Player
 

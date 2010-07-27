@@ -4,6 +4,9 @@
 
 module Production
 
+  attr_reader :boards, :players
+  attr_accessor :board_selection, :player_o, :player_x
+
 #  # Define this method if you want the production name to be different from the default, directory name.
 #  def name
 #    return Tic Tac Toe
@@ -28,8 +31,13 @@ module Production
 
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
 #  # any scenes have been opened.
-#  def production_loaded
-#  end
+  def production_loaded
+    @boards = ["3x3", "4x4"]
+    @players = ["human", "easy cpu", "medium cpu", "unbeatable cpu"]
+    @board_selection = @boards[0]
+    @player_o = @players[0]
+    @player_x = @players[-1]
+  end
 
 #  # Hook #3.  Called when the production, and all the scenes, have fully opened.
 #  def production_opened
