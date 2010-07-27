@@ -3,7 +3,7 @@
 stage "default" do
   title "Limelight Tic Tac Toe"
   location [:center, :center]
-  size [625, 700]
+  size [825, 700]
 end
 
 stage "options" do

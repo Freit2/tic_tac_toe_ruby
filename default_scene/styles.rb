@@ -5,10 +5,8 @@
 # For a complete listing of style attributes see: http://limelightwiki.8thlight.com/index.php/Style_Attributes
 
 default_scene {
+  background_image "images/background_board.jpg"
   background_color :white
-  secondary_background_color :black
-  gradient_angle 180
-  gradient :on
   horizontal_alignment :center
   vertical_alignment :center
   width "100%"
@@ -34,16 +32,14 @@ row {
 square {
   height 130
   width 130
-  border_color "#2661da"
+  border_color :dim_grey
   border_width 1
   horizontal_alignment :center
   vertical_alignment :bottom
-  gradient :on
   font_size 120
   font_face :helvetica
   background_color :white
   hover {
-    background_color "#DEEFF9"
     border_width 1
   }
 }
