@@ -1,4 +1,4 @@
-module DefaultScene
+module BoardScene
 
   attr_reader :player_o, :player_x, :animation, :thread
   attr_accessor :game, :board, :current_player, :move, :player_allowed

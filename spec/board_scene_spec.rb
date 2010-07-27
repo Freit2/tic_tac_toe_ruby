@@ -3,9 +3,9 @@ require 'game'
 require 'board'
 require 'player'
 
-describe "Default Scene" do
+describe "Board Scene" do
 
-  uses_scene "default_scene", :hidden => true
+  uses_scene "board_scene", :hidden => true
 
   before(:all) do
     production.production_opening
@@ -89,7 +89,7 @@ describe "Default Scene" do
     scene.player_x.class.name.should == 'NegamaxPlayer'
   end
 
-  it "should have player hold default_scene UI" do
+  it "should have player hold board_scene UI" do
     scene.create_players
     
     scene.player_o.ui.should == scene

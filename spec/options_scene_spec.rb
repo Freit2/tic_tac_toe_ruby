@@ -49,7 +49,7 @@ describe "Options Scene" do
 
   it "should hide when starting new game" do
     scene.stage.should_receive(:hide)
-    scene.should_receive(:open_default_scene)
+    scene.should_receive(:open_board_scene)
 
     scene.play_new_game
   end

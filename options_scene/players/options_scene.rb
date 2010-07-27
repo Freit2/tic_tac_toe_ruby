@@ -15,9 +15,9 @@ module OptionsScene
     stage.close
   end
 
-  def open_default_scene
-    production.producer.open_scene("default_scene", production.theater["default"])
-    production.theater["default"].current_scene.start
+  def open_board_scene
+    production.producer.open_scene("board_scene", production.theater["board"])
+    production.theater["board"].current_scene.start
   end
 
   def play_new_game
@@ -25,7 +25,7 @@ module OptionsScene
     production.player_o = player_o_type.text
     production.player_x = player_x_type.text
 
-    open_default_scene
+    open_board_scene
     stage.hide
   end
 end

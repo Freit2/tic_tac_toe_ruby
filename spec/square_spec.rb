@@ -3,7 +3,7 @@ require 'board'
 
 describe "Square Players" do
 
-  uses_scene "default_scene", :hidden => true
+  uses_scene "board_scene", :hidden => true
 
   before do
     scene.remove_squares
