@@ -13,6 +13,7 @@ module BoardScene
     remove_squares
     create_board
     build_squares
+    format_squares
     clear_squares
     create_players
     enable_squares
@@ -33,9 +34,29 @@ module BoardScene
       scene.build do
         row do
           r.each do |s|
-            square :id => "square_#{s}"
+            square :id => "square_#{s}", :border_width => 1
           end
         end
+      end
+    end
+  end
+
+  def format_squares
+    ranges = @board.ranges
+    ranges.each do |r|
+      case
+      when ranges.first == r
+        r.each do |s|
+          find("square_#{s}").style.top_border_width = 0
+        end
+      when ranges.last == r
+        r.each do |s|
+          find("square_#{s}").style.bottom_border_width = 0
+        end
+      end
+      r.each do |s|
+        find("square_#{s}").style.left_border_width = 0 if r.first == s
+        find("square_#{s}").style.right_border_width = 0 if r.last-1 == s
       end
     end
   end

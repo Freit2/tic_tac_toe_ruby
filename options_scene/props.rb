@@ -14,6 +14,10 @@ menu do
 end
 
 button_menu do
-  button :id => 'start_button', :action => "scene.play_new_game"
-  button :id => 'exit_button', :action => "scene.close"
+  start_button :id => 'start_button', :players => 'button',
+    :action => "scene.play_new_game",
+    :background_image => "images/props/new_game_dim.jpg"
+  exit_button :id => 'exit_button', :players => 'button',
+    :action => "scene.close",
+    :background_image => "images/props/exit_dim.jpg"
 end

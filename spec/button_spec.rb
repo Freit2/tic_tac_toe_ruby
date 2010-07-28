@@ -12,13 +12,4 @@ describe "Button Players" do
     production.production_loaded
   end
 
-  before do
-    scene.start_button.casted
-    scene.exit_button.casted
-  end
-
-  it "should start with enabled buttons" do
-    scene.start_button.enabled.should == true
-    scene.exit_button.enabled.should == true
-  end
 end

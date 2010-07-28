@@ -6,7 +6,6 @@
 
 board_scene {
   background_image "images/background/board.jpg"
-  background_color :white
   horizontal_alignment :center
   vertical_alignment :center
   width "100%"
@@ -29,11 +28,8 @@ row {
 square {
   height 130
   width 130
-  border_color :dim_grey
-  border_width 1
+  border_color :black
   horizontal_alignment :center
   vertical_alignment :bottom
-  font_size 120
-  font_face :helvetica
   background_color :white
 }

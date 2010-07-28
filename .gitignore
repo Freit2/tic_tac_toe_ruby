@@ -1,5 +1,6 @@
 *.swp
+.DS_Store
 ttt.iml
 .idea
 projectFilesBackup
-.DS_Store
+devtool

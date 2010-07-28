@@ -9,6 +9,8 @@ module OptionsScene
     player_o_type.value = production.player_o
     player_x_type.choices = production.players
     player_x_type.value = production.player_x
+    exit_button.hover_style.background_image = "images/props/exit.jpg"
+    start_button.hover_style.background_image = "images/props/new_game.jpg"
   end
 
   def close

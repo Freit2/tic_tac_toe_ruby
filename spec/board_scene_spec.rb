@@ -100,6 +100,7 @@ describe "Board Scene" do
     scene.should_receive(:remove_squares)
     scene.should_receive(:create_board)
     scene.should_receive(:build_squares)
+    scene.should_receive(:format_squares)
     scene.should_receive(:clear_squares)
     scene.should_receive(:create_players)
     scene.should_receive(:enable_squares)
