@@ -143,16 +143,9 @@ module BoardScene
   def display_winner(winner)
     display_message("The winner is #{winner}!!!")
     animate_win
-    display_try_again
   end
 
   def display_draw_message
     display_message("The game is a draw.")
-    display_try_again
-  end
-
-  def display_try_again
-    sleep(1.5)
-    display_message("Click New Game to try again or Exit")
   end
 end

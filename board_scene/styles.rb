@@ -20,7 +20,7 @@ status {
   font_size 15
   font_face :helvetica
   font_style :bold
-  text_color :green
+  text_color :dim_grey
 }
 
 row {
