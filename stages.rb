@@ -8,6 +8,7 @@ stage "options" do
 end
 
 stage "board" do
+  #default_scene "board_scene"
   title "Limelight Tic Tac Toe"
   location [:center, :center]
   size [825, 700]

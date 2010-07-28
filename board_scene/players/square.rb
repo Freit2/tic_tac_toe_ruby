@@ -8,20 +8,11 @@ module Square
   end
 
   def animate_move
-    style.transparency = 80
-    style.text_color = scene.piece_color
-    self.text = scene.current_player.piece
-    transparency = 80
-    @animation = animate(:updates_per_second => 20) do
-      transparency -= 10
-      style.transparency = transparency
-      @animation.stop if transparency <= 0
-    end
+    style.background_image = "images/pieces/#{scene.current_player.piece.downcase}.jpg"
   end
 
   def mouse_clicked(e)
-    if @enabled && scene.player_allowed &&
-      (text.strip == '' || style.transparency == "81%")
+    if @enabled && scene.player_allowed && style.background_image =~ /dim/
       (0...scene.board.size).each do |s|
         if self.id == "square_#{s}"
           scene.move = s
@@ -31,30 +22,22 @@ module Square
   end
 
   def mouse_entered(e)
-    if @enabled && scene.player_allowed && text.strip == ''
-      style.transparency = 81
-      style.text_color = scene.piece_color
-      self.text = scene.current_player.piece
+    if @enabled && scene.player_allowed && style.background_image == "none"
+      style.background_image = "images/pieces/#{scene.current_player.piece.downcase}_dim.jpg"
     end
   end
 
   def mouse_exited(e)
-    if style.transparency == "81%"
-      self.text = ""
-      style.transparency = 0
+    if @enabled && scene.player_allowed && style.background_image =~ /dim/
+      style.background_image = "none"
     end
   end
 
   def disable
     @enabled = false
-    style.text_color = "grey"
-    @tmp_hover_style = hover_style if hover_style
-    self.hover_style = nil
   end
 
   def enable
-    self.hover_style = @tmp_hover_style if @tmp_hover_style
     @enabled = true
   end
-
 end

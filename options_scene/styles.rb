@@ -1,5 +1,5 @@
 options_scene {
-  background_image "images/background_options.jpg"
+  background_image "images/background/options.jpg"
   horizontal_alignment :center
   vertical_alignment :center
   width "100%"

@@ -107,45 +107,50 @@ module BoardScene
     return @move
   end
 
-  def piece_color
-    return (current_player.piece == 'X') ? :royal_blue : :crimson
-  end
-
   def display_board(board)
     find("square_#{board.last_move}").animate_move if board.last_move
   end
 
   def animate_win
-    colors = [:red, :orange, :yellow, :green, :blue, :purple]
-    i = 0
-    @animation = animate(:updates_per_second => 12) do
+    @animation = animate(:updates_per_second => 3) do
       @board.win_moves.each do |s|
-        find("square_#{s}").style.text_color = colors[i]
+        square = find("square_#{s}")
+        square.disable
+        background_image = square.style.background_image
+        case
+        when background_image =~ /o\.jpg/
+        square.style.background_image = "images/pieces/o_dim.jpg"
+        when background_image =~ /o_dim/
+        square.style.background_image = "images/pieces/o.jpg"
+        when background_image =~ /x\.jpg/
+        square.style.background_image = "images/pieces/x_dim.jpg"
+        when background_image =~ /x_dim/
+        square.style.background_image = "images/pieces/x.jpg"
+        end
       end
-      i = (i+1 == colors.size) ? 0 : (i+1)
     end
   end
 
-  def display_message(message)
-    status.text = message
+  def display_message(image)
+    status.style.background_image = image
   end
 
   def get_human_player_move(piece)
-    display_message("Your move player '#{piece}'")
+    display_message("images/messages/move_player_#{piece.downcase}.jpg")
     return wait_for_move
   end
 
   def display_cpu_move_message(piece)
-    display_message("Player '#{piece}' is making a move")
-    sleep(0.1)
+    display_message("images/messages/player_#{piece.downcase}_moves.jpg")
+    sleep(0.5)
   end
 
   def display_winner(winner)
-    display_message("The winner is #{winner}!!!")
+    display_message("images/end_message/winner_#{winner.downcase}.jpg")
     animate_win
   end
 
   def display_draw_message
-    display_message("The game is a draw.")
+    display_message("images/end_message/draw_game.jpg")
   end
 end

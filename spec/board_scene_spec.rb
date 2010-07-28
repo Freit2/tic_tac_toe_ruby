@@ -26,15 +26,6 @@ describe "Board Scene" do
     count.should == 1
   end
 
-  it "should have a blank status text" do
-    scene.status.text == ""
-  end
-
-  it "should display status message" do
-    scene.display_message('test message')
-    scene.status.text.should == 'test message'
-  end
-
   it "should create default board" do
     scene.create_board
     scene.build_squares
@@ -94,17 +85,6 @@ describe "Board Scene" do
     
     scene.player_o.ui.should == scene
     scene.player_x.ui.should == scene
-  end
-
-  it "should return correct piece color" do
-    @h = mock('human')
-    @c = mock('cpu')
-    @h.should_receive(:piece).and_return('O')
-    @c.should_receive(:piece).and_return('X')
-    scene.current_player = @h
-    scene.piece_color.should == :crimson
-    scene.current_player = @c
-    scene.piece_color.should == :royal_blue
   end
 
   it "should create a new Board instance on new game" do

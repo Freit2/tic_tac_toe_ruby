@@ -5,7 +5,7 @@
 # For a complete listing of style attributes see: http://limelightwiki.8thlight.com/index.php/Style_Attributes
 
 board_scene {
-  background_image "images/background_board.jpg"
+  background_image "images/background/board.jpg"
   background_color :white
   horizontal_alignment :center
   vertical_alignment :center
@@ -14,13 +14,10 @@ board_scene {
 }
 
 status {
-  width '100%'
+  height 75
+  width 520
   horizontal_alignment :center
   bottom_padding 50
-  font_size 15
-  font_face :helvetica
-  font_style :bold
-  text_color :dim_grey
 }
 
 row {
@@ -39,7 +36,4 @@ square {
   font_size 120
   font_face :helvetica
   background_color :white
-  hover {
-    border_width 1
-  }
 }
