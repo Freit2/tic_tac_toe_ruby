@@ -35,12 +35,12 @@ describe "Options Scene" do
   end
 
   it "should default to 3x3 board" do
-    scene.board_selection.text.should == '3x3'
+    scene.find("board_#{production.board_selection}").style.background_image.should_not =~ /dim/
   end
 
   it "should default to human and minmax players" do
-    scene.player_o_type.text.should == 'human'
-    scene.player_x_type.text.should == 'unbeatable cpu'
+    scene.find("player_o_#{production.player_selection.first[:name]}").style.background_image.should_not =~ /dim/
+    scene.find("player_x_#{production.player_selection.last[:name]}").style.background_image.should_not =~ /dim/
   end
 
   it "should have default scene as options_scene" do

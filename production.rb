@@ -5,7 +5,7 @@
 module Production
 
   attr_reader :boards, :players
-  attr_accessor :board_selection, :player_o, :player_x
+  attr_accessor :board_selection, :player_selection, :player_o, :player_x
 
 #  # Define this method if you want the production name to be different from the default, directory name.
 #  def name
@@ -32,11 +32,17 @@ module Production
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
 #  # any scenes have been opened.
   def production_loaded
-    @boards = ["3x3", "4x4"]
-    @players = ["human", "easy cpu", "medium cpu", "unbeatable cpu"]
-    @board_selection = @boards[0]
-    @player_o = @players[0]
-    @player_x = @players[-1]
+    @boards = [{:id => "3x3", :on => "3x3.jpg", :off => "3x3_dim.jpg"},
+               {:id => "4x4", :on => "4x4.jpg", :off => "4x4_dim.jpg"}]
+    @players = [{:id => "human", :value => "human", :on => "player_human.jpg", :off => "player_human_dim.jpg"},
+                {:id => "easy", :value => "easy", :on => "player_easy_cpu.jpg", :off => "player_easy_cpu_dim.jpg"},
+                {:id => "med", :value => "med", :on => "player_med_cpu.jpg", :off => "player_med_cpu_dim.jpg"},
+                {:id => "hard", :value => "unbeatable", :on => "player_hard_cpu.jpg", :off => "player_hard_cpu_dim.jpg"}]
+    @board_selection = @boards.first[:id]
+    @player_selection = [{:id => 'o', :name => @players.first[:id], :value => @players.first[:value]},
+                         {:id => 'x', :name => @players.last[:id], :value => @players.last[:value]}]
+    #@player_o = @players.first[:value]
+    #@player_x = @players.last[:value]
   end
 
 #  # Hook #3.  Called when the production, and all the scenes, have fully opened.

@@ -27,6 +27,10 @@ module Square
     end
   end
 
+  def mouse_moved(e)
+    mouse_entered(e)
+  end
+
   def mouse_exited(e)
     if @enabled && scene.player_allowed && style.background_image =~ /dim/
       style.background_image = "none"

@@ -15,7 +15,7 @@ describe "Production" do
     production.boards.size.should > 0
     production.players.size.should > 1
     production.board_selection.should == "3x3"
-    production.player_o.should == "human"
-    production.player_x.should == "unbeatable cpu"
+    production.player_selection.first[:value].should == "human"
+    production.player_selection.last[:value].should == "unbeatable"
   end
 end

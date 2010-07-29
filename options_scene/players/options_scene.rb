@@ -1,20 +1,47 @@
 module OptionsScene
 
-  prop_reader :board_selection, :player_o_type, :player_x_type, :start_button, :exit_button
+  prop_reader :start_button, :exit_button
 
   def scene_opened(e)
-    board_selection.choices = production.boards
-    board_selection.value = production.board_selection
-    player_o_type.choices = production.players
-    player_o_type.value = production.player_o
-    player_x_type.choices = production.players
-    player_x_type.value = production.player_x
-    exit_button.hover_style.background_image = "images/props/exit.jpg"
-    start_button.hover_style.background_image = "images/props/new_game.jpg"
+    initialize_board_option
+    initialize_player_options
+    initialize_buttons
+    initialize_prop_defaults
   end
 
   def close
     stage.close
+  end
+
+  def initialize_prop_defaults
+    find("board_#{production.board_selection}").mouse_clicked(nil)
+    find("player_o_#{production.player_selection.first[:name]}").mouse_clicked(nil)
+    find("player_x_#{production.player_selection.last[:name]}").mouse_clicked(nil)
+  end
+
+  def initialize_board_option
+    production.boards.each do |pl|
+      prop = find("board_#{pl[:id]}")
+      prop.style.background_image = "images/props/#{pl[:off]}"
+      prop.hover_style.background_image = "images/props/#{pl[:on]}"
+    end
+  end
+
+  def initialize_player_options
+    %w(o x).each do |p|
+      production.players.each do |pl|
+        prop = find("player_#{p}_#{pl[:id]}")
+        prop.style.background_image = "images/props/#{pl[:off]}"
+        prop.hover_style.background_image = "images/props/#{pl[:on]}"
+      end
+    end
+  end
+
+  def initialize_buttons
+    start_button.style.background_image = "images/props/new_game_dim.jpg"
+    start_button.hover_style.background_image = "images/props/new_game.jpg"
+    exit_button.style.background_image = "images/props/exit_dim.jpg"
+    exit_button.hover_style.background_image = "images/props/exit.jpg"
   end
 
   def open_board_scene
@@ -23,10 +50,6 @@ module OptionsScene
   end
 
   def play_new_game
-    production.board_selection = board_selection.text
-    production.player_o = player_o_type.text
-    production.player_x = player_x_type.text
-
     open_board_scene
     stage.hide
   end

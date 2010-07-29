@@ -56,10 +56,14 @@ describe "Square Players" do
   it "should show player's piece hovered over empty space transparently" do
     scene.enable_squares
     scene.player_allowed = true
-    @human.should_receive(:piece).and_return('O')
-    scene.should_receive(:current_player).and_return(@human)
+    @human.should_receive(:piece).twice.and_return('O')
+    scene.should_receive(:current_player).twice.and_return(@human)
     square = scene.find("square_0")
     square.mouse_entered(nil)
+    scene.find("square_0").style.background_image.should =~ /o_dim\.jpg/
+
+    square.mouse_exited(nil)
+    square.mouse_moved(nil)
     scene.find("square_0").style.background_image.should =~ /o_dim\.jpg/
   end
 
