@@ -15,17 +15,6 @@ describe "Board Scene" do
     production.production_loaded
   end
 
-  it "should have a status prop" do
-    count = 0
-    scene.children.each do |p|
-      if p.name == "status"
-        count += 1
-      end
-    end
-
-    count.should == 1
-  end
-
   it "should create default board" do
     scene.create_board
     scene.build_squares
@@ -66,11 +55,11 @@ describe "Board Scene" do
     scene.create_board
     scene.build_squares
 
-    scene.children.size.should == 4
+    scene.children.size.should == 6
 
     scene.remove_squares
 
-    scene.children.size.should == 1
+    scene.children.size.should == 3
   end
 
   it "should create player instances" do

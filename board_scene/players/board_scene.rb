@@ -21,7 +21,7 @@ module BoardScene
   end
 
   def open_options_scene
-    production.producer.open_scene("options_scene", production.theater["options"])
+    production.theater["options"].show
   end
 
   def close

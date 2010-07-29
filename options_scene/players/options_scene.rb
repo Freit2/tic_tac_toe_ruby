@@ -46,6 +46,7 @@ module OptionsScene
 
   def open_board_scene
     production.producer.open_scene("board_scene", production.theater["board"])
+    production.theater["board"].show if !production.theater["board"].visible?
     production.theater["board"].current_scene.start
   end
 
