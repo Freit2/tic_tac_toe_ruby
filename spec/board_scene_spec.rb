@@ -86,7 +86,6 @@ describe "Board Scene" do
   end
 
   it "should receive method calls on start" do
-    scene.should_receive(:remove_squares)
     scene.should_receive(:create_board)
     scene.should_receive(:build_squares)
     scene.should_receive(:format_squares)
@@ -131,6 +130,7 @@ describe "Board Scene" do
   end
 
   it "should hide and return to options scene" do
+    scene.should_receive(:remove_squares)
     scene.should_receive(:open_options_scene)
     scene.stage.should_receive(:hide)
 

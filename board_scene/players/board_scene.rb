@@ -9,8 +9,6 @@ module BoardScene
   end
 
   def start
-    @animation.stop if @animation
-    remove_squares
     create_board
     build_squares
     format_squares
@@ -25,6 +23,8 @@ module BoardScene
   end
 
   def close
+    @animation.stop if @animation
+    remove_squares
     open_options_scene
     stage.hide
   end
