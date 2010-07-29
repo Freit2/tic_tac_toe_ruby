@@ -7,9 +7,18 @@ board_scene {
   height "100%"
 }
 
+mini_gap {
+  height 10
+  width '100%'
+}
+
 gap {
   height 20
   width '100%'
+}
+
+width_gap {
+  width '95%'
 }
 
 menu {
@@ -18,11 +27,9 @@ menu {
 }
 
 quit {
-  height 33
-  width '100%'
-  left_margin 780
+  height 24
+  width 40
   right_margin 10
-  top_margin 10
   border_width 1
   horizontal_alignment :right
   rounded_corner_radius 4
@@ -36,10 +43,9 @@ quit {
 }
 
 status {
-  height 75
+  height 55
   width '100%'
   horizontal_alignment :center
-  bottom_padding 50
   background_image_fill_strategy :static
   background_image_x :center
   background_image_y :center
@@ -57,5 +63,37 @@ square {
   border_color :black
   horizontal_alignment :center
   vertical_alignment :bottom
-  background_color :white
+}
+
+try_again_menu {
+  extends :menu
+  horizontal_alignment :center
+}
+
+try_again_status {
+  height 24
+  width 94
+  background_image_fill_strategy :static
+  background_image_x :center
+  background_image_y :center
+  right_margin 10
+  background_image_fill_strategy :static
+  background_image_x :center
+  background_image_y :center
+  background_image "images/props/try_again.jpg"
+}
+
+try_again_button {
+  height 24
+  width 40
+  border_width 1
+  horizontal_alignment :right
+  rounded_corner_radius 4
+  background_image_fill_strategy :static
+  background_image_x :center
+  background_image_y :center
+  background_image "images/props/yes_dim.jpg"
+  hover {
+    background_image "images/props/yes.jpg"
+  }
 }

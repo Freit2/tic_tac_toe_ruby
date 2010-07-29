@@ -40,8 +40,10 @@ describe "Board Scene" do
     scene.build_squares
 
     id = 0
+    count = 0
     scene.children.each do |p|
       if p.name == "row"
+        count += 1
         p.children.size.should == 4
         p.children.each do |s|
           s.id.should == "square_#{id}"
@@ -49,17 +51,41 @@ describe "Board Scene" do
         end
       end
     end
+    count.should == 4
+  end
+
+  it "should create try again" do
+    scene.build_try_again
+
+    count = 0
+    scene.children.each do |p|
+      if p.name == "try_again_menu"
+        count += 1
+        p.children.size.should == 3
+      end
+    end
+    count.should == 1
   end
 
   it "should remove board from scene" do
     scene.create_board
     scene.build_squares
 
-    scene.children.size.should == 6
+    scene.children.size.should == 8
 
     scene.remove_squares
 
-    scene.children.size.should == 3
+    scene.children.size.should == 5
+  end
+
+  it "should remove try again from scene" do
+    scene.build_try_again
+
+    scene.children.size.should == 6
+    
+    scene.remove_try_again
+
+    scene.children.size.should == 5
   end
 
   it "should create player instances" do
@@ -96,6 +122,18 @@ describe "Board Scene" do
     scene.start
   end
 
+  it "should receive method calls on cleanup" do
+    scene.should_receive(:remove_squares)
+    scene.should_receive(:remove_try_again)
+    scene.cleanup
+  end
+
+  it "should receive method calls on restart" do
+    scene.should_receive(:cleanup)
+    scene.should_receive(:start)
+    scene.restart
+  end
+
   it "should create game on new thread" do
     Game.should_receive(:new).and_return(scene.game = mock("game"))
     scene.game.should_receive(:play)
@@ -129,7 +167,7 @@ describe "Board Scene" do
     scene.animation.running?.should == true
   end
 
-  it "should hide and return to options scene" do
+  it "should receive method calls on close" do
     scene.should_receive(:remove_squares)
     scene.should_receive(:open_options_scene)
     scene.stage.should_receive(:hide)

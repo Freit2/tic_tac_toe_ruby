@@ -18,15 +18,50 @@ module BoardScene
     start_game_thread
   end
 
+  def cleanup
+    @animation.stop if @animation
+    remove_squares
+    remove_try_again
+  end
+
+  def restart
+    cleanup
+    start
+  end
+
   def open_options_scene
     production.theater["options"].show
   end
 
   def close
-    @animation.stop if @animation
-    remove_squares
+    cleanup
     open_options_scene
     stage.hide
+  end
+
+  def build_try_again
+    scene.build do
+      try_again_menu :id => 'try_again_menu' do
+        gap
+        try_again_status :id => 'try_again_status'
+        try_again_button :id => 'try_again_button', :players => 'button', :action => "scene.restart"
+      end
+    end
+  end
+
+  def remove_try_again
+    children_to_remove = []
+    scene.children.each do |p|
+      if p.name == "try_again_menu"
+        p.children.each do |s|
+          children_to_remove << s
+        end
+        children_to_remove << p
+      end
+    end
+    children_to_remove.each do |p|
+      scene.remove(p)
+    end
   end
 
   def build_squares
@@ -171,9 +206,11 @@ module BoardScene
   def display_winner(winner)
     display_message("images/end_message/winner_#{winner.downcase}.jpg")
     animate_win
+    build_try_again
   end
 
   def display_draw_message
     display_message("images/end_message/draw_game.jpg")
+    build_try_again
   end
 end

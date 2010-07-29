@@ -11,6 +11,7 @@ stage "board" do
   title "Limelight Tic Tac Toe"
   location [:center, :center]
   size [825, 700]
+  framed false
 end
 
 stage "devtool" do
