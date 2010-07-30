@@ -24,7 +24,7 @@ module Production
   # This is a good place to require needed files and instantiate objects in the business layer.
   def production_opening
     $: << File.expand_path(File.dirname(__FILE__) + "/lib")
-    require 'conf'
+    require 'ttt'
     require 'game'
     require 'board'
     require 'player'
@@ -33,9 +33,9 @@ module Production
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
 #  # any scenes have been opened.
   def production_loaded
-    @boards = Configuration::Boards
+    require 'config'
     @players = Configuration::Players
-    @board_selection = @boards.first[:id]
+    @board_selection = TTT::CONFIG.boards.keys.first.to_s
     @player_selection = [{:id => 'o', :name => @players.first[:id], :value => @players.first[:value]},
                          {:id => 'x', :name => @players.last[:id], :value => @players.last[:value]}]
   end

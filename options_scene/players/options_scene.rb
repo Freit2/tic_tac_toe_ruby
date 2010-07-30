@@ -14,19 +14,19 @@ module OptionsScene
     stage.close
   end
 
-# TODO: contains monkey path until LL bug is fixed with hover.background_image
+# TODO: contains monkey patch until LL bug is fixed with hover.background_image
 
   def build_scene
-    boards = production.boards
+    boards = TTT::CONFIG.boards
     scene.build do
       menu do
         label
         board_selection do
-          boards.each do |b|
-            if b[:id] == '3x3'
+          boards.keys.each do |key|
+            if key == :'3x3'
               board_3x3 :id => 'board_3x3', :players => 'board_type'
             end
-            if b[:id] == '4x4'
+            if key == :'4x4'
               board_4x4 :id => 'board_4x4', :players => 'board_type'
             end
           end
@@ -43,10 +43,10 @@ module OptionsScene
   end
 
   def initialize_board_option
-    production.boards.each do |pl|
-      prop = find("board_#{pl[:id]}")
-      prop.style.background_image = "images/props/#{pl[:off]}"
-      prop.hover_style.background_image = "images/props/#{pl[:on]}"
+    TTT::CONFIG.boards.keys.each do |key|
+      prop = find("board_#{key.to_s}")
+      prop.style.background_image = "images/props/#{TTT::CONFIG.boards[key][:off]}"
+      prop.hover_style.background_image = "images/props/#{TTT::CONFIG.boards[key][:on]}"
     end
   end
 
