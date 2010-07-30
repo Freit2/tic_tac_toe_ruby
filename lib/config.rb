@@ -12,13 +12,3 @@ TTT::CONFIG.players = {
   'med'   => { :value => "med",         :on => "player_med_cpu.jpg",  :off => "player_med_cpu_dim.jpg"},
   'hard'  => { :value => "unbeatable" , :on => "player_hard_cpu.jpg", :off => "player_hard_cpu_dim.jpg"}
 }
-
-module Configuration
-  PlayerHuman = {:id => "human", :value => "human", :on => "player_human.jpg", :off => "player_human_dim.jpg"}
-  PlayerCpuEasy = {:id => "easy", :value => "easy", :on => "player_easy_cpu.jpg", :off => "player_easy_cpu_dim.jpg"}
-  PlayerCpuMedium = {:id => "med", :value => "med", :on => "player_med_cpu.jpg", :off => "player_med_cpu_dim.jpg"}
-  PlayerCpuHard = {:id => "hard", :value => "unbeatable", :on => "player_hard_cpu.jpg", :off => "player_hard_cpu_dim.jpg"}
-
-  Players = []
-  Players << PlayerHuman << PlayerCpuEasy << PlayerCpuMedium << PlayerCpuHard
-end

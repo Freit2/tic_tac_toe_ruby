@@ -28,16 +28,17 @@ module Production
     require 'game'
     require 'board'
     require 'player'
+    require 'config'
   end
 
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
 #  # any scenes have been opened.
   def production_loaded
-    require 'config'
-    @players = Configuration::Players
     @board_selection = TTT::CONFIG.boards.keys.first.to_s
-    @player_selection = [{:id => 'o', :name => @players.first[:id], :value => @players.first[:value]},
-                         {:id => 'x', :name => @players.last[:id], :value => @players.last[:value]}]
+    @player_selection = [{:id => 'o', :name => TTT::CONFIG.players.keys.first.to_s,
+                          :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]},
+                         {:id => 'x', :name => TTT::CONFIG.players.keys.last.to_s,
+                          :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]}]
   end
 
 #  # Hook #3.  Called when the production, and all the scenes, have fully opened.

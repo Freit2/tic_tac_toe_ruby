@@ -52,10 +52,10 @@ module OptionsScene
 
   def initialize_player_options
     %w(o x).each do |p|
-      production.players.each do |pl|
-        prop = find("player_#{p}_#{pl[:id]}")
-        prop.style.background_image = "images/props/#{pl[:off]}"
-        prop.hover_style.background_image = "images/props/#{pl[:on]}"
+      TTT::CONFIG.players.keys.each do |key|
+        prop = find("player_#{p}_#{key.to_s}")
+        prop.style.background_image = "images/props/#{TTT::CONFIG.players[key][:off]}"
+        prop.hover_style.background_image = "images/props/#{TTT::CONFIG.players[key][:on]}"
       end
     end
   end
