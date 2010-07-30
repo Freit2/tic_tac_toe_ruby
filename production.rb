@@ -24,6 +24,7 @@ module Production
   # This is a good place to require needed files and instantiate objects in the business layer.
   def production_opening
     $: << File.expand_path(File.dirname(__FILE__) + "/lib")
+    require 'conf'
     require 'game'
     require 'board'
     require 'player'
@@ -32,17 +33,11 @@ module Production
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
 #  # any scenes have been opened.
   def production_loaded
-    @boards = [{:id => "3x3", :on => "3x3.jpg", :off => "3x3_dim.jpg"},
-               {:id => "4x4", :on => "4x4.jpg", :off => "4x4_dim.jpg"}]
-    @players = [{:id => "human", :value => "human", :on => "player_human.jpg", :off => "player_human_dim.jpg"},
-                {:id => "easy", :value => "easy", :on => "player_easy_cpu.jpg", :off => "player_easy_cpu_dim.jpg"},
-                {:id => "med", :value => "med", :on => "player_med_cpu.jpg", :off => "player_med_cpu_dim.jpg"},
-                {:id => "hard", :value => "unbeatable", :on => "player_hard_cpu.jpg", :off => "player_hard_cpu_dim.jpg"}]
+    @boards = Configuration::Boards
+    @players = Configuration::Players
     @board_selection = @boards.first[:id]
     @player_selection = [{:id => 'o', :name => @players.first[:id], :value => @players.first[:value]},
                          {:id => 'x', :name => @players.last[:id], :value => @players.last[:value]}]
-    #@player_o = @players.first[:value]
-    #@player_x = @players.last[:value]
   end
 
 #  # Hook #3.  Called when the production, and all the scenes, have fully opened.

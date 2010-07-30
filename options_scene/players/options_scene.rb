@@ -3,6 +3,7 @@ module OptionsScene
   prop_reader :start_button, :exit_button
 
   def scene_opened(e)
+    build_scene
     initialize_board_option
     initialize_player_options
     initialize_buttons
@@ -11,6 +12,28 @@ module OptionsScene
 
   def close
     stage.close
+  end
+
+# TODO: contains monkey path until LL bug is fixed with hover.background_image
+
+  def build_scene
+    boards = production.boards
+    scene.build do
+      menu do
+        label
+        board_selection do
+          boards.each do |b|
+            if b[:id] == '3x3'
+              board_3x3 :id => 'board_3x3', :players => 'board_type'
+            end
+            if b[:id] == '4x4'
+              board_4x4 :id => 'board_4x4', :players => 'board_type'
+            end
+          end
+        end
+      end
+      __install "options_scene/partial_options.rb"
+    end
   end
 
   def initialize_prop_defaults

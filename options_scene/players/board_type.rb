@@ -1,15 +1,18 @@
 module BoardType
 
   def mouse_clicked(e)
-    if self.id.match(production.boards.first[:id])
-      board = production.boards.first
-      other_board = production.boards.last
+    boards = production.boards
+    if self.id.match(boards.first[:id])
+      board = boards.first
+      other_board = boards.last if boards.size == 2
     else
-      board = production.boards.last
-      other_board = production.boards.first
+      board = boards.last
+      other_board = boards.first
     end
     production.board_selection = board[:id]
     style.background_image = "images/props/#{board[:on]}"
-    scene.find("board_#{other_board[:id]}").style.background_image = "images/props/#{other_board[:off]}"
+    if boards.size == 2
+      scene.find("board_#{other_board[:id]}").style.background_image = "images/props/#{other_board[:off]}"
+    end
   end
 end
