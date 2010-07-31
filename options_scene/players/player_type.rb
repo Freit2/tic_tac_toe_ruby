@@ -1,5 +1,4 @@
 module PlayerType
-
   def mouse_clicked(e)
     piece = self.id =~ /_o_/ ? 'o' : 'x'
     TTT::CONFIG.players.keys.each do |key|

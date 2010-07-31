@@ -38,6 +38,11 @@ describe "Options Scene" do
     scene.find("board_#{production.board_selection}").style.background_image.should_not =~ /dim/
   end
 
+  it "should not build board if not active in config" do
+    TTT::CONFIG.boards['4x4'][:active] = false
+    scene.find("board_4x4").should == nil
+  end
+
   it "should default to human and minmax players" do
     scene.find("player_o_#{production.player_selection.first[:name]}").style.background_image.should_not =~ /dim/
     scene.find("player_x_#{production.player_selection.last[:name]}").style.background_image.should_not =~ /dim/

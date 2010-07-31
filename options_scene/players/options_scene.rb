@@ -23,11 +23,13 @@ module OptionsScene
         label
         board_selection do
           boards.keys.each do |key|
-            if key == :'3x3'
-              board_3x3 :id => 'board_3x3', :players => 'board_type'
-            end
-            if key == :'4x4'
-              board_4x4 :id => 'board_4x4', :players => 'board_type'
+            if boards[key][:active]
+              if key == :'3x3'
+                board_3x3 :id => 'board_3x3', :players => 'board_type'
+              end
+              if key == :'4x4'
+                board_4x4 :id => 'board_4x4', :players => 'board_type'
+              end
             end
           end
         end
@@ -44,9 +46,11 @@ module OptionsScene
 
   def initialize_board_option
     TTT::CONFIG.boards.keys.each do |key|
-      prop = find("board_#{key.to_s}")
-      prop.style.background_image = "images/props/#{TTT::CONFIG.boards[key][:off]}"
-      prop.hover_style.background_image = "images/props/#{TTT::CONFIG.boards[key][:on]}"
+      if TTT::CONFIG.boards[key][:active]
+        prop = find("board_#{key.to_s}")
+        prop.style.background_image = "images/props/#{TTT::CONFIG.boards[key][:off]}"
+        prop.hover_style.background_image = "images/props/#{TTT::CONFIG.boards[key][:on]}"
+      end
     end
   end
 
