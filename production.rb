@@ -26,6 +26,7 @@ module Production
     $: << File.expand_path(File.dirname(__FILE__) + "/lib")
     require 'ttt'
     require 'config'
+    require 'nil_cache'
     require 'hash_cache'
     require 'mongo_cache'
     require 'game'
@@ -60,6 +61,8 @@ module Production
         else
           TTT::CONFIG.boards[key][:active] = false
         end
+      else
+        @cache[TTT::CONFIG.boards[key][:cache]] = NilCache.new
       end
     end
   end

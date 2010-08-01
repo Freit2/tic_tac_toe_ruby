@@ -8,6 +8,8 @@ describe "Production" do
     production.production_opening
     TTT::CONFIG.boards['3x3'][:active] = true
     TTT::CONFIG.boards['4x4'][:active] = true
+    TTT::CONFIG.boards['3x3'][:cache] = :hash
+    TTT::CONFIG.boards['4x4'][:cache] = :mongo
   end
 
   it "should load require libraries" do

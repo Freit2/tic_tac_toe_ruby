@@ -1,5 +1,5 @@
 TTT::CONFIG.boards = {
-  '3x3' => { :active => true, :cache => :hash, :on => "3x3.jpg", :off => "3x3_dim.jpg" },
+  '3x3' => { :active => true, :cache => :cache, :on => "3x3.jpg", :off => "3x3_dim.jpg" },
   '4x4' => { :active => true, :cache => :mongo, :on => "4x4.jpg", :off => "4x4_dim.jpg" }
 }
 
