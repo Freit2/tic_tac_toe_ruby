@@ -25,10 +25,11 @@ module Production
   def production_opening
     $: << File.expand_path(File.dirname(__FILE__) + "/lib")
     require 'ttt'
+    require 'config'
+    require 'cache'
     require 'game'
     require 'board'
     require 'player'
-    require 'config'
   end
 
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before

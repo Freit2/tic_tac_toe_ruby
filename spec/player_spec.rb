@@ -40,7 +40,7 @@ describe Player do
     board = Board.new
     player = Player.new('X')
     player.board = board
-    player.board.should == board
+    player.board.should equal(board)
   end
 
   it "should allow ui to be set" do

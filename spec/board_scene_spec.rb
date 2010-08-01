@@ -98,8 +98,8 @@ describe "Board Scene" do
   it "should have player hold board_scene UI" do
     scene.create_players
     
-    scene.player_o.ui.should == scene
-    scene.player_x.ui.should == scene
+    scene.player_o.ui.should equal(scene)
+    scene.player_x.ui.should equal(scene)
   end
 
   it "should create a new Board instance on new game" do

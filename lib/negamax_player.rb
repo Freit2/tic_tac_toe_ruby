@@ -16,6 +16,7 @@ class NegamaxPlayer < Player
   def initialize(piece)
     super(piece)
     @max = piece
+    # Mongo::ConnectionFailure
     @coll = Mongo::Connection.new.db("ttt").collection("boards")
     @documents = []
   end

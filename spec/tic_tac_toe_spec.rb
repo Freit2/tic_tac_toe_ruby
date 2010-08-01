@@ -32,8 +32,8 @@ describe TicTacToe do
     @ttt.ui.input.string = "h\nu"
     @ttt.create_players
 
-    @ttt.player_o.ui.should == @ui
-    @ttt.player_x.ui.should == @ui
+    @ttt.player_o.ui.should equal(@ui)
+    @ttt.player_x.ui.should equal(@ui)
   end
 
   it "should get board" do
