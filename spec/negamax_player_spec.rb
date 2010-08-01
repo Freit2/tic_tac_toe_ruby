@@ -218,7 +218,7 @@ describe NegamaxPlayer do
   it "should use alpha beta pruning" do
     @board.move(0, @o)
 
-    @negamax.should_receive(:memoize_negamax)
+    @negamax.should_receive(:negamax)
     @negamax.make_move
   end
 
@@ -241,7 +241,7 @@ describe NegamaxPlayer do
 
   it "should clear @documents" do
     @negamax.documents << 1 << 2 << 3
-    @negamax.should_receive(:memoize_negamax)
+    @negamax.should_receive(:negamax)
     @negamax.coll.should_receive(:insert)
     @negamax.should_receive(:best_random_move).and_return(0)
     @negamax.make_move

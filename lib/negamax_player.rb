@@ -24,7 +24,7 @@ class NegamaxPlayer < Player
     @ui.display_cpu_move_message(@piece)
     @documents.clear
     @scores = [].fill(0, @board.size) { -999 }
-    memoize_negamax(@board, @piece, 1)
+    negamax(@board, @piece, 1)
     #puts @scores.inspect
     @coll.insert(@documents)
     return best_random_move
@@ -67,7 +67,7 @@ class NegamaxPlayer < Player
     end
   end
 
-  def memoize_negamax(board, piece, depth)
+  def negamax(board, piece, depth)
     if board.game_over?
       return evaluate_score(board, piece, depth)
     else
@@ -78,7 +78,7 @@ class NegamaxPlayer < Player
         board.move(s, piece)
         score = get_score_from_hash(board.to_s, piece)
         if !score
-          score = -memoize_negamax(board, opponent, depth + 1)
+          score = -negamax(board, opponent, depth + 1)
           store_hash(board.to_s, piece, score)
         elsif (piece == @max && score == 1 && depth == 1)
           score = [evaluate_score(board, piece, 2), score].max
