@@ -7,8 +7,8 @@ class Game
     @board = board
     @ui = ui
     @player_o = player_o
-    @player_o.board = @board
     @player_x = player_x
+    @player_o.board = @board
     @player_x.board = @board
   end
 

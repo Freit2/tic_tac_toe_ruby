@@ -1,6 +1,6 @@
 class Player
   attr_reader :piece
-  attr_accessor :board, :ui
+  attr_accessor :board, :ui, :cache
 
   def self.create(player, piece)
     case player.upcase

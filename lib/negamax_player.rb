@@ -10,23 +10,18 @@ end
 
 class NegamaxPlayer < Player
 
-  attr_reader :coll
-  attr_accessor :scores, :documents
+  attr_accessor :scores
 
   def initialize(piece)
     super(piece)
     @max = piece
-    @coll = Mongo::Connection.new.db("ttt").collection("boards")
-    @documents = []
   end
 
   def make_move
     @ui.display_cpu_move_message(@piece)
-    @documents.clear
     @scores = [].fill(0, @board.size) { -999 }
     negamax(@board, @piece, 1)
     #puts @scores.inspect
-    @coll.insert(@documents)
     return best_random_move
   end
 
@@ -46,27 +41,6 @@ class NegamaxPlayer < Player
     end
   end
 
-  def get_score_from_hash(board, piece)
-    hash = @documents.select { |h| h["board"] == board &&
-      h["piece"] == piece }[0]
-    if !hash
-      bson = @coll.find_one("board" => board, "piece" => piece)
-      score = bson && bson["score"]
-    else
-      score = hash["score"]
-    end
-    return score
-  end
-
-  def store_hash(board, piece, score)
-    @documents << {"board" => board,
-      "piece" => piece, "score" => score}
-    if @documents.size > 75
-      @coll.insert(@documents)
-      @documents.clear
-    end
-  end
-
   def negamax(board, piece, depth)
     if board.game_over?
       return evaluate_score(board, piece, depth)
@@ -76,10 +50,10 @@ class NegamaxPlayer < Player
       empty_squares = board.get_empty_squares
       empty_squares.each do |s|
         board.move(s, piece)
-        score = get_score_from_hash(board.to_s, piece)
+        score = @cache.score(board.to_s, piece)
         if !score
           score = -negamax(board, opponent, depth + 1)
-          store_hash(board.to_s, piece, score)
+          @cache.memoize(board.to_s, piece, score)
         elsif (piece == @max && score == 1 && depth == 1)
           score = [evaluate_score(board, piece, 2), score].max
         end
