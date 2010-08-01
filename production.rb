@@ -4,7 +4,7 @@
 
 module Production
 
-  attr_reader :boards, :players
+  attr_reader :boards, :players, :cache
   attr_accessor :board_selection, :player_selection, :player_o, :player_x
 
 #  # Define this method if you want the production name to be different from the default, directory name.
@@ -26,7 +26,8 @@ module Production
     $: << File.expand_path(File.dirname(__FILE__) + "/lib")
     require 'ttt'
     require 'config'
-    require 'cache'
+    require 'hash_cache'
+    require 'mongo_cache'
     require 'game'
     require 'board'
     require 'player'
@@ -35,11 +36,32 @@ module Production
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
 #  # any scenes have been opened.
   def production_loaded
-    @board_selection = TTT::CONFIG.boards.keys.first.to_s
+    if TTT::CONFIG.boards.active.size == 0
+      puts "***Error***: No active boards found"
+      close
+    end
+    initialize_cache
+    @board_selection = TTT::CONFIG.boards.active.first
     @player_selection = [{:id => 'o', :name => TTT::CONFIG.players.keys.first.to_s,
                           :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]},
                          {:id => 'x', :name => TTT::CONFIG.players.keys.last.to_s,
                           :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]}]
+  end
+
+  def initialize_cache
+    @cache = {}
+    TTT::CONFIG.boards.active.each do |key|
+      case TTT::CONFIG.boards[key][:cache]
+      when :hash
+        @cache[:hash] = HashCache.new
+      when :mongo
+        if MongoCache.db_installed?
+          @cache[:mongo] = MongoCache.new
+        else
+          TTT::CONFIG.boards[key][:active] = false
+        end
+      end
+    end
   end
 
 #  # Hook #3.  Called when the production, and all the scenes, have fully opened.

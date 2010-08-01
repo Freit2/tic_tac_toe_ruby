@@ -53,4 +53,11 @@ describe TTT::Config do
     config = TTT::Config.new(@hash)
     config.index(2).should == :b
   end
+
+  it "should return active keys" do
+    hash = { '3x3' => { :active => true }, '4x4' => { :active => false }}
+    config = TTT::Config.new
+    config.boards = hash
+    config.boards.active.should == ['3x3']
+  end
 end

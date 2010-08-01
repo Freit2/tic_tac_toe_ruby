@@ -1,10 +1,6 @@
 class Player
   attr_reader :piece
   attr_accessor :board, :ui
-  
-  def initialize(piece)
-    @piece = piece
-  end
 
   def self.create(player, piece)
     case player.upcase
@@ -21,5 +17,9 @@ class Player
       require 'negamax_player'
       return NegamaxPlayer.new(piece)
     end
+  end
+
+  def initialize(piece)
+    @piece = piece
   end
 end
