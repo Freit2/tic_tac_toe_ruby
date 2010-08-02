@@ -21,7 +21,7 @@ describe StdUI do
 
   it "should return board type from user" do
     @input.string = '3'
-    @ui.get_board_type.should == '3'
+    @ui.get_board_type(['3x3']).should == '3'
   end
 
   it "should return player type from user" do

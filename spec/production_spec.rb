@@ -12,6 +12,11 @@ describe "Production" do
     TTT::CONFIG.boards['4x4'][:cache] = :mongo
   end
 
+  after(:each) do
+    TTT::CONFIG.boards['3x3'][:active] = true
+    TTT::CONFIG.boards['4x4'][:active] = true
+  end
+
   it "should load require libraries" do
     TTT::Config.should_receive(:new)
     HashCache.should_receive(:new)
@@ -62,15 +67,9 @@ describe "Production" do
   it "should close production if there are no active boards" do
     production.should_receive(:puts)
     production.should_receive(:close)
-    boards = {}
     TTT::CONFIG.boards['3x3'][:active] = false
     TTT::CONFIG.boards['4x4'][:active] = false
 
     production.production_loaded
-  end
-
-  after(:each) do
-    TTT::CONFIG.boards['3x3'][:active] = true
-    TTT::CONFIG.boards['4x4'][:active] = true
   end
 end

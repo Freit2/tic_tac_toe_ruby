@@ -6,6 +6,8 @@ describe "Board Type" do
 
   before(:all) do
     production.production_opening
+    TTT::CONFIG.boards['3x3'][:active] = true
+    TTT::CONFIG.boards['4x4'][:active] = true
   end
 
   before(:each) do

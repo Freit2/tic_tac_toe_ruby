@@ -15,9 +15,21 @@ class StdUI
     @output.print message
   end
 
-  def get_board_type
-    display_message("\nChoose board type (enter '3' for 3x3 or '4' for 4x4) ")
-    return get_input.to_s.chomp
+  def get_board_type(active_boards)
+    message = "\nChoose board type (enter "
+    count = 0
+    active_boards.each do |board|
+      message += " or " if count == 1
+      message += "'#{board[0,1]}' for #{board}"
+    end
+    message += ") "
+    loop do
+      display_message(message)
+      input = get_input.to_s.chomp
+      active_boards.each do |board|
+        return input if input == board[0,1]
+      end
+    end
   end
 
   def get_player_type(piece)

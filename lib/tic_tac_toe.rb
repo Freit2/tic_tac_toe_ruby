@@ -1,15 +1,21 @@
 require File.expand_path(File.dirname(__FILE__)) + "/init" 
+require 'ttt'
+require 'config'
+require 'nil_cache'
+require 'mongo_cache'
+require 'hash_cache'
 require 'game'
 require 'board'
 require 'std_ui'
 require 'player'
 
 class TicTacToe
-  attr_reader :ui, :player_o, :player_x
-  attr_accessor :game, :board
+  attr_reader :ui, :player_o, :player_x, :cache
+  attr_accessor :game, :board, :board_selection
 
   def initialize(ui = StdUI.new)
     @ui = ui
+    initialize_cache
   end
 
   def get_player(piece)
@@ -26,15 +32,42 @@ class TicTacToe
     @player_x = get_player('X')
     @player_o.ui = @ui
     @player_x.ui = @ui
+    cache = @cache[TTT::CONFIG.boards[@board_selection][:cache]]
+    @player_o.cache = cache
+    @player_x.cache = cache
   end
 
   def get_board
     board_type = ""
     loop do
-      board_type = @ui.get_board_type
+      board_type = @ui.get_board_type(TTT::CONFIG.boards.active)
       break if board_type =~ /^3$|^4$/
     end
-    return board_type == '4' ? Board.new(nil, 16) : Board.new
+    if board_type == '4'
+      @board_selection = '4x4'
+      return Board.new(nil, 16)
+    else
+      @board_selection = '3x3'
+      return Board.new
+    end
+  end
+
+  def initialize_cache
+    @cache = {}
+    TTT::CONFIG.boards.active.each do |key|
+      case TTT::CONFIG.boards[key][:cache]
+      when :hash
+        @cache[:hash] = HashCache.new
+      when :mongo
+        if MongoCache.db_installed?
+          @cache[:mongo] = MongoCache.new
+        else
+          TTT::CONFIG.boards[key][:active] = false
+        end
+      else
+        @cache[TTT::CONFIG.boards[key][:cache]] = NilCache.new
+      end
+    end
   end
   
   def play
@@ -59,5 +92,9 @@ class TicTacToe
 end
 
 if $0 == __FILE__
+  if TTT::CONFIG.boards.active.size == 0
+    puts "***Error***: No active boards found"
+    exit
+  end
   TicTacToe.new.play
 end
