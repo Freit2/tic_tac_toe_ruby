@@ -16,9 +16,10 @@ class Options < WEBrick::HTTPServlet::AbstractServlet
   end
 
   def draw(request)
-    content = <<-EOS
+    title = "WEBrick Tic Tac Toe!"
+    content = ERB.new <<-EOS
     <head>
-      <title>WEBrick Tic Tac Toe!</title>
+      <title><%= title %></title>
     </head>
     <body>
     <center>
@@ -66,6 +67,6 @@ class Options < WEBrick::HTTPServlet::AbstractServlet
     </center>
     </body>
     EOS
-    return 200, "text/html", content
+    return 200, "text/html", content.result(binding)
   end
 end
