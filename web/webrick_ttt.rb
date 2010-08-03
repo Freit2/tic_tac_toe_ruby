@@ -1,8 +1,8 @@
 $: << File.expand_path(File.dirname(__FILE__) + "/../lib")
 require 'ttt'
 require 'webrick_server'
-require 'webrick_options_servlet'
-require 'webrick_board_servlet'
+require 'options_servlet'
+require 'board_servlet'
 
 class WEBrickTTT
   include TTT
