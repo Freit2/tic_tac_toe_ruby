@@ -3,6 +3,9 @@
 # You may define serveral hooks and initialization steps here.
 
 module Production
+  $: << File.expand_path(File.dirname(__FILE__) + "/lib")
+  require 'ttt'
+  include TTT
 
   attr_reader :boards, :players, :cache
   attr_accessor :board_selection, :player_selection, :player_o, :player_x
@@ -23,15 +26,7 @@ module Production
   # Hook #1.  Called when the production is newly created, before any loading has been done.
   # This is a good place to require needed files and instantiate objects in the business layer.
   def production_opening
-    $: << File.expand_path(File.dirname(__FILE__) + "/lib")
-    require 'ttt'
-    require 'config'
-    require 'nil_cache'
-    require 'hash_cache'
-    require 'mongo_cache'
-    require 'game'
-    require 'board'
-    require 'player'
+    load_libraries
   end
 
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
@@ -47,24 +42,6 @@ module Production
                           :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]},
                          {:id => 'x', :name => TTT::CONFIG.players.keys.last.to_s,
                           :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]}]
-  end
-
-  def initialize_cache
-    @cache = {}
-    TTT::CONFIG.boards.active.each do |key|
-      case TTT::CONFIG.boards[key][:cache]
-      when :hash
-        @cache[:hash] = HashCache.new
-      when :mongo
-        if MongoCache.db_installed?
-          @cache[:mongo] = MongoCache.new
-        else
-          TTT::CONFIG.boards[key][:active] = false
-        end
-      else
-        @cache[TTT::CONFIG.boards[key][:cache]] = NilCache.new
-      end
-    end
   end
 
 #  # Hook #3.  Called when the production, and all the scenes, have fully opened.

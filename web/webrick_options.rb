@@ -1,3 +1,4 @@
+Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each {|file| require file }
 require 'webrick'
 require 'erb'
 
@@ -8,22 +9,22 @@ class Options < WEBrick::HTTPServlet::AbstractServlet
   end
 
   def do_GET(request, response)
-    status, content_type, body = draw(request)
+    status, content_type, body = options(request)
 
     response.status = status
     response['Content-Type'] = content_type
     response.body = body
   end
 
-  def draw(request)
+  def options(request)
     title = "WEBrick Tic Tac Toe!"
-    content = ERB.new <<-EOS
+    template = ERB.new <<-EOS
     <head>
       <title><%= title %></title>
     </head>
     <body>
     <center>
-    <h1>Tic Tac Toe!</h1>
+    <h1 style="font-family:helvetica">Tic Tac Toe!</h1>
     <hr />
     <form method='POST' action='/new'>
     <p>
@@ -67,6 +68,6 @@ class Options < WEBrick::HTTPServlet::AbstractServlet
     </center>
     </body>
     EOS
-    return 200, "text/html", content.result(binding)
+    return 200, "text/html", template.result(binding)
   end
 end

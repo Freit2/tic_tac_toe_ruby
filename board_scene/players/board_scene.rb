@@ -137,7 +137,7 @@ module BoardScene
     @player_o.ui = self
     @player_x.ui = self
     cache = production.cache[TTT::CONFIG.boards[production.board_selection][:cache]]
-    #puts "USING CACHE: #{TTT::CONFIG.boards[production.board_selection][:cache]}"
+    #puts "USING CACHE: #{TTT::wCONFIG.boards[production.board_selection][:cache]}"
     @player_o.cache = cache
     @player_x.cache = cache
   end

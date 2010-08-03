@@ -1,20 +1,16 @@
 require File.expand_path(File.dirname(__FILE__)) + "/init" 
 require 'ttt'
-require 'config'
-require 'nil_cache'
-require 'mongo_cache'
-require 'hash_cache'
-require 'game'
-require 'board'
 require 'std_ui'
-require 'player'
 
 class TicTacToe
+  include TTT
+
   attr_reader :ui, :player_o, :player_x, :cache
   attr_accessor :game, :board, :board_selection
 
   def initialize(ui = StdUI.new)
     @ui = ui
+    load_libraries
     initialize_cache
   end
 
@@ -51,24 +47,6 @@ class TicTacToe
       return Board.new
     end
   end
-
-  def initialize_cache
-    @cache = {}
-    TTT::CONFIG.boards.active.each do |key|
-      case TTT::CONFIG.boards[key][:cache]
-      when :hash
-        @cache[:hash] = HashCache.new
-      when :mongo
-        if MongoCache.db_installed?
-          @cache[:mongo] = MongoCache.new
-        else
-          TTT::CONFIG.boards[key][:active] = false
-        end
-      else
-        @cache[TTT::CONFIG.boards[key][:cache]] = NilCache.new
-      end
-    end
-  end
   
   def play
     loop do
@@ -92,9 +70,10 @@ class TicTacToe
 end
 
 if $0 == __FILE__
+  ttt = TicTacToe.new
   if TTT::CONFIG.boards.active.size == 0
     puts "***Error***: No active boards found"
     exit
   end
-  TicTacToe.new.play
+  ttt.play
 end

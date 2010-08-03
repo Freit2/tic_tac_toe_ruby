@@ -54,4 +54,32 @@ module TTT
     end
   end
   CONFIG = Config.new
+  def load_libraries
+    $: << File.expand_path(File.dirname(__FILE__) + "/lib")
+    require 'config'
+    require 'nil_cache'
+    require 'hash_cache'
+    require 'mongo_cache'
+    require 'game'
+    require 'board'
+    require 'player'
+  end
+
+  def initialize_cache
+    @cache = {}
+    CONFIG.boards.active.each do |key|
+      case CONFIG.boards[key][:cache]
+      when :hash
+        @cache[:hash] = HashCache.new
+      when :mongo
+        if MongoCache.db_installed?
+          @cache[:mongo] = MongoCache.new
+        else
+          CONFIG.boards[key][:active] = false
+        end
+      else
+        @cache[CONFIG.boards[key][:cache]] = NilCache.new
+      end
+    end
+  end
 end

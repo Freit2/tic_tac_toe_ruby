@@ -1,6 +1,6 @@
 require 'webrick'
-require 'webrick-get'
-require 'webrick-post'
+require 'webrick_options'
+require 'webrick_board'
 
 if $0 == __FILE__ then
   server = WEBrick::HTTPServer.new(:Port => 7546)
