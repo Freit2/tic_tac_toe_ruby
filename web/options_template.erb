@@ -1,0 +1,41 @@
+<head>
+  <title><%= title %></title>
+</head>
+<body>
+<center>
+<h1 style="font-family:helvetica">Tic Tac Toe!</h1>
+<hr />
+<form method='POST' action='/new'>
+<p>
+Board Type
+<select name="board">
+  <%= options_for_board %>
+</select>
+</p>
+<p>
+Player O
+<select name="player_o">
+  <%= options_for_player(@player_selection_o) %>
+</select>
+</p>
+<p>
+Player X
+<select name="player_x">
+  <%= options_for_player(@player_selection_x) %>
+</select>
+</p>
+<p>
+<input type="submit" value="Start Game" />
+</p>
+</form>
+<h1>
+<p style="font-family:courier;font-size:50px">
+ O | X | O  <br />
+---+---+--- <br />
+ X | O | X  <br />
+---+---+--- <br />
+ X | O | X  <br />
+</p>
+</h1>
+</center>
+</body>

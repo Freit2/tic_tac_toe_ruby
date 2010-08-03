@@ -11,4 +11,9 @@ describe WEBrickTTT do
     webrick_ttt.server.class.should == WEBrickServer
   end
 
+  it "should mount servlets" do
+    webrick_ttt = WEBrickTTT.new
+    webrick_ttt.server.search_servlet("/")[0].should == OptionsServlet
+    webrick_ttt.server.search_servlet("/new")[0].should == BoardServlet
+  end
 end

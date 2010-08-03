@@ -2,11 +2,15 @@ require 'webrick'
 require 'erb'
 
 class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
-  
+  attr_reader :options
+  attr_accessor :board_selection, :player_selection_o, :player_selection_x
+
   def initialize(config, *options)
-    puts "OptionsServlet initialize"
     super(config)
     @options = *options
+    @board_selection = TTT::CONFIG.boards.active.first
+    @player_selection_o = TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]
+    @player_selection_x = TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]
   end
 
   def self.get_instance config, *options
@@ -22,57 +26,37 @@ class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
     response.body = body
   end
 
+  def options_for_board
+    options = ""
+    TTT::CONFIG.boards.active.each do |board|
+      if board == @board_selection
+        options += "<option selected=\"selected\">#{board}</option>"
+      else
+        options += "<option>#{board}</option>"
+      end
+    end
+    return options
+  end
+
+  def options_for_player(default_selection)
+    options = ""
+    TTT::CONFIG.players.values.each do |value|
+      if value[:value] == default_selection
+        options += "<option selected=\"selected\">#{value[:value]}</option>"
+      else
+        options += "<option>#{value[:value]}</option>"
+      end
+    end
+    return options
+  end
+
+  def erbize(erb_file)
+    return ERB.new IO.read(erb_file)
+  end
+
   def display_options(request)
     title = "WEBrick Tic Tac Toe!"
-    template = ERB.new <<-EOS
-    <head>
-      <title><%= title %></title>
-    </head>
-    <body>
-    <center>
-    <h1 style="font-family:helvetica">Tic Tac Toe!</h1>
-    <hr />
-    <form method='POST' action='/new'>
-    <p>
-    Board Type
-    <select name="board">
-      <% TTT::CONFIG.boards.active.each do |board| %>
-        <option><%= board %></option>
-      <% end %>
-    </select>
-    </p>
-    <p>
-    Player O
-    <select name="player_o">
-      <% TTT::CONFIG.players.values.each do |value| %>
-        <option><%= value[:value] %></option>
-      <% end %>
-    </select>
-    </p>
-    <p>
-    Player X
-    <select name="player_x">
-      <% TTT::CONFIG.players.values.each do |value| %>
-        <option><%= value[:value] %></option>
-      <% end %>
-    </select>
-    </p>
-    <p>
-    <input type="submit" value="Start Game" />
-    </p>
-    </form>
-    <h1>
-    <p style="font-family:courier;font-size:50px">
-     O | X | O  <br />
-    ---+---+--- <br />
-     X | O | X  <br />
-    ---+---+--- <br />
-     X | O | X  <br />
-    </p>
-    </h1>
-    </center>
-    </body>
-    EOS
+    template = erbize("options_template.erb")
     return 200, "text/html", template.result(binding)
   end
 end

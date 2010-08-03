@@ -8,8 +8,12 @@ class WEBrickServer
     @server = WEBrick::HTTPServer.new(:Port => port)
   end
 
-  def mount(path, class_name, *options)
-    @server.mount path, class_name, *options
+  def mount(dir, servlet, *options)
+    @server.mount dir, servlet, *options
+  end
+
+  def search_servlet(path)
+    @server.search_servlet(path)
   end
 
   def start
