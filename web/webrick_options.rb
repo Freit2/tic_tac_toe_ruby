@@ -1,8 +1,18 @@
-Dir[File.dirname(__FILE__) + '/../lib/*.rb'].each {|file| require file }
+$: << File.expand_path(File.dirname(__FILE__) + "/../lib")
 require 'webrick'
 require 'erb'
+require 'ttt'
 
 class Options < WEBrick::HTTPServlet::AbstractServlet
+  include TTT
+
+  def initialize(config, *options)
+    super(config)
+    @options = *options
+    load_libraries
+    initialize_cache
+  end
+
   def self.get_instance config, *options
     load __FILE__
     new config, *options
@@ -30,26 +40,25 @@ class Options < WEBrick::HTTPServlet::AbstractServlet
     <p>
     Board Type
     <select name="board">
-      <option>3x3</option>
-      <option>4x4</option>
+      <% TTT::CONFIG.boards.active.each do |board| %>
+        <option><%= board %></option>
+      <% end %>
     </select>
     </p>
     <p>
     Player O
     <select name="player_o">
-      <option>human</option>
-      <option>easy cpu</option>
-      <option>medium cpu</option>
-      <option>unbeatable cpu</option>
+      <% TTT::CONFIG.players.values.each do |value| %>
+        <option><%= value[:value] %></option>
+      <% end %>
     </select>
     </p>
     <p>
     Player X
     <select name="player_x">
-      <option>human</option>
-      <option>easy cpu</option>
-      <option>medium cpu</option>
-      <option>unbeatable cpu</option>
+      <% TTT::CONFIG.players.values.each do |value| %>
+        <option><%= value[:value] %></option>
+      <% end %>
     </select>
     </p>
     <p>
