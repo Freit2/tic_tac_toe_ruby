@@ -1,16 +1,11 @@
-$: << File.expand_path(File.dirname(__FILE__) + "/../lib")
 require 'webrick'
 require 'erb'
-require 'ttt'
 
-class Options < WEBrick::HTTPServlet::AbstractServlet
-  include TTT
-
+class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
+  
   def initialize(config, *options)
     super(config)
     @options = *options
-    load_libraries
-    initialize_cache
   end
 
   def self.get_instance config, *options

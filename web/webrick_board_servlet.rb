@@ -1,7 +1,7 @@
 require 'webrick'
 require 'erb'
 
-class Board < WEBrick::HTTPServlet::AbstractServlet
+class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   def self.get_instance config, *options
     load __FILE__
     new config, *options
