@@ -7,16 +7,21 @@ require 'webrick_board_servlet'
 class WEBrickTTT
   include TTT
 
-  def initialize
+  attr_reader :server
+
+  def initialize(port=10000+rand(10000))
     load_libraries
     initialize_cache
-    webrick_server = WEBrickServer.new(7546)
-    webrick_server.mount("/", OptionsServlet)
-    webrick_server.mount("/new", BoardServlet)
-    webrick_server.start
+    @server = WEBrickServer.new(port)
+    @server.mount("/", OptionsServlet)
+    @server.mount("/new", BoardServlet, @cache)
+  end
+
+  def start
+    @server.start
   end
 end
 
 if $0 == __FILE__ then
-  WEBrickTTT.new
+  WEBrickTTT.new(7546).start
 end

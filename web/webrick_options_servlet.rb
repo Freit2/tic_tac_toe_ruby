@@ -4,6 +4,7 @@ require 'erb'
 class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
   
   def initialize(config, *options)
+    puts "OptionsServlet initialize"
     super(config)
     @options = *options
   end
@@ -14,14 +15,14 @@ class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
   end
 
   def do_GET(request, response)
-    status, content_type, body = options(request)
+    status, content_type, body = display_options(request)
 
     response.status = status
     response['Content-Type'] = content_type
     response.body = body
   end
 
-  def options(request)
+  def display_options(request)
     title = "WEBrick Tic Tac Toe!"
     template = ERB.new <<-EOS
     <head>
