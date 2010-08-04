@@ -7,19 +7,19 @@
 <hr />
 <form method='POST' action='/new'>
 <p>
-Board Type
+Board Type:
 <select name="board">
   <%= options_for_board %>
 </select>
 </p>
 <p>
-Player O
+Player O:
 <select name="player_o">
   <%= options_for_player(@player_selection_o) %>
 </select>
 </p>
 <p>
-Player X
+Player X:
 <select name="player_x">
   <%= options_for_player(@player_selection_x) %>
 </select>

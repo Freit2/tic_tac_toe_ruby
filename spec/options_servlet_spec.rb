@@ -1,5 +1,4 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
-require 'webrick_ttt'
 require 'options_servlet'
 require 'ttt'
 include TTT

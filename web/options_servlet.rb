@@ -5,17 +5,17 @@ class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
   attr_reader :options
   attr_accessor :board_selection, :player_selection_o, :player_selection_x
 
+  def self.get_instance config, *options
+    load __FILE__
+    new config, *options
+  end
+
   def initialize(config, *options)
     super(config)
     @options = *options
     @board_selection = TTT::CONFIG.boards.active.first
     @player_selection_o = TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]
     @player_selection_x = TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]
-  end
-
-  def self.get_instance config, *options
-    load __FILE__
-    new config, *options
   end
 
   def do_GET(request, response)
