@@ -5,9 +5,11 @@ class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
   attr_reader :options
   attr_accessor :board_selection, :player_selection_o, :player_selection_x
 
+  @@instance = nil
   def self.get_instance config, *options
-    load __FILE__
-    new config, *options
+    #load __FILE__
+    #new config, *options
+    @@instance = @@instance || self.new(config, *options)
   end
 
   def initialize(config, *options)

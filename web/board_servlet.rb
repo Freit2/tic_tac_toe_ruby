@@ -7,9 +7,11 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
 
   attr_reader :board, :player_o, :player_x
 
+  @@instance = nil
   def self.get_instance config, *options
-    load __FILE__
-    new config, *options
+#    load __FILE__
+#    new config, *options
+    @@instance = @@instance || self.new(config, *options)
   end
 
   def initialize(config, *options)
@@ -19,11 +21,14 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
 
   def do_GET(request, response)
     puts "do_GET"
+
+    
   end
 
   def do_POST(request, response)
     puts "do_POST"
 
+    create_board(request.query["board"])
     status, content_type, body = ttt(request)
 
     response.status = status
@@ -37,17 +42,26 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   end
 
   def create_players(request)
-    @player_o = Player.create(request["player_o"][0,1], 'O')
-    @player_x = Player.create(request["player_x"][0,1], 'X')
+    @player_o = Player.create(request.query["player_o"][0,1], 'O')
+    @player_x = Player.create(request.query["player_x"][0,1], 'X')
     @player_o.ui = self
     @player_x.ui = self
-    cache = @options[TTT::CONFIG.boards[request["board"]][:cache]]
+    cache = @options[TTT::CONFIG.boards[request.query["board"]][:cache]]
     @player_o.cache = cache
     @player_x.cache = cache
   end
 
-  def display_board
+  def get_board
+    board_line = "#{([].fill(0, @board.row_size) { "---" }).join('+')} <br />"
+    array = []
+    @board.rows.each do |r|
+      array << r.join(' | ') + " <br />"
+    end
+    return "#{array.join(" #{board_line} ")}"
+  end
 
+  def display_board
+    
   end
 
   def start_game_thread

@@ -3,6 +3,13 @@ require 'board_servlet'
 require 'ttt'
 include TTT
 
+class MockRequest
+  attr_accessor :query
+  def initialize
+    @query = {}
+  end
+end
+
 describe BoardServlet do
   before(:each) do
     @server = mock("WEBrick::HTTPServer")
@@ -10,14 +17,14 @@ describe BoardServlet do
     load_libraries
     initialize_cache
     @board_servlet = BoardServlet.new(@server, @cache)
-    @request = {}
-    @request['board'] = '3x3'
-    @request['player_o'] = 'human'
-    @request['player_x'] = 'unbeatable'
+    @request = MockRequest.new
+    @request.query['board'] = '3x3'
+    @request.query['player_o'] = 'human'
+    @request.query['player_x'] = 'unbeatable'
   end
 
   it "should create board" do
-    @board_servlet.create_board(@request['board'])
+    @board_servlet.create_board(@request.query['board'])
     @board_servlet.board.class.should == Board
     @board_servlet.board.size.should == 9
   end
@@ -40,6 +47,6 @@ describe BoardServlet do
     @board_servlet.player_x.cache.class.should == HashCache
   end
 
-  it "display board"
+  it "displays board"  
   it "start game thread"
 end
