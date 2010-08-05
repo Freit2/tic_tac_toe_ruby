@@ -1,9 +1,10 @@
-4x4 board requires MongoDB.  To install, go here: http://www.mongodb.org/downloads or
-if you have homebrew installed, type brew install mongodb
+Note: 4x4 board option requires MongoDB.  To install, go here: http://www.mongodb.org/downloads or
+if you have homebrew installed, type **brew install mongodb**
 
-## To run on stdio
+To run on stdio
+---------------
 
-type ruby lib/tic_tac_toe.rb
+type **ruby console/lib/tic_tac_toe.rb**
 
 Move positions for 3x3 are:
 
@@ -23,7 +24,10 @@ Move positions for 4x4 are:
  ---+---+---+---
   12| 13| 14| 15
 
-## To run on Limelight UI
+To run on Limelight UI
+----------------------
+
+type **limelight open limelight/lib**
 
 You must have the following installed:
 
@@ -33,12 +37,9 @@ You must have the following installed:
 
 See here for more information: http://limelight.8thlight.com/main/download
 
-Once installed, navigate to the cloned repo and type:
+Once installed, navigate to the cloned repo
 
-limelight open .
+To run on WEBrick (WIP)
+-----------------------
 
-The '.' is needed to run the program.
-
-## To run on WEBrick
-
-Work in progress...
+type **ruby webrick/lib/webrick_ttt.rb**
