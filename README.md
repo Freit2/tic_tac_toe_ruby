@@ -6,23 +6,9 @@ To run on stdio
 
 type **ruby console/lib/tic_tac_toe.rb**
 
-Move positions for 3x3 are:
+Move positions for 3x3 are 0-8 from top-left to bottom-right
 
-  0 | 1 | 2
- ---+---+---
-  3 | 4 | 5
- ---+---+---
-  6 | 7 | 8
-
-Move positions for 4x4 are:
-
-  0 | 1 | 2 | 3
- ---+---+---+---
-  4 | 5 | 6 | 7
- ---+---+---+---
-  8 | 9 | 10| 11
- ---+---+---+---
-  12| 13| 14| 15  
+Move positions for 4x4 are 0-15 from top-left to bottom-right
 
 To run on Limelight UI
 ----------------------
