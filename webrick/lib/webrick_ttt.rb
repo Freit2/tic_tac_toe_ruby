@@ -12,7 +12,7 @@ class WEBrickTTT
     initialize_cache
     @server = WEBrickServer.new(port)
     @server.mount("/", OptionsServlet)
-    @server.mount("/new", BoardServlet, @cache)
+    @server.mount("/new", BoardServlet, TTT::CONFIG.cache)
   end
 
   def start

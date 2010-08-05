@@ -14,7 +14,7 @@ describe BoardServlet do
     @server = mock("WEBrick::HTTPServer")
     @server.should_receive(:[])
     initialize_cache
-    @board_servlet = BoardServlet.new(@server, @cache)
+    @board_servlet = BoardServlet.new(@server, TTT::CONFIG.cache)
     @request = MockRequest.new
     @request.query['board'] = '3x3'
     @request.query['player_o'] = 'human'

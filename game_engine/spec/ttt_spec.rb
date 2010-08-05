@@ -1,6 +1,13 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 
 describe TTT::Config do
+  before(:all) do
+    TTT::CONFIG.boards['3x3'][:active] = true
+    TTT::CONFIG.boards['4x4'][:active] = true
+    TTT::CONFIG.boards['3x3'][:cache] = :hash
+    TTT::CONFIG.boards['4x4'][:cache] = :mongo
+  end
+
   before(:each) do
     @config = TTT::Config.new
     @hash = {:a => 1, :b => 2}

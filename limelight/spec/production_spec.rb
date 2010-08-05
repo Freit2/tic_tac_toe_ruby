@@ -65,11 +65,11 @@ describe "Production" do
     MongoCache.should_receive(:db_installed?).and_return(true)
     MongoCache.should_receive(:new).and_return(mongo_cache = mock("mongo_cache"))
     production.initialize_cache
-    production.cache[:mongo].should equal(mongo_cache)
+    TTT::CONFIG.cache[:mongo].should equal(mongo_cache)
   end
 
   it "should create an instance of HashCache" do
     production.initialize_cache
-    production.cache[:hash].class.should == HashCache
+    TTT::CONFIG.cache[:hash].class.should == HashCache
   end
 end

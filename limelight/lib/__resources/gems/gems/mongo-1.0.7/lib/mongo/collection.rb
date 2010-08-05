@@ -260,7 +260,7 @@ module Mongo
     #   run the operation in safe mode, which run a getlasterror command on the
     #   database to report any assertion. In addition, a hash can be provided to
     #   run an fsync and/or wait for replication of the remove (>= 1.5.1). See the options
-    #   for DB#error.
+    #   for DB#get_last_error.
     #
     # @example remove all documents from the 'users' collection:
     #   users.remove
@@ -480,7 +480,6 @@ module Mongo
     #
     # @core mapreduce map_reduce-instance_method
     def map_reduce(map, reduce, opts={})
-      opts.assert_valid_keys(:query, :sort, :limit, :finalize, :out, :keeptemp, :verbose, :raw)
       map    = BSON::Code.new(map) unless map.is_a?(BSON::Code)
       reduce = BSON::Code.new(reduce) unless reduce.is_a?(BSON::Code)
       raw    = opts.delete(:raw)

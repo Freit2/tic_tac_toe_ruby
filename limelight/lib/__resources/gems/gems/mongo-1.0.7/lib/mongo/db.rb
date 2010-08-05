@@ -122,7 +122,7 @@ module Mongo
         }
       )
     end
-    
+
     # Removes stored Javascript function from the database.  Returns
     # false if the function does not exist
     #
@@ -136,7 +136,7 @@ module Mongo
         return false
       end
     end
-    
+
     # Adds a user to this database for use with authentication. If the user already
     # exists in the system, the password will be updated.
     #
@@ -276,6 +276,8 @@ module Mongo
       ok?(command(:drop => name))
     end
 
+    # @deprecated
+    #
     # Get the error message from the most recently executed database
     # operation for this connection.
     #
@@ -286,19 +288,36 @@ module Mongo
     # @return [String, Nil] either the text describing an error or nil if no
     #   error has occurred.
     def error(opts={})
+      warn "DB#error is deprecated. Please use DB#get_last_error instead"
       opts.assert_valid_keys(:w, :wtimeout, :fsync)
-      cmd = BSON::OrderedHash.new
-      cmd[:getlasterror] = 1
-      cmd.merge!(opts) unless opts.empty?
-      doc = command(cmd, :check_response => false)
-      raise MongoDBError, "error retrieving last error: #{doc.inspect}" unless ok?(doc)
-      doc['err']
+      get_last_error(opts)['err']
     end
 
+    # Run the getlasterror command with the specified replication options.
+    #
+    # @option opts [Boolean] :fsync (false)
+    # @option opts [Integer] :w (nil)
+    # @option opts [Integer] :wtimeout (nil)
+    #
+    # @return [Hash] the entire response to getlasterror.
+    #
+    # @raise [MongoDBError] if the operation fails.
+    def get_last_error(opts={})
+      cmd = BSON::OrderedHash.new
+      cmd[:getlasterror] = 1
+      cmd.merge!(opts)
+      doc = command(cmd, :check_response => false)
+      raise MongoDBError, "error retrieving last error: #{doc.inspect}" unless ok?(doc)
+      doc
+    end
+
+    # @deprecated
+    #
     # Get status information from the last operation on this connection.
     #
     # @return [Hash] a hash representing the status of the last db op.
     def last_status
+      warn "DB#last_status is deprecated. Please use the equivalent DB#get_last_error instead"
       command(:getlasterror => 1)
     end
 
@@ -307,7 +326,7 @@ module Mongo
     #
     # @return [Boolean]
     def error?
-      error != nil
+      get_last_error['err'] != nil
     end
 
     # Get the most recent error to have occured on this database.
@@ -360,10 +379,9 @@ module Mongo
 
       oh = BSON::OrderedHash.new
       oh[:$eval] = code
-      oh[:args] = args
+      oh[:args]  = args
       doc = command(oh)
-      return doc['retval'] if ok?(doc)
-      raise OperationFailure, "eval failed: #{doc['errmsg']}"
+      doc['retval']
     end
 
     # Rename a collection.
@@ -372,13 +390,13 @@ module Mongo
     # @param [String] to new collection name.
     #
     # @return [True] returns +true+ on success.
-    # 
+    #
     # @raise MongoDBError if there's an error renaming the collection.
     def rename_collection(from, to)
       oh = BSON::OrderedHash.new
       oh[:renameCollection] = "#{@name}.#{from}"
       oh[:to] = "#{@name}.#{to}"
-      doc = DB.new('admin', @connection).command(oh)
+      doc = DB.new('admin', @connection).command(oh, :check_response => false)
       ok?(doc) || raise(MongoDBError, "Error renaming collection: #{doc.inspect}")
     end
 
@@ -415,7 +433,6 @@ module Mongo
       info
     end
 
-
     # Return stats on this database. Uses MongoDB's dbstats command.
     #
     # @return [Hash]
@@ -445,9 +462,6 @@ module Mongo
     # key, specifying the command to be performed. In Ruby 1.9, OrderedHash isn't necessary since
     # hashes are ordered by default.
     #
-    # @param [Boolean] admin If +true+, the command will be executed on the admin
-    # collection. DEPRECATED.
-    #
     # @option opts [Boolean] :check_response (true) If +true+, raises an exception if the
     # command fails.
     # @option opts [Socket] :sock a socket to use for sending the command. This is mainly for internal use.
@@ -455,8 +469,8 @@ module Mongo
     # @return [Hash]
     #
     # @core commands command_instance-method
-    def command(selector, opts={}, old_check_response=false, old_sock=nil)
-      check_response = opts[:check_response].nil? ? true : opts[:check_response]
+    def command(selector, opts={})
+      check_response = opts.fetch(:check_response, true)
       sock           = opts[:sock]
       raise MongoArgumentError, "command must be given a selector" unless selector.is_a?(Hash) && !selector.empty?
       if selector.keys.length > 1 && RUBY_VERSION < '1.9' && selector.class != BSON::OrderedHash
@@ -511,7 +525,7 @@ module Mongo
     def profiling_level
       oh = BSON::OrderedHash.new
       oh[:profile] = -1
-      doc = command(oh)
+      doc = command(oh, :check_response => false)
       raise "Error with profile command: #{doc.inspect}" unless ok?(doc) && doc['was'].kind_of?(Numeric)
       case doc['was'].to_i
       when 0
@@ -541,7 +555,7 @@ module Mongo
                      else
                        raise "Error: illegal profiling level value #{level}"
                      end
-      doc = command(oh)
+      doc = command(oh, :check_response => false)
       ok?(doc) || raise(MongoDBError, "Error with profile command: #{doc.inspect}")
     end
 
@@ -561,7 +575,7 @@ module Mongo
     # @raise [MongoDBError] if the command fails or there's a problem with the validation
     #   data, or if the collection is invalid.
     def validate_collection(name)
-      doc = command(:validate => name)
+      doc = command({:validate => name}, :check_response => false)
       raise MongoDBError, "Error with validate command: #{doc.inspect}" unless ok?(doc)
       result = doc['result']
       raise MongoDBError, "Error with validation data: #{doc.inspect}" unless result.kind_of?(String)

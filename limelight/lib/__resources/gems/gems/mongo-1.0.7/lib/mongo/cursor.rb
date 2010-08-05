@@ -45,7 +45,7 @@ module Mongo
       @order      = options[:order]
       @hint       = options[:hint]
       @snapshot   = options[:snapshot]
-      @timeout    = options[:timeout]  || false
+      @timeout    = options[:timeout]  || true
       @explain    = options[:explain]
       @socket     = options[:socket]
       @tailable   = options[:tailable] || false
@@ -71,8 +71,8 @@ module Mongo
         # pair but it has died or something like that) then we close that
         # connection. The next request will re-open on master server.
         if err == "not master"
-          raise ConnectionFailure, err
           @connection.close
+          raise ConnectionFailure, err
         end
 
         raise OperationFailure, err

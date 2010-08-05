@@ -1,4 +1,4 @@
-require 'test/test_helper'
+require './test/test_helper'
 
 class TestCollection < Test::Unit::TestCase
   @@connection ||= Connection.new(ENV['MONGO_RUBY_DRIVER_HOST'] || 'localhost', ENV['MONGO_RUBY_DRIVER_PORT'] || Connection::DEFAULT_PORT)
@@ -139,24 +139,6 @@ class TestCollection < Test::Unit::TestCase
         @@test.remove({:foo => 2}, :safe => {:w => 2, :wtime => 1, :fsync => true})
       end
     end
-
-    def test_safe_mode_with_w_failure
-      assert_raise_error OperationFailure, "timed out waiting for slaves" do
-        @@test.insert({:foo => 1}, :safe => {:w => 2, :wtimeout => 1, :fsync => true})
-      end
-      assert_raise_error OperationFailure, "timed out waiting for slaves" do
-        @@test.update({:foo => 1}, {:foo => 2}, :safe => {:w => 2, :wtimeout => 1, :fsync => true})
-      end
-      assert_raise_error OperationFailure, "timed out waiting for slaves" do
-        @@test.remove({:foo => 2}, :safe => {:w => 2, :wtimeout => 1, :fsync => true})
-      end
-    end
-
-    def test_safe_mode_with_write_and_fsync
-      assert @@test.insert({:foo => 1}, :safe => {:w => 1, :wtimeout => 1, :fsync => true})
-      assert @@test.update({:foo => 1}, {:foo => 2}, :safe => {:w => 1, :wtimeout => 1, :fsync => true})
-      assert @@test.remove({:foo => 2}, :safe => {:w => 1, :wtimeout => 1, :fsync => true})
-    end
   end
 
   def test_update
@@ -259,6 +241,11 @@ class TestCollection < Test::Unit::TestCase
     @test.drop
   end
 
+  def test_remove_return_value
+    assert_equal 50, @@test.remove({})
+    assert_equal 57, @@test.remove({"x" => 1})
+  end
+
   def test_count
     @@test.drop
 
@@ -295,6 +282,11 @@ class TestCollection < Test::Unit::TestCase
     @@test.find({}, :timeout => false) do |cursor|
       assert_equal 2, cursor.count
     end
+  end
+
+  def test_defualt_timeout
+    cursor = @@test.find
+    assert_equal true, cursor.timeout
   end
 
   def test_fields_as_hash
@@ -447,14 +439,6 @@ class TestCollection < Test::Unit::TestCase
       assert_equal output_collection, res["result"]
       assert res["counts"]
       assert res["timeMillis"]
-    end
-
-    def test_allows_only_valid_keys
-      m = Code.new("function() { emit(this.user_id, 1); }")
-      r = Code.new("function(k,vals) { return 1; }")
-      assert_raise ArgumentError do
-        @@test.map_reduce(m, r, :foo => true)
-      end
     end
   end
 

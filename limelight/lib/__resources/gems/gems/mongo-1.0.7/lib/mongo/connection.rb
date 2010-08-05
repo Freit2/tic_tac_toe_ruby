@@ -40,16 +40,15 @@ module Mongo
     # Counter for generating unique request ids.
     @@current_request_id = 0
 
-    # Create a connection to MongoDB. Specify either one or a pair of servers,
-    # along with a maximum connection pool size and timeout.
+    # Create a connection to MongoDB.
     #
     # If connecting to just one server, you may specify whether connection to slave is permitted.
     # In all cases, the default host is "localhost" and the default port is 27017.
     #
-    # To specify a pair, use Connection.paired.
-    #
-    # Note that there are a few issues when using connection pooling with Ruby 1.9 on Windows. These
-    # should be resolved in the next release.
+    # To specify more than one host pair to be used as seeds in a replica set
+    # or replica pair, use Connection.multi. If you're only specifying one node in the
+    # replica set, you can use Connection.new, as any other host known to the set will be
+    # cached.
     #
     # @param [String, Hash] host.
     # @param [Integer] port specify a port number here if only one host is being specified.
@@ -57,7 +56,8 @@ module Mongo
     # @option options [Boolean] :slave_ok (false) Must be set to +true+ when connecting
     #   to a single, slave node.
     # @option options [Logger, #debug] :logger (nil) Logger instance to receive driver operation log.
-    # @option options [Integer] :pool_size (1) The maximum number of socket connections that can be opened to the database.
+    # @option options [Integer] :pool_size (1) The maximum number of socket connections that can be
+    #   opened to the database.
     # @option options [Float] :timeout (5.0) When all of the connections to the pool are checked out,
     #   this is the number of seconds to wait for a new connection to be released before throwing an exception.
     #
@@ -110,14 +110,52 @@ module Mongo
       @checked_out  = []
 
       # slave_ok can be true only if one node is specified
-      @slave_ok = options[:slave_ok] && @nodes.length == 1
+      if @nodes.length > 1 && options[:slave_ok]
+        raise MongoArgumentError, "Can't specify more than one node when :slave_ok is true."
+      else
+        @slave_ok = options[:slave_ok]
+      end
+
       @logger   = options[:logger] || nil
       @options  = options
 
-      should_connect = options[:connect].nil? ? true : options[:connect]
-      connect_to_master if should_connect
+      should_connect = options.fetch(:connect, true)
+      connect if should_connect
     end
 
+    # Initialize a connection to a MongoDB replica set using an array of seed nodes.
+    #
+    # Note that, even when connecting to a replica set, you can use Connection.new specifying
+    # just a single node. If the replica set is up, the remaining nodes in the set will be cached
+    # for failover.
+    #
+    # @param nodes [Array] An array of arrays, each of which specifies a host and port.
+    # @param opts Takes the same options as Connection.new
+    #
+    # @example
+    #   Connection.multi([["db1.example.com", 27017],
+    #                   ["db2.example.com", 27017]])
+    #
+    # @example
+    #   Connection.multi([["db1.example.com", 27017], ["db2.example.com", 27017], ["db3.example.com", 27017]],
+    #                   :pool_size => 20, :timeout => 5)
+    #
+    # @return [Mongo::Connection]
+    def self.multi(nodes, opts={})
+      unless nodes.length > 0 && nodes.all? {|n| n.is_a? Array}
+        raise MongoArgumentError, "Connection.paired requires at least one node to be specified."
+      end
+      # Block returns an array, the first element being an array of nodes and the second an array
+      # of authorizations for the database.
+      new(nil, nil, opts) do |con|
+        nodes.map do |node|
+          con.pair_val_to_connection(node)
+        end
+      end
+    end
+
+    # @deprecated
+    #
     # Initialize a paired connection to MongoDB.
     #
     # @param nodes [Array] An array of arrays, each of which specified a host and port.
@@ -134,6 +172,7 @@ module Mongo
     #
     # @return [Mongo::Connection]
     def self.paired(nodes, opts={})
+      warn "Connection.paired is deprecated. Please use Connection.multi instead."
       unless nodes.length == 2 && nodes.all? {|n| n.is_a? Array}
         raise MongoArgumentError, "Connection.paired requires that exactly two nodes be specified."
       end
@@ -337,7 +376,7 @@ module Mongo
     # @param [BSON::ByteBuffer] message a message to send to the database.
     # @param [String] log_message text version of +message+ for logging.
     #
-    # @return [True]
+    # @return [Integer] number of bytes sent
     def send_message(operation, message, log_message=nil)
       @logger.debug("  MONGODB #{log_message || message}") if @logger
       begin
@@ -359,7 +398,7 @@ module Mongo
     # @param [Hash] last_error_params parameters to be sent to getLastError. See DB#error for
     #   available options.
     #
-    # @see DB#error for valid last error params.
+    # @see DB#get_last_error for valid last error params.
     #
     # @return [Array]
     #   An array whose indexes include [0] documents returned, [1] number of document received,
@@ -415,43 +454,34 @@ module Mongo
     # Create a new socket and attempt to connect to master.
     # If successful, sets host and port to master and returns the socket.
     #
+    # If connecting to a replica set, this method will update the
+    # initially-provided seed list with any nodes known to the set.
+    #
     # @raise [ConnectionFailure] if unable to connect to any host or port.
-    def connect_to_master
-      close
-      @host = @port = nil
-      for node_pair in @nodes
-        host, port = *node_pair
-        begin
-          socket = TCPSocket.new(host, port)
-          socket.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
+    def connect
+      reset_connection
 
-          # If we're connected to master, set the @host and @port
-          result = self['admin'].command({:ismaster => 1}, :check_response => false, :sock => socket)
-          if Mongo::Support.ok?(result) &&
-              ((is_master = result['ismaster'] == 1) || @slave_ok)
-            @host, @port = host, port
-            apply_saved_authentication
+      while !connected? && !(nodes_to_try = @nodes - @nodes_tried).empty?
+        nodes_to_try.each do |node|
+          if is_primary?(check_is_master(node))
+            set_primary(node)
+            break
           end
-
-          # Note: slave_ok can be true only when connecting to a single node.
-          if @nodes.length == 1 && !is_master && !@slave_ok
-            raise ConfigurationError, "Trying to connect directly to slave; " +
-              "if this is what you want, specify :slave_ok => true."
-          end
-
-          break if is_master || @slave_ok
-        rescue SocketError, SystemCallError, IOError => ex
-          close
-          false
-        ensure
-          socket.close if socket
         end
       end
-      raise ConnectionFailure, "failed to connect to any given host:port" unless socket
+
+      raise ConnectionFailure, "failed to connect to any given host:port" unless connected?
     end
 
-    # Are we connected to MongoDB? This is determined by checking whether
-    # host and port have values, since they're set to nil on calls to #close.
+    # @deprecated
+    #
+    # Create a new socket and attempt to connect to master.
+    # If successful, sets host and port to master and returns the socket.
+    def connect_to_master
+      warn "Connection#connect_to_master is deprecated. Use Connection#connect instead."
+      connect
+    end
+
     def connected?
       @host && @port
     end
@@ -542,6 +572,81 @@ module Mongo
 
     private
 
+    # If a ConnectionFailure is raised, this method will be called
+    # to close the connection and reset connection values.
+    def reset_connection
+      close
+      @host = nil
+      @port = nil
+      @nodes_tried = []
+    end
+
+    # Primary is defined as either a master node or a slave if
+    # :slave_ok has been set to +true+.
+    #
+    # If a primary node is discovered, we set the the @host and @port and
+    # apply any saved authentication.
+    #
+    # TODO: use the 'primary', and 'seconday' fields if we're in a replica set
+    def is_primary?(config)
+      config && (config['ismaster'] == 1 || config['ismaster'] == true) || @slave_ok
+    end
+
+    # @return
+    def check_is_master(node)
+      begin
+        host, port = *node
+        socket = TCPSocket.new(host, port)
+        socket.setsockopt(Socket::IPPROTO_TCP, Socket::TCP_NODELAY, 1)
+
+        config = self['admin'].command({:ismaster => 1}, :sock => socket)
+
+      rescue OperationFailure, SocketError, SystemCallError, IOError => ex
+        close
+      ensure
+        @nodes_tried << node
+        if config
+          update_node_list(config['hosts']) if config['hosts']
+          if @logger
+            @logger.warn(config['msg']) if config['msg']
+          end
+        end
+
+        socket.close if socket
+      end
+
+      config
+    end
+
+    # Set the specified node as primary, and
+    # apply any saved authentication credentials.
+    def set_primary(node)
+      @host, @port = *node
+      apply_saved_authentication
+    end
+
+    # Update the list of known nodes. Only applies to replica sets,
+    # where the response to the ismaster command will return a list
+    # of known hosts.
+    #
+    # @param hosts [Array] a list of hosts, specified as string-encoded
+    #   host-port values. Example: ["myserver-1.org:27017", "myserver-1.org:27017"]
+    #
+    # @return [Array] the updated list of nodes
+    def update_node_list(hosts)
+      new_nodes = hosts.map do |host|
+        if !host.respond_to?(:split)
+          warn "Could not parse host #{host.inspect}."
+          next
+        end
+
+        host, port = host.split(':')
+        [host, port.to_i]
+      end
+
+      @nodes |= new_nodes
+    end
+
     # Return a socket to the pool.
     def checkin(socket)
       @connection_mutex.synchronize do
@@ -581,7 +686,7 @@ module Mongo
     # pool size has not been exceeded. Otherwise, wait for the next
     # available socket.
     def checkout
-      connect_to_master if !connected?
+      connect if !connected?
       start_time = Time.now
       loop do
         if (Time.now - start_time) > @timeout
@@ -707,12 +812,17 @@ module Mongo
 
     # Low-level method for sending a message on a socket.
     # Requires a packed message and an available socket,
+    #
+    # @return [Integer] number of bytes sent
     def send_message_on_socket(packed_message, socket)
       begin
+      total_bytes_sent = 0
       while packed_message.size > 0
         byte_sent = socket.send(packed_message, 0)
+        total_bytes_sent += byte_sent
         packed_message.slice!(0, byte_sent)
       end
+      total_bytes_sent
       rescue => ex
         close
         raise ConnectionFailure, "Operation failed with the following exception: #{ex}"

@@ -26,7 +26,7 @@ class TicTacToe
     @player_x = get_player('X')
     @player_o.ui = @ui
     @player_x.ui = @ui
-    cache = @cache[TTT::CONFIG.boards[@board_selection][:cache]]
+    cache = TTT::CONFIG.cache[TTT::CONFIG.boards[@board_selection][:cache]]
     @player_o.cache = cache
     @player_x.cache = cache
   end

@@ -1,23 +1,10 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'tic_tac_toe'
-require 'game'
 require 'human_player'
 require 'cpu_player'
 require 'std_ui'
 
 describe TicTacToe do
-  before(:all) do
-    TTT::CONFIG.boards['3x3'][:active] = true
-    TTT::CONFIG.boards['4x4'][:active] = true
-    TTT::CONFIG.boards['3x3'][:cache] = :hash
-    TTT::CONFIG.boards['4x4'][:cache] = :mongo
-  end
-
-  after(:each) do
-    TTT::CONFIG.boards['3x3'][:active] = true
-    TTT::CONFIG.boards['4x4'][:active] = true
-  end
-
   before(:each) do
     @input = StringIO.new
     @output = StringIO.new
@@ -76,23 +63,5 @@ describe TicTacToe do
 
     @ttt.ui.input.string = "a\nb\nn"
     @ttt.play_again?.should == false
-  end
-
-  it "should deactivate 4x4 if MongoDB is not found" do
-    MongoCache.should_receive(:db_installed?).and_return(false)
-    @ttt.initialize_cache
-    TTT::CONFIG.boards['4x4'][:active].should == false
-  end
-
-  it "should create an instance of MongoCache" do
-    MongoCache.should_receive(:db_installed?).and_return(true)
-    MongoCache.should_receive(:new).and_return(mongo_cache = mock("mongo_cache"))
-    @ttt.initialize_cache
-    @ttt.cache[:mongo].should equal(mongo_cache)
-  end
-
-  it "should create an instance of HashCache" do
-    @ttt.initialize_cache
-    @ttt.cache[:hash].class.should == HashCache
   end
 end

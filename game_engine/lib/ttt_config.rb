@@ -12,3 +12,5 @@ TTT::CONFIG.players = {
   'med'   => { :value => "med",         :on => "player_med_cpu.jpg",  :off => "player_med_cpu_dim.jpg"},
   'hard'  => { :value => "unbeatable" , :on => "player_hard_cpu.jpg", :off => "player_hard_cpu_dim.jpg"}
 }
+
+TTT::CONFIG.cache = {}

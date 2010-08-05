@@ -7,7 +7,7 @@ describe OptionsServlet do
     @server = mock("WEBrick::HTTPServer")
     @server.should_receive(:[])
     initialize_cache
-    @option_servlet = OptionsServlet.new(@server, @cache)
+    @option_servlet = OptionsServlet.new(@server, TTT::CONFIG.cache)
     @option_servlet.board_selection = '3x3'
     @option_servlet.player_selection_o = 'human'
     @option_servlet.player_selection_x = 'unbeatable'
@@ -17,14 +17,14 @@ describe OptionsServlet do
 
   it "should have default for board selection" do
     @server.should_receive(:[])
-    option_servlet = OptionsServlet.new(@server, @cache)
+    option_servlet = OptionsServlet.new(@server, TTT::CONFIG.cache)
     option_servlet.board_selection.should_not == nil
     option_servlet.board_selection.should_not == ""
   end
   
   it "should have default for player_selections" do
     @server.should_receive(:[])
-    option_servlet = OptionsServlet.new(@server, @cache)
+    option_servlet = OptionsServlet.new(@server, TTT::CONFIG.cache)
     option_servlet.player_selection_o.should_not == nil
     option_servlet.player_selection_o.should_not == ""
     option_servlet.player_selection_x.should_not == nil
@@ -32,8 +32,8 @@ describe OptionsServlet do
   end
 
   it "should contain cache hash" do
-    @option_servlet.options.class.should == Hash
-    @option_servlet.options.size.should > 0
+    @option_servlet.options.class.should == TTT::Config
+    @option_servlet.options.keys.size.should > 0
   end
 
   it "should return all boards in tags" do
