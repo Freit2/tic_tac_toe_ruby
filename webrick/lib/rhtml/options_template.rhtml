@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
+</head>
+<body>
+<h1>Tic Tac Toe!</h1>
+<hr />
+<form method='POST' action='/new'>
+<p>
+<label for="board">Board Type:</label>
+<select name="board" id="board">
+  <%= options_for_board %>
+</select>
+</p>
+<p>
+<label for="player_o">Player O:</label>
+<select name="player_o" id="player_o">
+  <%= options_for_player(@player_selection_o) %>
+</select>
+</p>
+<p>
+<label for="player_x">Player X:</label>
+<select name="player_x" id="player_x">
+  <%= options_for_player(@player_selection_x) %>
+</select>
+</p>
+<p>
+<input type="submit" value="Start Game" />
+</p>
+</form>
+<h1>
+<pre>
+ O | X | O  <br />
+---+---+--- <br />
+ X | O | X  <br />
+---+---+--- <br />
+ X | O | X  <br />
+</pre>
+</h1>
+</body>
+</html>

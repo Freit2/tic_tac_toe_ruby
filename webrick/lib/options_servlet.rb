@@ -52,13 +52,13 @@ class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
     return options
   end
 
-  def erbize(erb_file)
-    return ERB.new IO.read(File.expand_path(File.dirname(__FILE__)) + "/erb/#{erb_file}")
+  def convert(rhtml_file)
+    return ERB.new IO.read(File.expand_path(File.dirname(__FILE__)) + "/rhtml/#{rhtml_file}")
   end
 
   def display_options(request)
     title = "WEBrick Tic Tac Toe!"
-    template = erbize("options_template.erb")
+    template = convert("options_template.rhtml")
     return 200, "text/html", template.result(binding)
   end
 end

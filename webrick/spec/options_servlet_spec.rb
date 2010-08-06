@@ -71,7 +71,7 @@ describe OptionsServlet do
 
   it "should return erb object" do
     IO.should_receive(:read).and_return("this is a string")
-    @option_servlet.erbize("some_erb.file").class.should == ERB
+    @option_servlet.convert("some_rhtml.file").class.should == ERB
   end
 
   it "should return status, content_type, body" do

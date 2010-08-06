@@ -52,12 +52,12 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   end
 
   def get_board
-    board_line = "#{([].fill(0, @board.row_size) { "---" }).join('+')} <br />"
+    board_line = "<br />#{([].fill(0, @board.row_size) { "---" }).join('+')}<br />"
     array = []
     @board.rows.each do |r|
-      array << r.join(' | ') + " <br />"
+      array << r.join(' | ')
     end
-    return "#{array.join(" #{board_line} ")}"
+    return "<br /> #{array.join(" #{board_line} ")} <br />"
   end
 
   def display_board
@@ -68,14 +68,14 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
 
   end
 
-  def erbize(erb_file)
-    return ERB.new IO.read(File.expand_path(File.dirname(__FILE__)) + "/erb/#{erb_file}")
+  def convert(rhtml_file)
+    return ERB.new IO.read(File.expand_path(File.dirname(__FILE__)) + "/rhtml/#{rhtml_file}")
   end
 
   def ttt(request)
     title = "WEBrick Tic Tac Toe!"
     #request.query.collect { |key, value| puts "#{key} : #{value}" }
-    template = erbize("board_template.erb")
+    template = convert("board_template.rhtml")
     return 200, "text/html", template.result(binding)
   end
 end
