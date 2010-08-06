@@ -75,7 +75,7 @@ describe OptionsServlet do
   end
 
   it "should return status, content_type, body" do
-    @option_servlet.should_receive(:erbize).and_return(template = mock("ERB"))
+    @option_servlet.should_receive(:convert).and_return(template = mock("rhtml"))
     template.should_receive(:result).and_return(template_value = mock("result_of_template"))
     @option_servlet.display_options(nil).should == [200, "text/html", template_value]
   end
