@@ -48,11 +48,4 @@ describe ScoreBoard do
     @score_board.losses(:x).should == 0
     @score_board.draws(:x).should == 1
   end
-
-  it "should display scores" do
-    ui = StdUI.new
-    @score_board = ui
-    ui.should_receive(:display_scores)
-    @score_board.display_scores
-  end
 end

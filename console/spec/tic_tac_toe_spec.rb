@@ -55,7 +55,7 @@ describe TicTacToe do
     @ttt.game.should_receive(:play)
     @ttt.board.should_receive(:winner).and_return(winner = mock("winner"))
     @ttt.score_board.should_receive(:add_score).with(winner)
-    @ttt.score_board.should_receive(:display_scores)
+    @ttt.ui.should_receive(:display_scores)
     @ttt.should_receive(:play_again?).and_return(false)
     @ttt.ui.should_receive(:display_exit_message)
     @ttt.play
@@ -71,7 +71,6 @@ describe TicTacToe do
 
   it "should create an instance of ScoreBoard" do
     ScoreBoard.should_receive(:new).and_return(score_board = mock("score_board"))
-    score_board.should_receive(:ui=)
     ttt = TicTacToe.new
     ttt.score_board.should == score_board
   end

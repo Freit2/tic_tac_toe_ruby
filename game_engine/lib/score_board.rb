@@ -1,6 +1,5 @@
 class ScoreBoard
-  attr_reader :scores
-  attr_accessor :ui
+  attr_accessor :scores
 
   def initialize
     @scores = {:o => { :wins => 0, :draws => 0, :losses => 0},
@@ -31,9 +30,5 @@ class ScoreBoard
 
   def draws(player)
     return @scores[player.to_sym][:draws]
-  end
-
-  def display_scores
-    @ui.display_scores(@scores)
   end
 end

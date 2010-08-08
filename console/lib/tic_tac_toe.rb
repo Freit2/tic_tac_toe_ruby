@@ -10,7 +10,6 @@ class TicTacToe
   def initialize(ui = StdUI.new)
     @ui = ui
     @score_board = ScoreBoard.new
-    @score_board.ui = @ui
     initialize_cache
   end
 
@@ -55,7 +54,7 @@ class TicTacToe
       @game = Game.new(@player_o, @player_x, @board, @ui)
       @game.play
       @score_board.add_score(@board.winner)
-      @score_board.display_scores
+      @ui.display_scores(@score_board)
       break if !play_again?
     end
     @ui.display_exit_message

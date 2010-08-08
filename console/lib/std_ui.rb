@@ -77,8 +77,8 @@ class StdUI
     return "\n" + line + columns + player_o + player_x + line
   end
 
-  def display_scores(scores)
-    display_message(get_score_board(scores))
+  def display_scores(score_board)
+    display_message(get_score_board(score_board.scores))
   end
 
   def display_exit_message
