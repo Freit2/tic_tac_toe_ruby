@@ -5,6 +5,18 @@ class MockTTT
 end
 
 describe "config" do
+  before(:all) do
+    TTT::CONFIG.keys.include?(:boards).should == true
+    TTT::CONFIG.keys.include?(:players).should == true
+    TTT::CONFIG.keys.include?(:cache).should == true
+    TTT::CONFIG.boards.keys.include?(:'3x3').should == true
+    TTT::CONFIG.boards.keys.include?(:'4x4').should == true
+    TTT::CONFIG.players.keys.include?(:human).should == true
+    TTT::CONFIG.players.keys.include?(:easy).should == true
+    TTT::CONFIG.players.keys.include?(:med).should == true
+    TTT::CONFIG.players.keys.include?(:hard).should == true
+  end
+
   before(:each) do
     TTT::CONFIG.boards['3x3'][:active] = true
     TTT::CONFIG.boards['4x4'][:active] = true

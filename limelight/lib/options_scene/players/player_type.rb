@@ -1,6 +1,6 @@
 module PlayerType
   def mouse_clicked(e)
-    piece = self.id =~ /_o_/ ? 'o' : 'x'
+    piece = self.id =~ /_o_/ ? 'O' : 'X'
     TTT::CONFIG.players.keys.each do |key|
       if self.id.match(key.to_s)
         style.background_image = "#{production.images_path}/props/#{TTT::CONFIG.players[key][:on]}"
@@ -11,7 +11,7 @@ module PlayerType
           end
         end
       else
-        scene.find("player_#{piece}_#{key.to_s}").style.background_image =
+        scene.find("player_#{piece.downcase}_#{key.to_s}").style.background_image =
           "#{production.images_path}/props/#{TTT::CONFIG.players[key][:off]}"
       end
     end

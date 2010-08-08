@@ -132,8 +132,8 @@ module BoardScene
   def create_players
     player_o = production.player_selection.first
     player_x = production.player_selection.last
-    @player_o = Player.create(player_o[:value][0,1], player_o[:id].upcase)
-    @player_x = Player.create(player_x[:value][0,1], player_x[:id].upcase)
+    @player_o = Player.create(player_o[:value][0,1], player_o[:id])
+    @player_x = Player.create(player_x[:value][0,1], player_x[:id])
     @player_o.ui = self
     @player_x.ui = self
     cache = TTT::CONFIG.cache[TTT::CONFIG.boards[production.board_selection][:cache]]

@@ -37,9 +37,9 @@ module Production
     end
     initialize_cache
     @board_selection = TTT::CONFIG.boards.active.first
-    @player_selection = [{:id => 'o', :name => TTT::CONFIG.players.keys.first.to_s,
+    @player_selection = [{:id => 'O', :name => TTT::CONFIG.players.keys.first.to_s,
                           :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]},
-                         {:id => 'x', :name => TTT::CONFIG.players.keys.last.to_s,
+                         {:id => 'X', :name => TTT::CONFIG.players.keys.last.to_s,
                           :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]}]
   end
 
