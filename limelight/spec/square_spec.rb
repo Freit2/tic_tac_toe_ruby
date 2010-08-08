@@ -23,7 +23,7 @@ describe "Square Players" do
     @human.should_receive(:piece).and_return('O')
     scene.should_receive(:current_player).and_return(@human)
     scene.find("square_0").animate_move
-    scene.find("square_0").style.background_image.should =~ /o\.jpg/
+    scene.find("square_0").style.background_image.should =~ /o\.png/
   end
 
   it "should move piece to board" do
@@ -59,11 +59,11 @@ describe "Square Players" do
     scene.should_receive(:current_player).twice.and_return(@human)
     square = scene.find("square_0")
     square.mouse_entered(nil)
-    scene.find("square_0").style.background_image.should =~ /o_dim\.jpg/
-
+    scene.find("square_0").style.background_image.should =~ /o_dim\.png/
+    
     square.mouse_exited(nil)
     square.mouse_moved(nil)
-    scene.find("square_0").style.background_image.should =~ /o_dim\.jpg/
+    scene.find("square_0").style.background_image.should =~ /o_dim\.png/
   end
 
   it "should not hover player's piece when mouse exited" do
@@ -74,6 +74,6 @@ describe "Square Players" do
     square = scene.find("square_0")
     square.mouse_entered(nil)
     square.mouse_exited(nil)
-    scene.find("square_0").style.background_image.should_not =~ /o_dim\.jpg/
+    scene.find("square_0").style.background_image.should_not =~ /o_dim\.png/
   end
 end

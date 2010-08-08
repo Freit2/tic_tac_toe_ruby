@@ -3,7 +3,6 @@ options_scene {
   background_image_fill_strategy :static
   background_image_x :center
   background_image_y :center
-  rounded_corner_radius 25
   width '100%'
   height '100%'
 }

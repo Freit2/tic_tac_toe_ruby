@@ -61,6 +61,7 @@ square {
   height 130
   width 130
   border_color :black
+  background_color "transparent"
   horizontal_alignment :center
   vertical_alignment :bottom
 }
@@ -80,7 +81,7 @@ try_again_status {
   background_image_fill_strategy :static
   background_image_x :center
   background_image_y :center
-  background_image "/../../assets/images/props/try_again.jpg"
+  background_image "/../../assets/images/props/try_again.png"
 }
 
 try_again_button {

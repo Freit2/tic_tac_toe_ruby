@@ -14,16 +14,17 @@ stage "board" do
 end
 
 stage "score_board" do
+  #default_scene "score_board_scene"
   location [:center, :center]
   size [505, 380]
   framed false
 end
 
-#stage "devtool" do
-#  default_scene "devtool"
-#  title "Dev Tool"
-#  location [50, 25]
-#  size [100, 100]
-#  background_color "transparent"
-#  framed false
-#end
+stage "devtool" do
+  default_scene "devtool"
+  title "Dev Tool"
+  location [50, 25]
+  size [100, 100]
+  background_color "transparent"
+  framed false
+end

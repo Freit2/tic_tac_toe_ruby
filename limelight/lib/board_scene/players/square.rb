@@ -8,7 +8,7 @@ module Square
   end
 
   def animate_move
-    style.background_image = "#{production.images_path}/pieces/#{scene.current_player.piece.downcase}.jpg"
+    style.background_image = "#{production.images_path}/pieces/#{scene.current_player.piece.downcase}.png"
   end
 
   def mouse_clicked(e)
@@ -23,7 +23,7 @@ module Square
 
   def mouse_entered(e)
     if @enabled && scene.player_allowed && style.background_image == "none"
-      style.background_image = "#{production.images_path}/pieces/#{scene.current_player.piece.downcase}_dim.jpg"
+      style.background_image = "#{production.images_path}/pieces/#{scene.current_player.piece.downcase}_dim.png"
     end
   end
 

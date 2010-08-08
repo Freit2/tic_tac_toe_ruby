@@ -179,14 +179,14 @@ module BoardScene
         square.disable
         background_image = square.style.background_image
         case
-        when background_image =~ /o\.jpg/
-        square.style.background_image = "#{production.images_path}/pieces/o_dim.jpg"
+        when background_image =~ /o\.png/
+        square.style.background_image = "#{production.images_path}/pieces/o_dim.png"
         when background_image =~ /o_dim/
-        square.style.background_image = "#{production.images_path}/pieces/o.jpg"
-        when background_image =~ /x\.jpg/
-        square.style.background_image = "#{production.images_path}/pieces/x_dim.jpg"
+        square.style.background_image = "#{production.images_path}/pieces/o.png"
+        when background_image =~ /x\.png/
+        square.style.background_image = "#{production.images_path}/pieces/x_dim.png"
         when background_image =~ /x_dim/
-        square.style.background_image = "#{production.images_path}/pieces/x.jpg"
+        square.style.background_image = "#{production.images_path}/pieces/x.png"
         end
       end
     end
@@ -197,23 +197,23 @@ module BoardScene
   end
 
   def get_human_player_move(piece)
-    display_message("#{production.images_path}/messages/move_player_#{piece.downcase}.jpg")
+    display_message("#{production.images_path}/messages/move_player_#{piece.downcase}.png")
     return wait_for_move
   end
 
   def display_cpu_move_message(piece)
-    display_message("#{production.images_path}/messages/player_#{piece.downcase}_moves.jpg")
+    display_message("#{production.images_path}/messages/player_#{piece.downcase}_moves.png")
     sleep(0.5)
   end
 
   def display_winner(winner)
-    display_message("#{production.images_path}/end_message/winner_#{winner.downcase}.jpg")
+    display_message("#{production.images_path}/end_message/winner_#{winner.downcase}.png")
     animate_win
     build_try_again
   end
 
   def display_draw_message
-    display_message("#{production.images_path}/end_message/draw_game.jpg")
+    display_message("#{production.images_path}/end_message/draw_game.png")
     build_try_again
   end
 end
