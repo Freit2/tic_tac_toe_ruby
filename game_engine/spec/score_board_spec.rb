@@ -8,12 +8,12 @@ describe ScoreBoard do
   end
 
   it "should hold a hash in instance variable" do
-    @score_board.score_hash.class.should == Hash
+    @score_board.scores.class.should == Hash
   end
 
   it "should have o and x keys" do
-    @score_board.score_hash.keys.include?(:o).should == true
-    @score_board.score_hash.keys.include?(:x).should == true
+    @score_board.scores.keys.include?(:o).should == true
+    @score_board.scores.keys.include?(:x).should == true
   end
 
   it "should add a win to player O" do
@@ -51,8 +51,8 @@ describe ScoreBoard do
 
   it "should display scores" do
     ui = StdUI.new
-    ui.should_receive(:display_scores)
     @score_board = ui
+    ui.should_receive(:display_scores)
     @score_board.display_scores
   end
 end

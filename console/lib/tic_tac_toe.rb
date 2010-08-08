@@ -4,11 +4,13 @@ require 'std_ui'
 class TicTacToe
   include TTT
 
-  attr_reader :ui, :player_o, :player_x, :cache
+  attr_reader :ui, :player_o, :player_x, :cache, :score_board
   attr_accessor :game, :board, :board_selection
 
   def initialize(ui = StdUI.new)
     @ui = ui
+    @score_board = ScoreBoard.new
+    @score_board.ui = @ui
     initialize_cache
   end
 
@@ -52,6 +54,8 @@ class TicTacToe
       create_players
       @game = Game.new(@player_o, @player_x, @board, @ui)
       @game.play
+      @score_board.add_score(@board.winner)
+      @score_board.display_scores
       break if !play_again?
     end
     @ui.display_exit_message

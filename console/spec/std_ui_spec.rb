@@ -68,4 +68,16 @@ describe StdUI do
     @ui.display_winner('X')
     @ui.output.string.should == "The winner is X."
   end
+
+  it "should display scores" do
+    hash_score = {:o => {:wins => 2, :losses => 1, :draws => 1},
+                  :x => {:wins => 1, :losses => 2, :draws => 1}}
+
+    @ui.display_scores(hash_score)
+    line =   "\n-----------------------------------\n"
+    columns =  "          | wins | losses | draws |\n"
+    player_o = "player O     2   |   1    |  1    |\n"
+    player_x = "player X     1   |   2    |  1    |\n"
+    @ui.output.string.should == "\n" + line + columns + player_o + player_x + line
+  end
 end

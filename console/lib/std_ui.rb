@@ -67,6 +67,20 @@ class StdUI
       display_message(get_board(board))
   end
 
+  def get_score_board(scores)
+    o = scores[:o]
+    x = scores[:x]
+    line =   "\n-----------------------------------\n"
+    columns =  "          | wins | losses | draws |\n"
+    player_o = "player O     #{o[:wins]}   |   #{o[:losses]}    |  #{o[:draws]}    |\n"
+    player_x = "player X     #{x[:wins]}   |   #{x[:losses]}    |  #{x[:draws]}    |\n"
+    return "\n" + line + columns + player_o + player_x + line
+  end
+
+  def display_scores(scores)
+    display_message(get_score_board(scores))
+  end
+
   def display_exit_message
     display_message("\nThanks for playing!\n\n")
   end

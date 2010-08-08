@@ -3,6 +3,7 @@ require 'tic_tac_toe'
 require 'human_player'
 require 'cpu_player'
 require 'std_ui'
+require 'score_board'
 
 describe TicTacToe do
   before(:each) do
@@ -48,10 +49,13 @@ describe TicTacToe do
   end
 
   it "should play game" do
-    @ttt.should_receive(:create_players)
     @ttt.should_receive(:get_board).and_return(@ttt.board = mock("board"))
+    @ttt.should_receive(:create_players)
     Game.should_receive(:new).and_return(@ttt.game = mock("game"))
     @ttt.game.should_receive(:play)
+    @ttt.board.should_receive(:winner).and_return(winner = mock("winner"))
+    @ttt.score_board.should_receive(:add_score).with(winner)
+    @ttt.score_board.should_receive(:display_scores)
     @ttt.should_receive(:play_again?).and_return(false)
     @ttt.ui.should_receive(:display_exit_message)
     @ttt.play
@@ -63,5 +67,12 @@ describe TicTacToe do
 
     @ttt.ui.input.string = "a\nb\nn"
     @ttt.play_again?.should == false
+  end
+
+  it "should create an instance of ScoreBoard" do
+    ScoreBoard.should_receive(:new).and_return(score_board = mock("score_board"))
+    score_board.should_receive(:ui=)
+    ttt = TicTacToe.new
+    ttt.score_board.should == score_board
   end
 end

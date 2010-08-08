@@ -1,10 +1,10 @@
 class ScoreBoard
-  attr_reader :score_hash
+  attr_reader :scores
   attr_accessor :ui
 
   def initialize
-    @score_hash = { :o => { :wins => 0, :draws => 0, :losses => 0},
-                    :x => { :wins => 0, :draws => 0, :losses => 0} }
+    @scores = {:o => { :wins => 0, :draws => 0, :losses => 0},
+                    :x => { :wins => 0, :draws => 0, :losses => 0}}
   end
 
   def loser(piece)
@@ -13,27 +13,27 @@ class ScoreBoard
 
   def add_score(winner)
     if winner
-      @score_hash[winner.downcase.to_sym][:wins] += 1
-      @score_hash[loser(winner).downcase.to_sym][:losses] += 1
+      @scores[winner.downcase.to_sym][:wins] += 1
+      @scores[loser(winner).downcase.to_sym][:losses] += 1
     else
-      @score_hash[:o][:draws] += 1
-      @score_hash[:x][:draws] += 1
+      @scores[:o][:draws] += 1
+      @scores[:x][:draws] += 1
     end
   end
 
   def wins(player)
-    return @score_hash[player.to_sym][:wins]
+    return @scores[player.to_sym][:wins]
   end
 
   def losses(player)
-    return @score_hash[player.to_sym][:losses]
+    return @scores[player.to_sym][:losses]
   end
 
   def draws(player)
-    return @score_hash[player.to_sym][:draws]
+    return @scores[player.to_sym][:draws]
   end
 
   def display_scores
-    @ui.display_scores
+    @ui.display_scores(@scores)
   end
 end
