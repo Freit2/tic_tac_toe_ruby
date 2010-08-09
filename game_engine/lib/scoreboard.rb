@@ -1,4 +1,4 @@
-class ScoreBoard
+class Scoreboard
   attr_accessor :scores
 
   def initialize

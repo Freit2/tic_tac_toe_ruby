@@ -70,11 +70,11 @@ describe StdUI do
   end
 
   it "should display scores" do
-    score_board = ScoreBoard.new
-    score_board.scores = {:o => {:wins => 2, :losses => 1, :draws => 1},
+    scoreboard = Scoreboard.new
+    scoreboard.scores = {:o => {:wins => 2, :losses => 1, :draws => 1},
                   :x => {:wins => 1, :losses => 2, :draws => 1}}
 
-    @ui.display_scores(score_board)
+    @ui.display_scores(scoreboard)
     line =   "\n-----------------------------------\n"
     columns =  "          | wins | losses | draws |\n"
     player_o = "player O     2   |   1    |  1    |\n"

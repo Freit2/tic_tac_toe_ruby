@@ -13,7 +13,9 @@ describe Game do
     @player_x = CpuPlayer.new('X')
     @player_o.ui = @ui
     @player_x.ui = @ui
+    @scoreboard = Scoreboard.new
     @game = Game.new(@player_o, @player_x, @board, @ui)
+    @game.scoreboard = @scoreboard
   end
 
   it "should hold two different players" do
@@ -27,6 +29,10 @@ describe Game do
 
   it "should hold a ui" do
     @game.ui.should be(@ui)
+  end
+
+  it "should hold a scoreboard" do
+    @game.scoreboard.should be(@scoreboard)
   end
 
   it "should return a move for human player" do
@@ -107,7 +113,7 @@ describe Game do
     @game.play_turn
   end
 
-  it "should display winner when game ends" do
+  it "should receive messages when game ends" do
     @player_o.should_receive(:piece).exactly(3).times.and_return('X')
     @player_x.should_receive(:piece).exactly(2).times.and_return('O')
     @player_o.should_receive(:make_move).and_return(0)
@@ -117,6 +123,10 @@ describe Game do
     @player_o.should_receive(:make_move).and_return(2)
 
     @game.should_receive(:display_end_message)
+    @game.scoreboard.should_receive(:add_score)
+    @game.ui.should_receive(:display_scores)
+    @game.ui.should_receive(:display_try_again)
+
     @game.play
   end
 end

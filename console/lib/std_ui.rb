@@ -40,11 +40,6 @@ class StdUI
     return get_input.to_s.chomp
   end
 
-  def get_play_again
-    display_message("\n\nDo you want to play again? ('y' or 'n') ")
-    return get_input.to_s.chomp
-  end
-
   def get_human_player_move(piece)
     display_message("\nEnter your move, player '#{piece}': ")
     return get_input.to_i
@@ -81,8 +76,12 @@ class StdUI
     display_message(get_score_board(score_board.scores))
   end
 
-  def display_exit_message
-    display_message("\nThanks for playing!\n\n")
+  def display_try_again
+    display_message("\n\nDo you want to play again? ('y' or 'n') ")
+  end
+
+  def get_play_again
+    return get_input.to_s.chomp
   end
 
   def display_winner(winner)
@@ -91,5 +90,9 @@ class StdUI
 
   def display_draw_message
     display_message("The game is a draw.")
+  end
+
+  def display_exit_message
+    display_message("\nThanks for playing!\n\n")
   end
 end

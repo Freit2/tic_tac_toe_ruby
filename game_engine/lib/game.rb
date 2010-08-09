@@ -1,5 +1,6 @@
 class Game
-  attr_reader :board, :ui, :player_o, :player_x
+  attr_reader :player_o, :player_x, :board, :ui
+  attr_accessor :scoreboard
 
   def initialize(player_o, player_x, board, ui)
     @board = board
@@ -39,6 +40,9 @@ class Game
       play_turn
     end
     display_end_message
+    @scoreboard.add_score(@board.winner)
+    @ui.display_scores(@scoreboard)
+    @ui.display_try_again
   end
 
   def display_end_message
