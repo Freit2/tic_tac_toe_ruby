@@ -66,6 +66,26 @@ square {
   vertical_alignment :bottom
 }
 
+view_scoreboard_menu {
+  extends :menu
+  horizontal_alignment :center
+}
+
+view_scoreboard_button {
+  height 24
+  width 127
+  border_width 1
+  horizontal_alignment :right
+  rounded_corner_radius 4
+  background_image_fill_strategy :static
+  background_image_x :center
+  background_image_y :center
+  background_image "/../../assets/images/props/view_scoreboard_dim.jpg"
+  hover {
+    background_image "/../../assets/images/props/view_scoreboard.jpg"
+  }
+}
+
 try_again_menu {
   extends :menu
   horizontal_alignment :center

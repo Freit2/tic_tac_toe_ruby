@@ -13,8 +13,8 @@ stage "board" do
   framed false
 end
 
-stage "score_board" do
-  #default_scene "score_board_scene"
+stage "scoreboard" do
+  #default_scene "scoreboard_scene"
   location [:center, :center]
   size [505, 380]
   framed false

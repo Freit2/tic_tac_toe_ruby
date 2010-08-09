@@ -28,14 +28,14 @@ describe "Production" do
     TTT::Config.new
     HashCache.new
     MongoCache.new
-    Game.new
+    Game.new("o", "x", "board", "ui")
     Board.new
     Player.create('H', 'O')
   end
 
   it "should have instance variables" do
     production.production_loaded
-    
+    production.scoreboard.class.should == Scoreboard
     production.board_selection.should == "3x3"
     production.player_selection.first[:value].should == "human"
     production.player_selection.last[:value].should == "unbeatable"

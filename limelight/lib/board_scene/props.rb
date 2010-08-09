@@ -7,10 +7,8 @@ mini_gap
 
 menu do
   width_gap
-  quit :id => 'quit', :players => 'button', :action => "scene.close"
+  quit :id => 'quit', :players => 'button', :action => "scene.open_options"
 end
-
-mini_gap
 
 menu do
   status :id => 'status'

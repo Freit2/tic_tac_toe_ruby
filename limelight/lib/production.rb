@@ -7,7 +7,7 @@ module Production
   include TTT
 
   attr_reader :boards, :players, :cache, :images_path
-  attr_accessor :board_selection, :player_selection, :player_o, :player_x
+  attr_accessor :board_selection, :player_selection, :player_o, :player_x, :scoreboard
 
 #  # Define this method if you want the production name to be different from the default, directory name.
 #  def name
@@ -35,6 +35,7 @@ module Production
       puts "***Error***: No active boards found"
       close
     end
+    @scoreboard = Scoreboard.new
     initialize_cache
     @board_selection = TTT::CONFIG.boards.active.first
     @player_selection = [{:id => 'O', :name => TTT::CONFIG.players.keys.first.to_s,

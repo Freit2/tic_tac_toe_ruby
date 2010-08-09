@@ -20,6 +20,10 @@ class Scoreboard
     end
   end
 
+  def [](player)
+    return @scores[player.to_sym]
+  end
+
   def wins(player)
     return @scores[player.to_sym][:wins]
   end

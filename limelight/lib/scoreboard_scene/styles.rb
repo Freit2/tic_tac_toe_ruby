@@ -1,4 +1,4 @@
-score_board_scene {
+scoreboard_scene {
   background_image "/../../assets/images/background/score_board.jpg"
   background_image_fill_strategy :static
   background_image_x :center
@@ -52,4 +52,8 @@ button {
   background_image_fill_strategy :static
   background_image_x :center
   background_image_y :center
+  background_image "/../../assets/images/props/ok_dim.png"
+  hover {
+    background_image "/../../assets/images/props/ok.png"
+  }
 }

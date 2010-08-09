@@ -64,25 +64,48 @@ describe "Board Scene" do
     count.should == 1
   end
 
+  it "should create view scoreboard" do
+    scene.build_view_scoreboard
+
+    count = 0
+    scene.children.each do |p|
+      if p.name == "view_scoreboard_menu"
+        count += 1
+        p.children.size.should == 2
+      end
+    end
+    count.should == 1
+  end
+
   it "should remove board from scene" do
     scene.create_board
     scene.build_squares
 
-    scene.children.size.should == 8
+    scene.children.size.should == 7
 
     scene.remove_squares
 
-    scene.children.size.should == 5
+    scene.children.size.should == 4
   end
 
   it "should remove try again from scene" do
     scene.build_try_again
 
-    scene.children.size.should == 6
+    scene.children.size.should == 5
     
     scene.remove_try_again
 
+    scene.children.size.should == 4
+  end
+
+  it "should remove scoreboard from scene" do
+    scene.build_view_scoreboard
+
     scene.children.size.should == 5
+
+    scene.remove_view_scoreboard
+
+    scene.children.size.should == 4
   end
 
   it "should create player instances" do
@@ -122,6 +145,7 @@ describe "Board Scene" do
   it "should receive method calls on cleanup" do
     scene.should_receive(:remove_squares)
     scene.should_receive(:remove_try_again)
+    scene.should_receive(:remove_view_scoreboard)
     scene.cleanup
   end
 
@@ -133,6 +157,7 @@ describe "Board Scene" do
 
   it "should create game on new thread" do
     Game.should_receive(:new).and_return(scene.game = mock("game"))
+    scene.game.should_receive(:scoreboard=)
     scene.game.should_receive(:play)
     scene.start_game_thread
     scene.thread.join
@@ -164,11 +189,26 @@ describe "Board Scene" do
     scene.animation.running?.should == true
   end
 
-  it "should receive method calls on close" do
-    scene.should_receive(:remove_squares)
+  it "should receive method calls on open_options" do
+    scene.should_receive(:cleanup)
     scene.should_receive(:open_options_scene)
     scene.stage.should_receive(:hide)
 
-    scene.close
+    scene.open_options
+  end
+
+  it "should receive method calls on open_scoreboard" do
+    scene.should_receive(:open_scoreboard_scene)
+    scene.stage.should_receive(:hide)
+
+    scene.open_scoreboard
+  end
+
+  it "should receive messages" do
+    scene.should_receive(:build_view_scoreboard)
+    scene.display_scores(nil)
+
+    scene.should_receive(:build_try_again)
+    scene.display_try_again
   end
 end

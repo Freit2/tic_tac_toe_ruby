@@ -48,4 +48,13 @@ describe Scoreboard do
     @scoreboard.losses(:x).should == 0
     @scoreboard.draws(:x).should == 1
   end
+
+  it "should return player's hash" do
+    %w(o x).each do |p|
+      @scoreboard.add_score(p.upcase)
+      @scoreboard[p][:wins].should == @scoreboard.wins(p)
+      @scoreboard[p][:losses].should == @scoreboard.losses(p)
+      @scoreboard[p][:draws].should == @scoreboard.draws(p)
+    end
+  end
 end

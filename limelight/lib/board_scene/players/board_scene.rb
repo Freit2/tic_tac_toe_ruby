@@ -22,6 +22,7 @@ module BoardScene
     @animation.stop if @animation
     remove_squares
     remove_try_again
+    remove_view_scoreboard
   end
 
   def restart
@@ -33,16 +34,28 @@ module BoardScene
     production.theater["options"].show
   end
 
-  def close
+  def open_options
     cleanup
     open_options_scene
+    stage.hide
+  end
+
+  def open_scoreboard_scene
+    production.producer.open_scene("scoreboard_scene", production.theater["scoreboard"])
+    production.theater["scoreboard"].show if !production.theater["scoreboard"].visible?
+    production.theater["scoreboard"].current_scene.start
+  end
+
+  def open_scoreboard
+    @animation.stop if @animation
+    open_scoreboard_scene
     stage.hide
   end
 
   def build_try_again
     scene.build do
       try_again_menu :id => 'try_again_menu' do
-        gap
+        mini_gap
         try_again_status :id => 'try_again_status'
         try_again_button :id => 'try_again_button', :players => 'button', :action => "scene.restart"
       end
@@ -53,6 +66,31 @@ module BoardScene
     children_to_remove = []
     scene.children.each do |p|
       if p.name == "try_again_menu"
+        p.children.each do |s|
+          children_to_remove << s
+        end
+        children_to_remove << p
+      end
+    end
+    children_to_remove.each do |p|
+      scene.remove(p)
+    end
+  end
+
+  def build_view_scoreboard
+    scene.build do
+      view_scoreboard_menu :id => 'view_scoreboard_menu' do
+        mini_gap
+        view_scoreboard_button :id => 'view_scoreboard_button',
+          :players => 'button', :action => 'scene.open_scoreboard'
+      end
+    end
+  end
+
+  def remove_view_scoreboard
+    children_to_remove = []
+    scene.children.each do |p|
+      if p.name == "view_scoreboard_menu"
         p.children.each do |s|
           children_to_remove << s
         end
@@ -150,6 +188,7 @@ module BoardScene
     @thread = Thread.new do
       begin
         @game = Game.new(@player_o, @player_x, @board, self)
+        @game.scoreboard = production.scoreboard
         @game.play
       rescue StandardError => e
         puts e
@@ -166,6 +205,14 @@ module BoardScene
     end
     @player_allowed = false
     return @move
+  end
+
+  def display_scores(scoreboard)
+    build_view_scoreboard
+  end
+
+  def display_try_again
+    build_try_again
   end
 
   def display_board(board)
@@ -209,11 +256,9 @@ module BoardScene
   def display_winner(winner)
     display_message("#{production.images_path}/end_message/winner_#{winner.downcase}.png")
     animate_win
-    build_try_again
   end
 
   def display_draw_message
     display_message("#{production.images_path}/end_message/draw_game.png")
-    build_try_again
   end
 end
