@@ -21,8 +21,8 @@ describe NegamaxPlayer do
   end
 
   it "should return correct opponent" do
-    @negamax.get_opponent(@o).should == @x
-    @negamax.get_opponent(@x).should == @o
+    @negamax.opponent(@o).should == @x
+    @negamax.opponent(@x).should == @o
   end
 
   it "should return 1 if Max is winner" do

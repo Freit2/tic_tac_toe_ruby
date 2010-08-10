@@ -243,7 +243,7 @@ module BoardScene
     status.style.background_image = image
   end
 
-  def get_human_player_move(piece)
+  def human_player_move(piece)
     display_message("#{production.images_path}/messages/move_player_#{piece.downcase}.png")
     return wait_for_move
   end

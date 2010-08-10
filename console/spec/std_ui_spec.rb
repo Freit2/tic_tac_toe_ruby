@@ -20,22 +20,22 @@ describe StdUI do
 
   it "should return board type from user" do
     @input.string = '3'
-    @ui.get_board_type(['3x3']).should == '3'
+    @ui.board_type(['3x3']).should == '3'
   end
 
   it "should return player type from user" do
     @input.string = 'h'
-    @ui.get_player_type('X').should == 'h'
+    @ui.player_type('X').should == 'h'
   end
 
   it "should return a move for human player from user" do
     @input.string = '4'
-    @ui.get_human_player_move('X').should == 4
+    @ui.human_player_move('X').should == 4
   end
 
   it "should return an answer from user if user wants to play again" do
     @input.string = 'y'
-    @ui.get_play_again.should == 'y'
+    @ui.play_again.should == 'y'
   end
 
   it "should return board" do
@@ -45,7 +45,7 @@ describe StdUI do
       "#{board_line} #{board[3..5].join(' | ')} " +
       "#{board_line} #{board[6..8].join(' | ')} \n\n"
 
-    @ui.get_board(board).should == message
+    @ui.board_layout(board).should == message
 
     board_2 = Board.new([].fill(0, 16) { @x })
     board_line = "\n---+---+---+---\n"
@@ -54,12 +54,12 @@ describe StdUI do
       "#{board_line} #{board_2[8..11].join(' | ')} " +
       "#{board_line} #{board_2[12..15].join(' | ')} \n\n"
 
-    @ui.get_board(board_2).should == message
+    @ui.board_layout(board_2).should == message
   end
 
   it "should display board" do
     board = mock("board")
-    @ui.should_receive(:get_board).and_return(board)
+    @ui.should_receive(:board_layout).and_return(board)
     @ui.should_receive(:display_message).with(board)
     @ui.display_board(board)
   end

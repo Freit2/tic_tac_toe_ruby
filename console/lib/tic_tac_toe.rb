@@ -13,18 +13,18 @@ class TicTacToe
     initialize_cache
   end
 
-  def get_player(piece)
+  def player(piece)
     player_type = ""
     loop do
-      player_type = @ui.get_player_type(piece)
+      player_type = @ui.player_type(piece)
       break if player_type =~ /^h$|^e$|^m$|^u$/
     end
     return Player.create(player_type, piece)
   end
 
   def create_players
-    @player_o = get_player('O')
-    @player_x = get_player('X')
+    @player_o = player('O')
+    @player_x = player('X')
     @player_o.ui = @ui
     @player_x.ui = @ui
     cache = TTT::CONFIG.cache[TTT::CONFIG.boards[@board_selection][:cache]]
@@ -32,10 +32,10 @@ class TicTacToe
     @player_x.cache = cache
   end
 
-  def get_board
+  def board
     board_type = ""
     loop do
-      board_type = @ui.get_board_type(TTT::CONFIG.boards.active)
+      board_type = @ui.board_type(TTT::CONFIG.boards.active)
       break if board_type =~ /^3$|^4$/
     end
     if board_type == '4'
@@ -49,7 +49,7 @@ class TicTacToe
   
   def play
     loop do
-      @board = get_board
+      @board = board
       create_players
       @game = Game.new(@player_o, @player_x, @board, @ui)
       @game.scoreboard = @scoreboard
@@ -62,7 +62,7 @@ class TicTacToe
   def play_again?
     play_again = ''
     loop do
-      play_again = @ui.get_play_again
+      play_again = @ui.play_again
       break if play_again =~ /^y$|^n$/
       @ui.display_try_again
     end

@@ -9,15 +9,15 @@ class CpuPlayer < Player
 
   def make_move
     @ui.display_cpu_move_message(@piece)
-    move_pos = get_winning_pattern_move
-    move_pos = get_blocking_pattern_move if !move_pos
-    move_pos = get_first_available_move if !move_pos
+    move_pos = winning_pattern_move
+    move_pos = blocking_pattern_move if !move_pos
+    move_pos = first_available_move if !move_pos
     return rand(@board.size) if rand(3) == 0
     return move_pos
   end
 
-  def get_winning_pattern_move
-    set_patterns(@piece) if !@winning_patterns
+  def winning_pattern_move
+    initialize_patterns(@piece) if !@winning_patterns
     move_pos = nil
     array = @winning_patterns.find { |p| p.first =~ @board.to_s }
     if array
@@ -26,8 +26,8 @@ class CpuPlayer < Player
     return move_pos
   end
 
-  def get_blocking_pattern_move
-    set_patterns(@piece) if !@blocking_patterns
+  def blocking_pattern_move
+    initialize_patterns(@piece) if !@blocking_patterns
     move_pos = nil
     array = @blocking_patterns.find { |p| p.first =~ @board.to_s }
     if array
@@ -36,7 +36,7 @@ class CpuPlayer < Player
     return move_pos
   end
 
-  def get_first_available_move
+  def first_available_move
     if !@board.occupied?(4)
       move_pos = 4
     else
@@ -46,7 +46,7 @@ class CpuPlayer < Player
   end
 
   private
-  def set_patterns(p)
+  def initialize_patterns(p)
     case @board.size
     when 9
       @winning_patterns =

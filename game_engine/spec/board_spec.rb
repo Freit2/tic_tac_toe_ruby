@@ -100,9 +100,9 @@ describe Board do
   end
 
   it "should return an array of empty squares" do
-    @board.get_empty_squares.size.should == 9
+    @board.empty_squares.size.should == 9
     @board.move(0, @x)
-    @board.get_empty_squares.size.should == 8
+    @board.empty_squares.size.should == 8
   end
 
   it "should return last move" do

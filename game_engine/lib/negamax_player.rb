@@ -17,12 +17,12 @@ class NegamaxPlayer < Player
     return best_random_move
   end
 
-  def get_opponent(piece)
+  def opponent(piece)
     return piece === 'O' ? 'X' : 'O'
   end
 
   def evaluate_score(board, piece, depth)
-    opponent = get_opponent(piece)
+    opponent = opponent(piece)
     case board.winner
     when piece
       return (depth == 2) ? 2 : 1
@@ -38,8 +38,8 @@ class NegamaxPlayer < Player
       return evaluate_score(board, piece, depth)
     else
       best_score = -999
-      opponent = get_opponent(piece)
-      empty_squares = board.get_empty_squares
+      opponent = opponent(piece)
+      empty_squares = board.empty_squares
       empty_squares.each do |s|
         board.move(s, piece)
         score = @cache.score(board.to_s, piece)

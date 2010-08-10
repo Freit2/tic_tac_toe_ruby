@@ -15,7 +15,7 @@ class StdUI
     @output.print message
   end
 
-  def get_board_type(active_boards)
+  def board_type(active_boards)
     message = "\nChoose board type (enter "
     count = 0
     active_boards.each do |board|
@@ -33,14 +33,14 @@ class StdUI
     end
   end
 
-  def get_player_type(piece)
+  def player_type(piece)
     display_message("\nChoose player type for '#{piece}' " +
       "(enter 'h' for human or 'e' for easy cpu, " +
       "'m' for  medium cpu or 'u' for unbeatable cpu) ")
     return user_input.to_s.chomp
   end
 
-  def get_human_player_move(piece)
+  def human_player_move(piece)
     display_message("\nEnter your move, player '#{piece}': ")
     return user_input.to_i
   end
@@ -49,7 +49,7 @@ class StdUI
     display_message("Player '#{piece}' is making a move\n")
   end
 
-  def get_board(board)
+  def board_layout(board)
     board_line = "\n#{([].fill(0, board.row_size) { "---" }).join('+')}\n"
     array = []
     board.rows.each do |r|
@@ -59,10 +59,10 @@ class StdUI
   end
 
   def display_board(board)
-      display_message(get_board(board))
+      display_message(board_layout(board))
   end
 
-  def get_score_board(scores)
+  def scoreboard(scores)
     o = scores[:o]
     x = scores[:x]
     line =   "\n-----------------------------------\n"
@@ -73,14 +73,14 @@ class StdUI
   end
 
   def display_scores(score_board)
-    display_message(get_score_board(score_board.scores))
+    display_message(scoreboard(score_board.scores))
   end
 
   def display_try_again
     display_message("\n\nDo you want to play again? ('y' or 'n') ")
   end
 
-  def get_play_again
+  def play_again
     return user_input.to_s.chomp
   end
 

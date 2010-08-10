@@ -19,13 +19,13 @@ describe TicTacToe do
 
   it "should return player" do
     @ttt.ui.input.string = "h"
-    @ttt.get_player('O').instance_of?(HumanPlayer)
+    @ttt.player('O').instance_of?(HumanPlayer)
     @ttt.ui.input.string = "e"
-    @ttt.get_player('X').instance_of?(EasyCpuPlayer)
+    @ttt.player('X').instance_of?(EasyCpuPlayer)
     @ttt.ui.input.string = "m"
-    @ttt.get_player('X').instance_of?(CpuPlayer)
+    @ttt.player('X').instance_of?(CpuPlayer)
     @ttt.ui.input.string = "u"
-    @ttt.get_player('X').instance_of?(NegamaxPlayer)
+    @ttt.player('X').instance_of?(NegamaxPlayer)
   end
 
   it "should create players" do
@@ -39,16 +39,16 @@ describe TicTacToe do
 
   it "should get board" do
     @ttt.ui.input.string = "1\n2\n3\n4"
-    board = @ttt.get_board
+    board = @ttt.board
     board.size.should == 9
 
     @ttt.ui.input.string = "a\nb\n4\n3"
-    board_2 = @ttt.get_board
+    board_2 = @ttt.board
     board_2.size.should == 16
   end
 
   it "should play game" do
-    @ttt.should_receive(:get_board).and_return(@ttt.board = mock("board"))
+    @ttt.should_receive(:board).and_return(@ttt.board = mock("board"))
     @ttt.should_receive(:create_players)
     Game.should_receive(:new).and_return(@ttt.game = mock("game"))
     @ttt.game.should_receive(:scoreboard=)

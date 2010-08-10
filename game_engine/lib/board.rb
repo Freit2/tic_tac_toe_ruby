@@ -11,7 +11,7 @@ class Board
     end
     @size = @board.size
     @row_size = Math.sqrt(@size).to_i
-    set_patterns
+    initialize_patterns
   end
 
   def [](index)
@@ -69,7 +69,7 @@ class Board
     @winner = nil
   end
 
-  def get_empty_squares
+  def empty_squares
     array = []
     @board.size.times do |s|
       if @board[s].strip == ''
@@ -110,7 +110,7 @@ class Board
   end
 
   private
-  def set_patterns
+  def initialize_patterns
     case @size
     when 9
       @winning_patterns =

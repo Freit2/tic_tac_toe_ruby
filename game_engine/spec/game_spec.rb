@@ -37,14 +37,14 @@ describe Game do
 
   it "should return a move for human player" do
     @ui.input.string = '1'
-    @game.get_move_from(@player_o).should == 1
+    @game.move_from(@player_o).should == 1
   end
 
   it "should return a move from cpu player" do
     @player_x.should_receive(:rand).and_return(1)
-    @game.get_move_from(@player_x).should == 4
+    @game.move_from(@player_x).should == 4
     @player_x.should_receive(:rand).twice.and_return(0)
-    @game.get_move_from(@player_x).should == 0
+    @game.move_from(@player_x).should == 0
   end
 
   it "should play one turn" do
@@ -59,7 +59,7 @@ describe Game do
   it 'continues to ask a player for a valid move' do
     @player_o.should_receive(:make_move).twice.and_return(-1)
     @player_o.should_receive(:make_move).once.and_return(0)
-    @game.get_move_from(@player_o).should == 0
+    @game.move_from(@player_o).should == 0
   end
 
   it 'places pieces on board for players' do

@@ -6,6 +6,6 @@ class HumanPlayer < Player
   end
 
   def make_move
-    return @ui.get_human_player_move(@piece)
+    return @ui.human_player_move(@piece)
   end
 end

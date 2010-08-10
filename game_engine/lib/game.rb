@@ -11,7 +11,7 @@ class Game
     @player_x.board = @board
   end
 
-  def get_move_from(player)
+  def move_from(player)
     loop do
       move = player.make_move
       if @board.valid_move?(move)
@@ -23,7 +23,7 @@ class Game
   def make_move(player)
     if !@board.game_over?
       @ui.current_player = player
-      player_move = get_move_from(player)
+      player_move = move_from(player)
       @board.move(player_move, player.piece)
       @ui.display_board(@board)
     end
