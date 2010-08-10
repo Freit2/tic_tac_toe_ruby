@@ -3,7 +3,7 @@ require 'player'
 class EasyCpuPlayer < Player
   def make_move
     @ui.display_cpu_move_message(@piece)
-    spaces = @board.empty_squares
-    return spaces[rand(spaces.size)]
+    squares = @board.empty_squares
+    return squares[rand(squares.size)]
   end
 end
