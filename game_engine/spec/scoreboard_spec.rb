@@ -50,8 +50,9 @@ describe Scoreboard do
   end
 
   it "should return player's hash" do
-    %w(o x).each do |p|
-      @scoreboard.add_score(p.upcase)
+    TTT::CONFIG.pieces.values.each do |p|
+      @scoreboard.add_score(p)
+      p = p.downcase
       @scoreboard[p][:wins].should == @scoreboard.wins(p)
       @scoreboard[p][:losses].should == @scoreboard.losses(p)
       @scoreboard[p][:draws].should == @scoreboard.draws(p)

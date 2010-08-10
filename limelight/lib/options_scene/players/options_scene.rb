@@ -15,7 +15,6 @@ module OptionsScene
   end
 
 # TODO: contains monkey patch until LL bug is fixed with hover.background_image
-
   def build_scene
     boards = TTT::CONFIG.boards
     scene.build do
@@ -38,12 +37,6 @@ module OptionsScene
     end
   end
 
-  def initialize_prop_defaults
-    find("board_#{production.board_selection}").mouse_clicked(nil)
-    find("player_o_#{production.player_selection.first[:name]}").mouse_clicked(nil)
-    find("player_x_#{production.player_selection.last[:name]}").mouse_clicked(nil)
-  end
-
   def initialize_board_option
     TTT::CONFIG.boards.keys.each do |key|
       if TTT::CONFIG.boards[key][:active]
@@ -55,9 +48,9 @@ module OptionsScene
   end
 
   def initialize_player_options
-    %w(o x).each do |p|
+    TTT::CONFIG.pieces.values.each do |p|
       TTT::CONFIG.players.keys.each do |key|
-        prop = find("player_#{p}_#{key.to_s}")
+        prop = find("player_#{p.downcase}_#{key.to_s}")
         prop.style.background_image = "#{production.images_path}/props/#{TTT::CONFIG.players[key][:off]}"
         prop.hover_style.background_image = "#{production.images_path}/props/#{TTT::CONFIG.players[key][:on]}"
       end
@@ -69,6 +62,12 @@ module OptionsScene
     start_button.hover_style.background_image = "#{production.images_path}/props/new_game.jpg"
     exit_button.style.background_image = "#{production.images_path}/props/exit_dim.jpg"
     exit_button.hover_style.background_image = "#{production.images_path}/props/exit.jpg"
+  end
+
+  def initialize_prop_defaults
+    find("board_#{production.board_selection}").mouse_clicked(nil)
+    find("player_o_#{production.player_selection.first[:name]}").mouse_clicked(nil)
+    find("player_x_#{production.player_selection.last[:name]}").mouse_clicked(nil)
   end
 
   def open_board_scene

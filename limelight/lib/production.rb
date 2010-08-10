@@ -38,9 +38,9 @@ module Production
     @scoreboard = Scoreboard.new
     initialize_cache
     @board_selection = TTT::CONFIG.boards.active.first
-    @player_selection = [{:id => 'O', :name => TTT::CONFIG.players.keys.first.to_s,
+    @player_selection = [{:id => TTT::CONFIG.pieces[:o], :name => TTT::CONFIG.players.keys.first.to_s,
                           :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]},
-                         {:id => 'X', :name => TTT::CONFIG.players.keys.last.to_s,
+                         {:id => TTT::CONFIG.pieces[:x], :name => TTT::CONFIG.players.keys.last.to_s,
                           :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]}]
   end
 

@@ -6,27 +6,35 @@ class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
   attr_accessor :board_selection, :player_selection_o, :player_selection_x
 
   @@instance = nil
+  @@instance_creation_mutex = Mutex.new
+
   def self.get_instance config, *options
-    #load __FILE__
-    #new config, *options
-    @@instance = @@instance || self.new(config, *options)
+    @@instance_creation_mutex.synchronize {
+      @@instance = @@instance || self.new(config, *options)
+    }
   end
 
   def initialize(config, *options)
+    puts "OptionsServlet initialize"
     super(config)
     @options = *options
+    @template = "options_template.rhtml"
+    
     @board_selection = TTT::CONFIG.boards.active.first
     @player_selection_o = TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]
     @player_selection_x = TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]
   end
 
   def do_GET(request, response)
+    puts "OptionsServlet do_GET"
     status, content_type, body = display_options(request)
 
     response.status = status
     response['Content-Type'] = content_type
     response.body = body
   end
+
+  alias :do_POST :do_GET
 
   def options_for_board
     options = ""
@@ -58,7 +66,7 @@ class OptionsServlet < WEBrick::HTTPServlet::AbstractServlet
 
   def display_options(request)
     title = "WEBrick Tic Tac Toe!"
-    template = convert("options_template.rhtml")
+    template = convert(@template)
     return 200, "text/html", template.result(binding)
   end
 end

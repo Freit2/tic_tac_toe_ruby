@@ -1,5 +1,5 @@
 module WEBrickUI
-    def display_message(message)
+  def display_message(message)
       message
   end
 

@@ -5,15 +5,12 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <title><%= title %></title>
+  <script type="text/javascript" src="javascript/ttt.js"></script>
   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
 </head>
 <body>
-<h1>Tic Tac Toe!</h1>
-<hr />
-<h1>
-<pre>
-  <%= get_board %>
-</pre>
-</h1>
+  <div class="board">
+    <%= generate_board %>
+  </div>
 </body>
 </html>

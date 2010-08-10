@@ -8,37 +8,79 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   attr_reader :board, :player_o, :player_x
 
   @@instance = nil
+  @@instance_creation_mutex = Mutex.new
+
   def self.get_instance config, *options
-#    load __FILE__
-#    new config, *options
-    @@instance = @@instance || self.new(config, *options)
+    @@instance_creation_mutex.synchronize do
+      @@instance = @@instance || self.new(config, *options)
+    end
   end
 
   def initialize(config, *options)
+puts "BoardServlet initialize"
     super(config)
     @options = *options
+    @template = "board_template.rhtml"
   end
 
   def do_GET(request, response)
-    puts "do_GET"
+puts "BoardServlet do_GET"
+    if request.query['pos']
+puts request.query['pos']
+      response.set_redirect(WEBrick::HTTPStatus::Found, "/new")
+    end
 
-    
-  end
+puts "player o is #{@player_o.class}"
+puts "player x is #{@player_x.class}"
+puts "board size is #{@board.size}"
 
-  def do_POST(request, response)
-    puts "do_POST"
-
-    create_board(request.query["board"])
-    status, content_type, body = ttt(request)
+    status, content_type, body = generate_body(request)
 
     response.status = status
     response['Content-Type'] = content_type
     response.body = body
   end
 
+  def do_POST(request, response)
+puts "BoardServlet do_POST"
+
+    create_board(request.query["board"])
+    create_players(request)
+    status, content_type, body = generate_body(request)
+
+    response.status = status
+    response['Content-Type'] = content_type
+    response.body = body
+  end
+
+  def convert(rhtml_file)
+    return ERB.new IO.read(File.expand_path(File.dirname(__FILE__)) + "/rhtml/#{rhtml_file}")
+  end
+
+  def generate_body(request)
+    title = "WEBrick Tic Tac Toe!"
+    #request.query.collect { |key, value| puts "#{key} : #{value}" }
+    template = convert(@template)
+    return 200, "text/html", template.result(binding)
+  end
+
   def create_board(board)
     board_size = board[0,1].to_i ** 2
     @board = Board.new(nil, board_size)
+  end
+
+  def generate_board
+    board_html = ""
+    @board.ranges.each do |r|
+      html = ""
+      r.each do |s|
+        html += ("<a href=\"/new?pos=#{s}\"><img border=\"1\" src=\"/images/empty_square.png\" " +
+          "alt=\"blank square\" width=\"130\" height=\"130\" " +
+          "onmouseover=\"TTT.mouseOverSquare(this)\" onmouseout=\"TTT.mouseOutSquare(this)\"/></a>")
+      end
+      board_html += "#{html}<br />"
+    end
+    return (board_html + "<br />")
   end
 
   def create_players(request)
@@ -51,31 +93,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     @player_x.cache = cache
   end
 
-  def get_board
-    board_line = "<br />#{([].fill(0, @board.row_size) { "---" }).join('+')}<br />"
-    array = []
-    @board.rows.each do |r|
-      array << r.join(' | ')
-    end
-    return "<br /> #{array.join(" #{board_line} ")} <br />"
-  end
-
-  def display_board
-    
-  end
-
   def start_game_thread
 
-  end
-
-  def convert(rhtml_file)
-    return ERB.new IO.read(File.expand_path(File.dirname(__FILE__)) + "/rhtml/#{rhtml_file}")
-  end
-
-  def ttt(request)
-    title = "WEBrick Tic Tac Toe!"
-    #request.query.collect { |key, value| puts "#{key} : #{value}" }
-    template = convert("board_template.rhtml")
-    return 200, "text/html", template.result(binding)
   end
 end

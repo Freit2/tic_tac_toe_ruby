@@ -8,9 +8,9 @@ module ScoreboardScene
   end
 
   def display_scores
-    %w(o x).each do |p|
+    TTT::CONFIG.pieces.values.each do |p|
       %w(wins losses draws).each do |s|
-        find("player_#{p}_#{s}").text = production.scoreboard[p][s.to_sym]
+        find("player_#{p.downcase}_#{s}").text = production.scoreboard[p.downcase][s.to_sym]
       end
     end
   end

@@ -6,6 +6,11 @@ TTT::CONFIG.boards = {
 # TTT::CONFIG.boards[:'3x3'][:active] = false
 # TTT::CONFIG.boards[:'4x4'][:active] = false
 
+TTT::CONFIG.pieces = {
+  :o => 'O',
+  :x => 'X'
+}
+
 TTT::CONFIG.players = {
   :human => { :value => "human",       :on => "player_human.jpg",    :off => "player_human_dim.jpg" },
   :easy  => { :value => "easy",        :on => "player_easy_cpu.jpg", :off => "player_easy_cpu_dim.jpg"},
