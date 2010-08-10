@@ -10,7 +10,7 @@ describe StdUI do
 
   it "should get input from user" do
     @input.string == "hello world"
-    @ui.get_input.should.to_s == "hello world"
+    @ui.user_input.should.to_s == "hello world"
   end
   
   it "should display message" do

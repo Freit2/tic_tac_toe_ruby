@@ -7,7 +7,7 @@ class StdUI
     @output = output
   end
 
-  def get_input
+  def user_input
     return @input.gets
   end
 
@@ -26,7 +26,7 @@ class StdUI
     message += ") "
     loop do
       display_message(message)
-      input = get_input.to_s.chomp
+      input = user_input.to_s.chomp
       active_boards.each do |board|
         return input if input == board[0,1]
       end
@@ -37,12 +37,12 @@ class StdUI
     display_message("\nChoose player type for '#{piece}' " +
       "(enter 'h' for human or 'e' for easy cpu, " +
       "'m' for  medium cpu or 'u' for unbeatable cpu) ")
-    return get_input.to_s.chomp
+    return user_input.to_s.chomp
   end
 
   def get_human_player_move(piece)
     display_message("\nEnter your move, player '#{piece}': ")
-    return get_input.to_i
+    return user_input.to_i
   end
 
   def display_cpu_move_message(piece)
@@ -81,7 +81,7 @@ class StdUI
   end
 
   def get_play_again
-    return get_input.to_s.chomp
+    return user_input.to_s.chomp
   end
 
   def display_winner(winner)
