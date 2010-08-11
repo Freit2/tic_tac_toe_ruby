@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'spec'
 require 'stringio'
 require 'limelight/specs/spec_helper'
