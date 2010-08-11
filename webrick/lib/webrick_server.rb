@@ -1,13 +1,12 @@
 require 'webrick'
 
 class WEBrickServer
-  attr_reader :server, :port
+  attr_reader :server, :port, :document_root
 
-  def initialize(port=10000+rand(10000), document_root=nil)
+  def initialize(port=10000+rand(10000))
+    @port ||= port
     WEBrick::HTTPUtils::DefaultMimeTypes.store('rhtml', 'text/html')
-    @port = port
-    @document_root = document_root
-    @server = WEBrick::HTTPServer.new(:Port => port, :DocumentRoot => @document_root)
+    @server = WEBrick::HTTPServer.new({:Port => @port, :DocumentRoot => @document_root})
   end
 
   def mount(dir, servlet, *options)
@@ -19,6 +18,7 @@ class WEBrickServer
   end
 
   def start
+    puts "Server started at http://localhost:#{@port}..."
     trap "INT" do shutdown end
     @server.start
   end

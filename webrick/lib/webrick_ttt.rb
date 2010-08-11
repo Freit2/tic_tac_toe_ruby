@@ -2,25 +2,27 @@ require File.expand_path(File.dirname(__FILE__)) + "/init"
 require 'webrick_server'
 require 'board_servlet'
 
-class WEBrickTTT
+class WEBrickTTT < WEBrickServer
   include TTT
 
-  attr_reader :server
+  attr_reader :document_root, :rhtml_path,
+              :board_selection, :player_selection_o, :player_selection_x
 
   def initialize(port=10000+rand(10000))
-    initialize_cache
-    @document_root = File.dirname(__FILE__) + "/www/"
-    @rhtml_path = File.dirname(__FILE__) + "/rhtml/"
-    @server = WEBrickServer.new(port, @document_root)
-
-    #require 'options_servlet'
-    #@server.mount("/", OptionsServlet)
-    @server.mount("/new", BoardServlet, TTT::CONFIG.cache)
-
+    @port = port
+    @document_root = "#{File.dirname(__FILE__)}/www/"
+    @rhtml_path = "#{File.dirname(__FILE__)}/rhtml/"
+    super
     @board_selection = TTT::CONFIG.boards.active.first
     @player_selection_o = TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]
     @player_selection_x = TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]
+    initialize_cache
+    mount("/new", BoardServlet, TTT::CONFIG.cache)
+  end
+
+  def start
     generate_index
+    super
   end
 
   def options_for_board
@@ -53,10 +55,6 @@ class WEBrickTTT
     file = File.new("#{@document_root}index.html", "w")
     file.puts ERB.new(data).result(binding)
     file.close
-  end
-
-  def start
-    @server.start
   end
 end
 
