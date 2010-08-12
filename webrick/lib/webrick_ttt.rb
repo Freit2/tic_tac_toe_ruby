@@ -5,7 +5,7 @@ require 'board_servlet'
 class WEBrickTTT < WEBrickServer
   include TTT
 
-  attr_reader :document_root, :rhtml_path,
+  attr_reader :rhtml_path,
               :board_selection, :player_selection_o, :player_selection_x
 
   def initialize(port=10000+rand(10000))

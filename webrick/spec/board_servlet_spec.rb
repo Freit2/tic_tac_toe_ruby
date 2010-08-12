@@ -159,4 +159,47 @@ describe BoardServlet do
 
     @board_servlet.do_POST(@request, @response)
   end
+
+  it "should wait until game starts" do
+    @board_servlet.current_player = mock("current_player")
+    @board_servlet.should_not_receive(:sleep)
+    @board_servlet.wait_until_game_starts
+  end
+
+#  it "should wait until move" do
+#    @board_servlet.player_allowed.should == false
+#    move = nil
+#    thread = Thread.new do
+#      move = @board_servlet.wait_for_move
+#    end
+#    while !@board_servlet.move
+#      @board_servlet.move = 8
+#    end
+#    thread.join
+#    @board_servlet.player_allowed.should == false
+#    @board_servlet.move.should == move
+#  end
+
+  it "should display message" do
+    status = mock("status")
+    @board_servlet.display_message(status)
+    @board_servlet.status.should == status
+  end
+
+  it "should display cpu move message" do
+    piece = "O"
+    @board_servlet.should_receive(:display_message).with("/images/messages/player_#{piece.downcase}_moves.png")
+    @board_servlet.display_cpu_move_message(piece)
+  end
+
+  it "should display winner" do
+    winner = "X"
+    @board_servlet.should_receive(:display_message).with("/images/end_message/winner_#{winner.downcase}.png")
+    @board_servlet.display_winner(winner)
+  end
+
+  it "should display draw" do
+    @board_servlet.should_receive(:display_message).with("/images/end_message/draw_game.png")
+    @board_servlet.display_draw_message
+  end
 end

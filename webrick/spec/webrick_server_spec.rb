@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + "/spec_helper")
 require 'webrick_server'
 
 describe WEBrickServer do
-
   it "should start an instance of WEBrick::HTTPServer" do
     webrick_server = WEBrickServer.new
     webrick_server.server.class.should == WEBrick::HTTPServer

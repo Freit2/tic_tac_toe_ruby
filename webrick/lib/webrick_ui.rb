@@ -8,16 +8,16 @@ module WEBrickUI
   def wait_for_move
     @player_allowed = true
     @move = nil
-    while (@move == nil)
-      sleep(0.1)
+    while @move == nil
+      sleep 0.1
     end
     @player_allowed = false
     return @move
   end
 
   def wait_until_move_is_made(square)
-    while(@board[square].strip == "")
-      sleep(0.1)
+    while @board[square].strip == ""
+      sleep 0.1
     end
   end
 
