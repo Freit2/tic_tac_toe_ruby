@@ -10,7 +10,7 @@ end
 class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   include WEBrickUI
 
-  attr_reader :template, :title, :player_o, :player_x, :thread
+  attr_reader :template, :title, :player_o, :player_x, :thread, :request, :request_method
   attr_accessor :game, :board, :current_player, :move, :player_allowed, :status
 
   @@instance = nil
@@ -27,10 +27,10 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     @cache = options[0]
     @template = "board_template.rhtml"
     @title = "WEBrick Tic Tac Toe!"
-    @player_allowed = false
   end
 
   def do_GET(request, response)
+    @request_method = request.request_method
     if @player_allowed && request.query['s']
       @move = request.query['s'].to_i
       wait_until_move_is_made(@move)
@@ -44,8 +44,13 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   end
 
   def do_POST(request, response)
-    create_board(request.query["board"])
-    create_players(request)
+    @request_method = request.request_method
+    @request = {:board => request.query["board"],
+                :player_o => request.query["player_o"],
+                :player_x => request.query["player_x"]}
+    @player_allowed = false
+    create_board
+    create_players
     start_game_thread
     
     status, content_type, body = generate_body
@@ -63,13 +68,32 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     return 200, "text/html", template.result(binding)
   end
 
-  def create_board(board)
-    board_size = board[0,1].to_i ** 2
-    @board = Board.new(nil, board_size)
+  def opponent
+    return @current_player == @player_o ? @player_o : @player_x
+  end
+
+  def generate_meta_html
+    if (opponent.class != HumanPlayer && !@board.game_over? &&
+       @request_method == "GET") || (@current_player != HumanPlayer &&
+       @request_method == "POST")
+      return "<meta http-equiv=\"refresh\" content=\"2\" />"
+    end
+    return ""
   end
 
   def generate_status_html
     return "<img src=\"#{@status}\" alt=\"status\" width=\"502\" height=\"75\"/>" if @status
+    return ""
+  end
+
+  def generate_try_again_html
+    return ("<img src=\"images/labels/try_again.png\">" +
+        "<form method='POST' action='/new'>" +
+          "<input type=\"hidden\" name=\"board\" value=\"#{@request[:board]}\">" +
+          "<input type=\"hidden\" name=\"player_o\" value=\"#{@request[:player_o]}\">" +
+          "<input type=\"hidden\" name=\"player_x\" value=\"#{@request[:player_x]}\">" +
+          "<input type=\"submit\" value=\"Yes\" />" +
+        "</form>") if @board.game_over?
     return ""
   end
 
@@ -98,15 +122,20 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
       end
       board_html += "#{html}<br />"
     end
-    return (board_html + "<br />")
+    return board_html
   end
 
-  def create_players(request)
-    @player_o = Player.create(request.query["player_o"][0,1], TTT::CONFIG.pieces[:o])
-    @player_x = Player.create(request.query["player_x"][0,1], TTT::CONFIG.pieces[:x])
+  def create_board
+    board_size = @request[:board][0,1].to_i ** 2
+    @board = Board.new(nil, board_size)
+  end
+
+  def create_players
+    @player_o = Player.create(@request[:player_o][0,1], TTT::CONFIG.pieces[:o])
+    @player_x = Player.create(@request[:player_x][0,1], TTT::CONFIG.pieces[:x])
     @player_o.ui = self
     @player_x.ui = self
-    cache = @cache[TTT::CONFIG.boards[request.query["board"]][:cache]]
+    cache = @cache[TTT::CONFIG.boards[@request[:board]][:cache]]
     @player_o.cache = cache
     @player_x.cache = cache
   end

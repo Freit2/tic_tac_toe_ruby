@@ -9,31 +9,37 @@
   <link rel="stylesheet" href="css/screen.css" type="text/css" media="screen, projection" />
 </head>
 <body>
-<div class="options">
-<h1>Tic Tac Toe!</h1>
-<form method='POST' action='/new'>
-<p>
-<label for="board">Board Type:</label>
-<select name="board" id="board" size="2">
-  <%= options_for_board %>
-</select>
-</p>
-<p>
-<label for="player_o">Player O:</label>
-<select name="player_o" id="player_o" size="4">
-  <%= options_for_player(@player_selection_o) %>
-</select>
-</p>
-<p>
-<label for="player_x">Player X:</label>
-<select name="player_x" id="player_x" size="4">
-  <%= options_for_player(@player_selection_x) %>
-</select>
-</p>
-<p>
-<input type="submit" value="Start Game" />
-</p>
-</form>
-</div>
+  <div id="content">
+    <img src="images/labels/ttt_title.png" alt="TTT Title"/>
+    <form method='POST' action='/new'>
+      <p>
+        <label for="board">
+          <img src="images/labels/board_type.png" alt="Board Type"/>
+        </label>
+        <select name="board" id="board" size="2">
+          <%= options_for_board %>
+        </select>
+      </p>
+      <p>
+        <label for="player_o">
+          <img src="images/labels/player_o.png" alt="Player O"/>
+        </label>
+        <select name="player_o" id="player_o" size="4">
+          <%= options_for_player(@player_selection_o) %>
+        </select>
+      </p>
+      <p>
+        <label for="player_x">
+          <img src="images/labels/player_x.png" alt="Player X"/>
+        </label>
+        <select name="player_x" id="player_x" size="4">
+          <%= options_for_player(@player_selection_x) %>
+        </select>
+      </p>
+      <p id="button">
+        <input type="submit" value="Start Game" />
+      </p>
+    </form>
+  </div>
 </body>
 </html>

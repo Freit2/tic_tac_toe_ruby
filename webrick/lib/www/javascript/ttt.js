@@ -1,20 +1,20 @@
 var TTT;
 
 TTT = function() {
-  var currentPlayer,
-      setCurrentPlayer,
+  var currentPiece,
+      setCurrentPiece,
       mouseOverSquare,
       mouseOutSquare;
 
-  currentPlayer = "";
+  currentPiece = "";
 
   return {
-    setCurrentPlayer : function(player) {
-      currentPlayer = player;
+    setCurrentPiece : function(player) {
+      currentPiece = player;
     },
     mouseOverSquare : function(element) {
       if (element.src.match(/empty_square/)) {
-        element.src = "/images/pieces/" + currentPlayer + "_dim.png";
+        element.src = "/images/pieces/" + currentPiece + "_dim.png";
       }
     },
     mouseOutSquare : function(element) {

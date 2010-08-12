@@ -3,7 +3,7 @@ body {
   font-family: Georgia, Arial, Sans-serif;
   font-size: 17px;
   line-height: 1.7em;
-  margin: 0;
+  padding: 0;
 }
 a{
   color: #3B3A40;
@@ -27,14 +27,22 @@ h1{
   margin-bottom: .25em;
   padding-bottom: 8px;
 }
-h2{
+.select{
+  padding-left: 50px;
 }
-h3{
+#content {
+  width: 500px;
+  margin: 0 auto;
+  padding: 15px;
 }
-.options{
-  margin:auto;
-  width: 80%;
+#board_content {
+  width: 543px;
+  margin: 0 auto;
+  padding: 15px;
 }
-.board{
-  width: 530px;
+#button {
+  padding-left: 200px;
+}
+#try_again {
+  padding-left: 200px;
 }
