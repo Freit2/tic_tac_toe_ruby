@@ -3,9 +3,10 @@ require 'board_servlet'
 include TTT
 
 class MockRequest
-  attr_accessor :query
+  attr_accessor :query, :request_method
   def initialize
     @query = {}
+    @request_method = "mock"
   end
 end
 
@@ -24,43 +25,51 @@ describe BoardServlet do
     @server.should_receive(:[])
     initialize_cache
     @board_servlet = BoardServlet.new(@server, TTT::CONFIG.cache)
-    @request = MockRequest.new
-    @request.query['board'] = '3x3'
-    @request.query['player_o'] = 'human'
-    @request.query['player_x'] = 'unbeatable'
+    @request = {}
+    @request[:board] = '3x3'
+    @request[:player_o] = 'human'
+    @request[:player_x] = 'unbeatable'
+    @board_servlet.request = @request
     @response = MockResponse.new
     @x = 'X'
     @o = 'O'
   end
 
   it "should set defaults" do
+    @board_servlet.cache.should == TTT::CONFIG.cache
     @board_servlet.template.should == "board_template.rhtml"
     @board_servlet.title.should == "WEBrick Tic Tac Toe!"
-    @board_servlet.player_allowed.should == false
   end
 
   it "should create board" do
-    @board_servlet.create_board(@request.query['board'])
+    @board_servlet.create_board
     @board_servlet.board.class.should == Board
     @board_servlet.board.size.should == 9
   end
 
   it "should create players" do
-    @board_servlet.create_players(@request)
+    @board_servlet.create_players
     @board_servlet.player_o.class.should == HumanPlayer
     @board_servlet.player_x.class.should == NegamaxPlayer
   end
 
   it "should add UI to players" do
-    @board_servlet.create_players(@request)
+    @board_servlet.create_players
     @board_servlet.player_o.ui.class.should == BoardServlet
     @board_servlet.player_x.ui.class.should == BoardServlet
   end
 
   it "should add cache to players" do
-    @board_servlet.create_players(@request)
+    @board_servlet.create_players
     @board_servlet.player_o.cache.class.should == HashCache
     @board_servlet.player_x.cache.class.should == HashCache
+  end
+
+  it "should generate quit html" do
+    @board_servlet.generate_quit_html.should ==
+      "<form method='GET' action='/'>" +
+      "<input type=\"submit\" value=\"Return to Options\" />" +
+      "</form>"
   end
 
   it "should generate status html" do
@@ -106,7 +115,7 @@ describe BoardServlet do
       board_html += "<br />"
     end
 
-    @board_servlet.generate_board_html.should == board_html + "<br />"
+    @board_servlet.generate_board_html.should == board_html
   end
 
   it "should create an eRB from rhtml" do
@@ -135,18 +144,20 @@ describe BoardServlet do
   it "should set @move to user clicked square when player allowed" do
     @board_servlet.should_receive(:wait_until_move_is_made)
     @board_servlet.should_receive(:generate_body)
-    @request.query['s'] = 3
+    request = MockRequest.new
+    request.query['s'] = 3
     @board_servlet.player_allowed = true
-    @board_servlet.do_GET(@request, @response)
+    @board_servlet.do_GET(request, @response)
 
     @board_servlet.move.should == 3
   end
 
   it "should not set @move to user clicked square when player not allowed" do
     @board_servlet.should_receive(:generate_body)
-    @request.query['s'] = 5
+    request = MockRequest.new
+    request.query['s'] = 5
     @board_servlet.player_allowed = false
-    @board_servlet.do_GET(@request, @response)
+    @board_servlet.do_GET(request, @response)
 
     @board_servlet.move.should == nil
   end
@@ -157,7 +168,7 @@ describe BoardServlet do
     @board_servlet.should_receive(:start_game_thread)
     @board_servlet.should_receive(:generate_body)
 
-    @board_servlet.do_POST(@request, @response)
+    @board_servlet.do_POST(MockRequest.new, @response)
   end
 
   it "should wait until game starts" do

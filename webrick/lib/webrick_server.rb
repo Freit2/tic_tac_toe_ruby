@@ -18,7 +18,7 @@ class WEBrickServer
   end
 
   def start
-    puts "Server started at http://localhost:#{@port}..."
+    puts "=> Server started at http://localhost:#{@port}..."
     trap "INT" do shutdown end
     @server.start
   end

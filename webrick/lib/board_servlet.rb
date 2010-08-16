@@ -2,6 +2,7 @@ require 'webrick'
 require 'erb'
 require 'webrick_ui'
 
+# TODO: Replace with real Scoreboard class
 class NilScoreboard
   def add_score(w)
   end
@@ -10,8 +11,9 @@ end
 class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   include WEBrickUI
 
-  attr_reader :template, :title, :player_o, :player_x, :thread, :request, :request_method
-  attr_accessor :game, :board, :current_player, :move, :player_allowed, :status
+  attr_reader :cache, :template, :title, :player_o, :player_x
+  attr_accessor :game, :board, :current_player, :move, :player_allowed,
+    :thread, :status, :request, :request_method
 
   @@instance = nil
   @@instance_creation_mutex = Mutex.new
@@ -31,6 +33,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
 
   def do_GET(request, response)
     @request_method = request.request_method
+
     if @player_allowed && request.query['s']
       @move = request.query['s'].to_i
       wait_until_move_is_made(@move)
@@ -44,11 +47,13 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   end
 
   def do_POST(request, response)
+    @thread.exit if @thread
     @request_method = request.request_method
     @request = {:board => request.query["board"],
                 :player_o => request.query["player_o"],
                 :player_x => request.query["player_x"]}
     @player_allowed = false
+    @status = nil
     create_board
     create_players
     start_game_thread
@@ -72,28 +77,46 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     return @current_player == @player_o ? @player_o : @player_x
   end
 
+  def is_human_opponent?
+    return opponent.class == HumanPlayer
+  end
+
+  def is_human_player?
+    return @current_player.class == HumanPlayer
+  end
+
+# TODO: Replace class type checking with something better
   def generate_meta_html
-    if (opponent.class != HumanPlayer && !@board.game_over? &&
-       @request_method == "GET") || (@current_player != HumanPlayer &&
-       @request_method == "POST")
+    if (!is_human_opponent? && !@board.game_over? && @request_method == "GET") ||
+       (!is_human_opponent? && @request_method == "POST")
       return "<meta http-equiv=\"refresh\" content=\"2\" />"
     end
     return ""
   end
 
+  def generate_quit_html
+    return ("<form method='GET' action='/'>" +
+            "<input type=\"submit\" value=\"Return to Options\" />" +
+            "</form>")
+  end
+
   def generate_status_html
-    return "<img src=\"#{@status}\" alt=\"status\" width=\"502\" height=\"75\"/>" if @status
+    if @status
+      return "<img src=\"#{@status}\" alt=\"status\" width=\"502\" height=\"75\"/>"
+    end
     return ""
   end
 
   def generate_try_again_html
-    return ("<img src=\"images/labels/try_again.png\">" +
-        "<form method='POST' action='/new'>" +
-          "<input type=\"hidden\" name=\"board\" value=\"#{@request[:board]}\">" +
-          "<input type=\"hidden\" name=\"player_o\" value=\"#{@request[:player_o]}\">" +
-          "<input type=\"hidden\" name=\"player_x\" value=\"#{@request[:player_x]}\">" +
-          "<input type=\"submit\" value=\"Yes\" />" +
-        "</form>") if @board.game_over?
+    if @board.game_over?
+      return ("<form method='POST' action='/new'>" +
+            "<input type=\"hidden\" name=\"board\" value=\"#{@request[:board]}\">" +
+            "<input type=\"hidden\" name=\"player_o\" value=\"#{@request[:player_o]}\">" +
+            "<input type=\"hidden\" name=\"player_x\" value=\"#{@request[:player_x]}\">" +
+            "<img src=\"images/labels/try_again.png\">" +
+            "<input type=\"submit\" value=\"Yes\" />" +
+          "</form>")
+    end
     return ""
   end
 
@@ -144,6 +167,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     @thread = Thread.new do
       begin
         @game = Game.new(@player_o, @player_x, @board, self)
+# TODO: Replace with real Scoreboard class
         @game.scoreboard = NilScoreboard.new
         @game.play
       rescue StandardError => e

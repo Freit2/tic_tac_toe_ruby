@@ -8,9 +8,13 @@
   <title><%= title %></title>
   <script type="text/javascript" src="javascript/ttt.js"></script>
   <script type="text/javascript">TTT.setCurrentPiece("<%= @current_player.piece.downcase %>");</script>
+  <script type="text/javascript">TTT.setPlayerAllowed(<%= is_human_player? %>);</script>
   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
 </head>
 <body>
+  <div id="quit">
+    <%= generate_quit_html %>
+  </div>
   <div id="board_content">
     <p><%= generate_status_html %></p>
     <p><%= generate_board_html %></p>
