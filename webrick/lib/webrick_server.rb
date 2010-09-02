@@ -3,7 +3,7 @@ require 'webrick'
 class WEBrickServer
   attr_reader :server, :port, :document_root
 
-  def initialize(port=10000+rand(10000))
+  def initialize(port)
     @port ||= port
     WEBrick::HTTPUtils::DefaultMimeTypes.store('rhtml', 'text/html')
     @server = WEBrick::HTTPServer.new({:Port => @port, :DocumentRoot => @document_root})

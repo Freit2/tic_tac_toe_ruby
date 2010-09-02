@@ -20,6 +20,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
 
   def self.get_instance config, *options
     @@instance_creation_mutex.synchronize do
+      
       @@instance = @@instance || self.new(config, *options)
     end
   end
