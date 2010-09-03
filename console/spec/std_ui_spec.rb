@@ -3,9 +3,14 @@ require 'std_ui'
 
 describe StdUI do
   before(:each) do
+    File.delete("test.csv") if File.exists?("test.csv")
     @input = StringIO.new
     @output = StringIO.new
     @ui = StdUI.new(@input, @output)
+  end
+
+  after(:all) do
+    File.delete("test.csv") if File.exists?("test.csv")
   end
 
   it "should get input from user" do
@@ -70,7 +75,7 @@ describe StdUI do
   end
 
   it "should display scores" do
-    scoreboard = Scoreboard.new
+    scoreboard = Scoreboard.new("test.csv")
     scoreboard.scores = {:o => {:wins => 2, :losses => 1, :draws => 1},
                   :x => {:wins => 1, :losses => 2, :draws => 1}}
 

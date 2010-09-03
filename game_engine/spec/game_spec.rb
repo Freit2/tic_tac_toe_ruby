@@ -5,6 +5,7 @@ require 'std_ui'
 
 describe Game do
   before(:each) do
+    File.delete("test.csv") if File.exists?("test.csv")
     @input = StringIO.new
     @output = StringIO.new
     @board = Board.new
@@ -13,9 +14,13 @@ describe Game do
     @player_x = CpuPlayer.new('X')
     @player_o.ui = @ui
     @player_x.ui = @ui
-    @scoreboard = Scoreboard.new
+    @scoreboard = Scoreboard.new("test.csv")
     @game = Game.new(@player_o, @player_x, @board, @ui)
     @game.scoreboard = @scoreboard
+  end
+
+  after(:all) do
+    File.delete("test.csv") if File.exists?("test.csv")
   end
 
   it "should hold two different players" do
@@ -123,7 +128,7 @@ describe Game do
     @player_o.should_receive(:make_move).and_return(2)
 
     @game.should_receive(:display_end_message)
-    @game.scoreboard.should_receive(:add_score)
+    @game.scoreboard.should_receive(:add_scores)
     @game.ui.should_receive(:display_scores)
     @game.ui.should_receive(:display_try_again)
 

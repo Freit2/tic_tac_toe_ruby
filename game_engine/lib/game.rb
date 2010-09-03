@@ -40,7 +40,7 @@ class Game
       play_turn
     end
     display_end_message
-    @scoreboard.add_score(@board.winner)
+    @scoreboard.add_scores(@board.winner)
     @ui.display_scores(@scoreboard)
     @ui.display_try_again
   end

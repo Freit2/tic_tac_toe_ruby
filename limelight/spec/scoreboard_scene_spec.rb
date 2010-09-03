@@ -28,10 +28,10 @@ describe "Scoreboard Scene" do
   end
 
   it "should display scores" do
-    production.scoreboard.add_score('X')
-    production.scoreboard.add_score('X')
-    production.scoreboard.add_score('O')
-    production.scoreboard.add_score(nil)
+    production.scoreboard.add_scores('X')
+    production.scoreboard.add_scores('X')
+    production.scoreboard.add_scores('O')
+    production.scoreboard.add_scores(nil)
     scene.display_scores
 
     scene.find('player_x_wins').text.should == "2"
