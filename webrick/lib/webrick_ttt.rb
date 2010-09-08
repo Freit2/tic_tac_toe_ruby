@@ -5,7 +5,7 @@ require 'board_servlet'
 class WEBrickTTT < WEBrickServer
   include TTT
 
-  attr_reader :rhtml_path,
+  attr_reader :rhtml_path, :document_root,
               :board_selection, :player_selection_o, :player_selection_x
 
   def initialize(port=10000+rand(10000))
@@ -17,6 +17,7 @@ class WEBrickTTT < WEBrickServer
     @player_selection_o = TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]
     @player_selection_x = TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]
     initialize_cache
+    mount("/", WEBrick::HTTPServlet::FileHandler, @document_root)
     mount("/new", BoardServlet, TTT::CONFIG.cache)
   end
 

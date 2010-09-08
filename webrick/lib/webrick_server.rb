@@ -1,16 +1,20 @@
 require 'webrick'
 
 class WEBrickServer
-  attr_reader :server, :port, :document_root
+  attr_reader :server, :port
 
   def initialize(port)
     @port ||= port
     WEBrick::HTTPUtils::DefaultMimeTypes.store('rhtml', 'text/html')
-    @server = WEBrick::HTTPServer.new({:Port => @port, :DocumentRoot => @document_root})
+    @server = WEBrick::HTTPServer.new({:Port => @port})
   end
 
   def mount(dir, servlet, *options)
     @server.mount dir, servlet, *options
+  end
+
+  def mount_proc(dir, proc=nil, &block)
+    @server.mount_proc(dir, proc, &block)
   end
 
   def search_servlet(path)

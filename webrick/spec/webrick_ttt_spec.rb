@@ -11,12 +11,12 @@ describe WEBrickTTT do
   end
 
   it "should set defaults" do
-    @webrick_ttt.port.should_not == nil
-    @webrick_ttt.document_root.should_not == nil
-    @webrick_ttt.rhtml_path.should_not == nil
-    @webrick_ttt.board_selection.should_not == nil
-    @webrick_ttt.player_selection_o.should_not == nil
-    @webrick_ttt.player_selection_x.should_not == nil
+    @webrick_ttt.port.should_not be_nil
+    @webrick_ttt.document_root.should_not be_nil
+    @webrick_ttt.rhtml_path.should_not be_nil
+    @webrick_ttt.board_selection.should_not be_nil
+    @webrick_ttt.player_selection_o.should_not be_nil
+    @webrick_ttt.player_selection_x.should_not be_nil
   end
 
   it "should create an instance of WEBrickServer" do
