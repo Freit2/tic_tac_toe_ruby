@@ -29,16 +29,42 @@ class Game
     end
   end
 
-  def play_turn
-    make_move(@player_o)
-    make_move(@player_x)
-  end
-
   def play
     @ui.display_board(@board)
-    (@board.size/2.0).round.times do
-      play_turn
+    while !@board.game_over?
+      switch_player
+      make_move(@current_player)
     end
+    end_of_play
+  end
+
+  def current_player
+    if @current_player.nil?
+      @current_player = @board.move_list.size.even? ? @player_o : @player_x
+    end
+    return @current_player
+  end
+
+  def switch_player
+    @current_player = @current_player == @player_o ? @player_x : @player_o
+    @ui.current_player = @current_player
+  end
+
+  def non_blocking_play
+    while !@board.game_over?
+      switch_player
+      @ui.display_board(@board)
+      if @current_player.is_a? HumanPlayer
+        @ui.human_player_move(@current_player.piece)
+        return
+      else
+        @board.move(move_from(@current_player), @current_player.piece)
+      end
+    end
+    end_of_play
+  end
+
+  def end_of_play
     display_end_message
     @scoreboard.add_scores(@board.winner)
     @ui.display_scores(@scoreboard)

@@ -40,7 +40,7 @@ class TicTacToe
     end
     if board_type == '4'
       @board_selection = '4x4'
-      return Board.new(nil, 16)
+      return Board.new(16)
     else
       @board_selection = '3x3'
       return Board.new

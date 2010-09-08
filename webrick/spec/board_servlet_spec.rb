@@ -85,17 +85,17 @@ describe BoardServlet do
     array = [].fill(0, 9) { " " }
     array[0] = 'X'
     array[1] = 'O'
-    @board_servlet.board = Board.new(array)
+    @board_servlet.board = Board.from_moves(array)
     
-    @board_servlet.generate_row_html(0).should ==
+    @board_servlet.generate_square_html(0).should ==
       "<img border=\"1\" src=\"/images/pieces/x.png\" " +
       "alt=\"square\" width=\"130\" height=\"130\"  />"
 
-    @board_servlet.generate_row_html(1).should ==
+    @board_servlet.generate_square_html(1).should ==
       "<img border=\"1\" src=\"/images/pieces/o.png\" " +
       "alt=\"square\" width=\"130\" height=\"130\"  />"
 
-    @board_servlet.generate_row_html(2).should ==
+    @board_servlet.generate_square_html(2).should ==
       "<a href=\"/new?s=2\"><img border=\"1\" src=\"/images/pieces/empty_square.png\" " +
       "alt=\"square\" width=\"130\" height=\"130\" onmouseover=\"TTT.mouseOverSquare(this)\" " +
       "onmouseout=\"TTT.mouseOutSquare(this)\"/></a>"
@@ -103,9 +103,9 @@ describe BoardServlet do
 
   it "should generate board html" do
     array = [].fill(0, 9) { " " }
-    @board_servlet.board = Board.new(array)
+    @board_servlet.board = Board.from_moves(array)
     mock_row_html = "mock_row_html"
-    @board_servlet.should_receive(:generate_row_html).exactly(9).and_return(mock_row_html)
+    @board_servlet.should_receive(:generate_square_html).exactly(9).and_return(mock_row_html)
 
     board_html = ""
     3.times do
@@ -132,75 +132,26 @@ describe BoardServlet do
     @board_servlet.generate_body
   end
 
-  it "should create game on new thread" do
+  it "should create game" do
     Game.should_receive(:new).and_return(@board_servlet.game = mock("game"))
     @board_servlet.game.should_receive(:scoreboard=)
-    @board_servlet.game.should_receive(:play)
-    @board_servlet.should_receive(:wait_until_game_starts)
-    @board_servlet.start_game_thread
-    @board_servlet.thread.join
-  end
-
-  it "should set @move to user clicked square when player allowed" do
-    @board_servlet.should_receive(:wait_until_move_is_made)
-    @board_servlet.should_receive(:generate_body)
-    request = MockRequest.new
-    request.query['s'] = 3
-    @board_servlet.player_allowed = true
-    @board_servlet.do_GET(request, @response)
-
-    @board_servlet.move.should == 3
-  end
-
-  it "should not set @move to user clicked square when player not allowed" do
-    @board_servlet.should_receive(:generate_body)
-    request = MockRequest.new
-    request.query['s'] = 5
-    @board_servlet.player_allowed = false
-    @board_servlet.do_GET(request, @response)
-
-    @board_servlet.move.should == nil
+    @board_servlet.game.should_receive(:non_blocking_play)
+    @board_servlet.start_game
   end
 
   it "should receive message for do_POST" do
     @board_servlet.should_receive(:create_board)
     @board_servlet.should_receive(:create_players)
-    @board_servlet.should_receive(:start_game_thread)
+    @board_servlet.should_receive(:start_game)
     @board_servlet.should_receive(:generate_body)
 
     @board_servlet.do_POST(MockRequest.new, @response)
   end
 
-  it "should wait until game starts" do
-    @board_servlet.current_player = mock("current_player")
-    @board_servlet.should_not_receive(:sleep)
-    @board_servlet.wait_until_game_starts
-  end
-
-#  it "should wait until move" do
-#    @board_servlet.player_allowed.should == false
-#    move = nil
-#    thread = Thread.new do
-#      move = @board_servlet.wait_for_move
-#    end
-#    while !@board_servlet.move
-#      @board_servlet.move = 8
-#    end
-#    thread.join
-#    @board_servlet.player_allowed.should == false
-#    @board_servlet.move.should == move
-#  end
-
   it "should display message" do
     status = mock("status")
     @board_servlet.display_message(status)
     @board_servlet.status.should == status
-  end
-
-  it "should display cpu move message" do
-    piece = "O"
-    @board_servlet.should_receive(:display_message).with("/images/messages/player_#{piece.downcase}_moves.png")
-    @board_servlet.display_cpu_move_message(piece)
   end
 
   it "should display winner" do
@@ -212,5 +163,28 @@ describe BoardServlet do
   it "should display draw" do
     @board_servlet.should_receive(:display_message).with("/images/end_message/draw_game.png")
     @board_servlet.display_draw_message
+  end
+
+  it "should make a move on an empty board" do
+    request = WEBrick::HTTPRequest.new({})
+    request.cookies << WEBrick::Cookie.new("board_state", " , , , , , , , , ")
+    request.cookies << WEBrick::Cookie.new("board", "3x3")
+    request.cookies << WEBrick::Cookie.new("player_x", "human")
+    request.cookies << WEBrick::Cookie.new("player_o", "human")
+    request.instance_variable_set("@query", {'s' => '0'})
+    response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
+
+    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
+    @board_servlet.do_GET(request, response)
+
+    cookie(response, "board_state").should == "O, , , , , , , , "
+    cookie(response, "board").should == "3x3"
+    cookie(response, "player_x").should == "human"
+    cookie(response, "player_o").should == "human"
+  end
+
+  def cookie(response, name)
+    cookie = response.cookies.find {|c| c.name == name}
+    return cookie.nil? ? nil : cookie.value
   end
 end

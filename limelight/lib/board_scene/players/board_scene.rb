@@ -181,7 +181,7 @@ module BoardScene
 
   def create_board
     board_size = production.board_selection[0,1].to_i ** 2
-    @board = Board.new(nil, board_size)
+    @board = Board.new(board_size)
   end
 
   def start_game_thread

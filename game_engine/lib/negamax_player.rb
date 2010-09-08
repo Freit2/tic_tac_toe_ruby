@@ -12,7 +12,7 @@ class NegamaxPlayer < Player
   def make_move
     @ui.display_cpu_move_message(@piece)
     @scores = [].fill(0, @board.size) { -999 }
-    negamax(Board.new(@board.to_a), @piece, 1)
+    negamax(Board.from_moves(@board.to_a), @piece, 1)
     #puts @scores.inspect
     return best_random_move
   end

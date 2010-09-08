@@ -82,7 +82,7 @@ describe NegamaxPlayer do
   end
 
   it "should return 0 if no one is winner" do
-    board = Board.new([@x, @x, @o, @o, @x, @x, @x, @o, @o])
+    board = Board.from_moves([@x, @x, @o, @o, @x, @x, @x, @o, @o])
     @negamax.evaluate_score(board, @x, 5).should == 0
   end
 
@@ -141,7 +141,7 @@ describe NegamaxPlayer do
   end
 
   it "should make winning move, scenario 6" do
-    board = Board.new(nil, 16)
+    board = Board.new(16)
     @negamax.board = board
     board.move(0, @o)
     board.move(1, @x)
@@ -184,7 +184,7 @@ describe NegamaxPlayer do
   end
 
   it "should make blocking move, scenario 4" do
-    board = Board.new(nil, 16)
+    board = Board.new(16)
     @negamax.board = board
     board.move(0, @o)
     board.move(1, @x)

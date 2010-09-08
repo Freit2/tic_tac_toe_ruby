@@ -51,33 +51,11 @@ describe Game do
     @player_x.should_receive(:rand).twice.and_return(0)
     @game.move_from(@player_x).should == 0
   end
-
-  it "should play one turn" do
-    @player_o.should_receive(:make_move).and_return(0)
-    @player_o.should_receive(:piece).and_return('X')
-    @player_x.should_receive(:make_move).and_return(1)
-    @player_x.should_receive(:piece).and_return('X')
-
-    @game.play_turn
-  end
   
   it 'continues to ask a player for a valid move' do
     @player_o.should_receive(:make_move).twice.and_return(-1)
     @player_o.should_receive(:make_move).once.and_return(0)
     @game.move_from(@player_o).should == 0
-  end
-
-  it 'places pieces on board for players' do
-    @player_o.should_receive(:make_move).and_return(0)
-    @player_o.should_receive(:piece).and_return('X')
-    @player_x.should_receive(:make_move).and_return(1)
-    @player_x.should_receive(:piece).and_return('O')
-
-    @game.play_turn
-    @game.board.occupied?(0).should == true
-    @game.board.piece_in(0).should == 'X'
-    @game.board.occupied?(1).should == true
-    @game.board.piece_in(1).should == 'O'
   end
 
   it "should allow up to nine turns" do
@@ -106,16 +84,6 @@ describe Game do
     @player_o.should_receive(:make_move).and_return(2)
 
     @game.play
-  end
-
-  it "should display board after one turn" do
-    @player_o.should_receive(:piece).exactly(1).times.and_return('X')
-    @player_x.should_receive(:piece).exactly(1).times.and_return('O')
-    @player_o.should_receive(:make_move).and_return(0)
-    @player_x.should_receive(:make_move).and_return(1)
-
-    @game.ui.should_receive(:display_board).twice
-    @game.play_turn
   end
 
   it "should receive messages when game ends" do

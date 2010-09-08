@@ -44,7 +44,7 @@ describe StdUI do
   end
 
   it "should return board" do
-    board = Board.new([].fill(0, 9) { @x })
+    board = Board.from_moves([].fill(0, 9) { @x })
     board_line = "\n---+---+---\n"
     message = "\n\n #{board[0..2].join(' | ')} " +
       "#{board_line} #{board[3..5].join(' | ')} " +
@@ -52,7 +52,7 @@ describe StdUI do
 
     @ui.board_layout(board).should == message
 
-    board_2 = Board.new([].fill(0, 16) { @x })
+    board_2 = Board.from_moves([].fill(0, 16) { @x })
     board_line = "\n---+---+---+---\n"
     message = "\n\n #{board_2[0..3].join(' | ')} " +
       "#{board_line} #{board_2[4..7].join(' | ')} " +

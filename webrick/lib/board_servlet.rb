@@ -4,7 +4,7 @@ require 'webrick_ui'
 
 # TODO: Replace with real Scoreboard class
 class NilScoreboard
-  def add_score(w)
+  def add_scores(w)
   end
 end
 
@@ -13,7 +13,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
 
   attr_reader :cache, :template, :title, :player_o, :player_x
   attr_accessor :game, :board, :current_player, :move, :player_allowed,
-    :thread, :status, :request, :request_method
+                :thread, :status, :request, :request_method
 
   @@instance = nil
   @@instance_creation_mutex = Mutex.new
@@ -32,12 +32,25 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     @title = "WEBrick Tic Tac Toe!"
   end
 
-  def do_GET(request, response)
-    @request_method = request.request_method
+  def cookie_value(request, name)
+    request.cookies.each { |c| return c.value if c.name == name }
+    return nil
+  end
 
-    if @player_allowed && request.query['s']
+  def do_GET(request, response)
+    @request = {:board => cookie_value(request, "board"),
+                :player_o => cookie_value(request, "player_o"),
+                :player_x => cookie_value(request, "player_x")}
+    @board = Board.parse(cookie_value(request, "board_state"))
+    create_players
+    start_game
+
+    if request.query['s']
       @move = request.query['s'].to_i
-      wait_until_move_is_made(@move)
+      if @board.valid_move?(@move)
+        @board.move(@move, @game.current_player.piece)
+        @game.non_blocking_play
+      end
     end
 
     status, content_type, body = generate_body
@@ -45,19 +58,20 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     response.status = status
     response['Content-Type'] = content_type
     response.body = body
+    response.cookies.push(WEBrick::Cookie.new("board_state", @board.serialize))
+    response.cookies.push(WEBrick::Cookie.new("board", @request[:board]))
+    response.cookies.push(WEBrick::Cookie.new("player_o", @request[:player_o]))
+    response.cookies.push(WEBrick::Cookie.new("player_x", @request[:player_x]))
   end
 
   def do_POST(request, response)
-    @thread.exit if @thread
-    @request_method = request.request_method
     @request = {:board => request.query["board"],
                 :player_o => request.query["player_o"],
                 :player_x => request.query["player_x"]}
-    @player_allowed = false
     @status = nil
     create_board
     create_players
-    start_game_thread
+    start_game
     
     status, content_type, body = generate_body
     response.status = status
@@ -72,27 +86,6 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   def generate_body
     template = convert(@template)
     return 200, "text/html", template.result(binding)
-  end
-
-  def opponent
-    return @current_player == @player_o ? @player_o : @player_x
-  end
-
-  def is_human_opponent?
-    return opponent.class == HumanPlayer
-  end
-
-  def is_human_player?
-    return @current_player.class == HumanPlayer
-  end
-
-# TODO: Replace class type checking with something better
-  def generate_meta_html
-    if (!is_human_opponent? && !@board.game_over? && @request_method == "GET") ||
-       (!is_human_opponent? && @request_method == "POST")
-      return "<meta http-equiv=\"refresh\" content=\"2\" />"
-    end
-    return ""
   end
 
   def generate_quit_html
@@ -121,7 +114,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     return ""
   end
 
-  def generate_row_html(s)
+  def generate_square_html(s)
     if @board.empty_squares.include?(s)
       a_start = "<a href=\"/new?s=#{s}\">"
       a_end = "</a>"
@@ -142,7 +135,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     @board.ranges.each do |r|
       html = ""
       r.each do |s|
-        html += generate_row_html(s)
+        html += generate_square_html(s)
       end
       board_html += "#{html}<br />"
     end
@@ -151,7 +144,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
 
   def create_board
     board_size = @request[:board][0,1].to_i ** 2
-    @board = Board.new(nil, board_size)
+    @board = Board.new(board_size)
   end
 
   def create_players
@@ -164,18 +157,10 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     @player_x.cache = cache
   end
 
-  def start_game_thread
-    @thread = Thread.new do
-      begin
-        @game = Game.new(@player_o, @player_x, @board, self)
+  def start_game
+    @game = Game.new(@player_o, @player_x, @board, self)
 # TODO: Replace with real Scoreboard class
-        @game.scoreboard = NilScoreboard.new
-        @game.play
-      rescue StandardError => e
-        puts e
-        puts e.backtrace
-      end
-    end
-    wait_until_game_starts
+    @game.scoreboard = NilScoreboard.new
+    @game.non_blocking_play
   end
 end

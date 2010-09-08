@@ -1,21 +1,30 @@
 class Board
-  attr_reader :winning_patterns, :board, :size, :row_size,
+  attr_reader :winning_patterns, :move_list, :size, :row_size,
               :win_moves, :last_move
   attr_accessor :winner
 
-  def initialize(board=nil, size=9)
-    if board
-      @board = board.dup
-    else
-      @board = [].fill(0, size) { " " }
+  def self.parse(string_value)
+    moves = string_value.split(',')
+    return from_moves(moves)
+  end
+
+  def self.from_moves(moves)
+    board = self.new(moves.size)
+    moves.each_with_index do |move, i|
+      board.move_list[i] = move
     end
-    @size = @board.size
+    return board
+  end
+
+  def initialize(size=9)
+    @move_list = [].fill(0, size) { " " }
+    @size = @move_list.size
     @row_size = Math.sqrt(@size).to_i
     initialize_patterns
   end
 
   def [](index)
-    return @board[index]
+    return @move_list[index]
   end
 
   def ranges
@@ -31,48 +40,52 @@ class Board
   def rows
     array = []
     ranges.each do |r|
-      array << @board[r]
+      array << @move_list[r]
     end
     return array
   end
 
   def to_a
-    return @board.dup
+    return @move_list.dup
   end
 
   def to_s
-    return @board.join
+    return @move_list.join
+  end
+
+  def serialize
+    return @move_list.join(',')
   end
 
   def index(piece)
-    return @board.index(piece)
+    return @move_list.index(piece)
   end
 
   def occupied?(square)
-    return (@board.at(square) == " ") ? false : true
+    return (@move_list.at(square) == " ") ? false : true
   end
 
   def piece_in(square)
-    return @board.at(square)
+    return @move_list.at(square)
   end
 
   def move(square, piece)
     if !occupied?(square)
-      @board[square] = piece
+      @move_list[square] = piece
       @last_move = square
       find_winner
     end
   end
 
   def clear(square)
-    @board[square] = " "
+    @move_list[square] = " "
     @winner = nil
   end
 
   def empty_squares
     array = []
-    @board.size.times do |s|
-      if @board[s].strip == ''
+    @move_list.size.times do |s|
+      if @move_list[s].strip == ''
         array << s
       end
     end
@@ -87,14 +100,14 @@ class Board
   end
 
   def game_over?
-    if !someone_win? && @board.index(" ")
+    if !someone_win? && @move_list.index(" ")
       return false
     end
     return true
   end
 
   def find_winner
-    array = @winning_patterns.find { |p| p.first =~ @board.join }
+    array = @winning_patterns.find { |p| p.first =~ @move_list.join }
     if array
       @winner = (array.last === :X) ? 'X' : 'O'
       @win_moves = array[1]
