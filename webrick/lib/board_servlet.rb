@@ -15,16 +15,6 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   attr_accessor :game, :board, :current_player, :move, :player_allowed,
                 :thread, :status, :request, :request_method
 
-  @@instance = nil
-  @@instance_creation_mutex = Mutex.new
-
-  def self.get_instance config, *options
-    @@instance_creation_mutex.synchronize do
-      
-      @@instance = @@instance || self.new(config, *options)
-    end
-  end
-
   def initialize(config, *options)
     super(config)
     @cache = options[0]
