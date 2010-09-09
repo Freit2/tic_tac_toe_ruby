@@ -12,8 +12,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   include WEBrickUI
 
   attr_reader :cache, :template, :title, :player_o, :player_x
-  attr_accessor :game, :board, :current_player, :move, :player_allowed,
-                :thread, :status, :request, :request_method
+  attr_accessor :game, :board, :current_player, :status, :request
 
   def initialize(config, *options)
     super(config)
@@ -22,9 +21,24 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     @title = "WEBrick Tic Tac Toe!"
   end
 
+  def add_body_response(response)
+    status, content_type, body = generate_body
+
+    response.status = status
+    response['Content-Type'] = content_type
+    response.body = body
+  end
+
   def cookie_value(request, name)
     request.cookies.each { |c| return c.value if c.name == name }
     return nil
+  end
+
+  def create_new_cookies(response)
+    response.cookies.push(WEBrick::Cookie.new("board_state", @board.serialize))
+    response.cookies.push(WEBrick::Cookie.new("board", @request[:board]))
+    response.cookies.push(WEBrick::Cookie.new("player_o", @request[:player_o]))
+    response.cookies.push(WEBrick::Cookie.new("player_x", @request[:player_x]))
   end
 
   def do_GET(request, response)
@@ -42,16 +56,8 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
         @game.non_blocking_play
       end
     end
-
-    status, content_type, body = generate_body
-
-    response.status = status
-    response['Content-Type'] = content_type
-    response.body = body
-    response.cookies.push(WEBrick::Cookie.new("board_state", @board.serialize))
-    response.cookies.push(WEBrick::Cookie.new("board", @request[:board]))
-    response.cookies.push(WEBrick::Cookie.new("player_o", @request[:player_o]))
-    response.cookies.push(WEBrick::Cookie.new("player_x", @request[:player_x]))
+    add_body_response(response)
+    create_new_cookies(response)
   end
 
   def do_POST(request, response)
@@ -63,10 +69,30 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     create_players
     start_game
     
-    status, content_type, body = generate_body
-    response.status = status
-    response['Content-Type'] = content_type
-    response.body = body
+    add_body_response(response)
+    create_new_cookies(response)
+  end
+
+  def create_board
+    board_size = @request[:board][0,1].to_i ** 2
+    @board = Board.new(board_size)
+  end
+
+  def create_players
+    @player_o = Player.create(@request[:player_o][0,1], TTT::CONFIG.pieces[:o])
+    @player_x = Player.create(@request[:player_x][0,1], TTT::CONFIG.pieces[:x])
+    @player_o.ui = self
+    @player_x.ui = self
+    cache = @cache[TTT::CONFIG.boards[@request[:board]][:cache]]
+    @player_o.cache = cache
+    @player_x.cache = cache
+  end
+
+  def start_game
+    @game = Game.new(@player_o, @player_x, @board, self)
+# TODO: Replace with real Scoreboard class
+    @game.scoreboard = NilScoreboard.new
+    @game.non_blocking_play
   end
 
   def convert(rhtml_file)
@@ -130,27 +156,5 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
       board_html += "#{html}<br />"
     end
     return board_html
-  end
-
-  def create_board
-    board_size = @request[:board][0,1].to_i ** 2
-    @board = Board.new(board_size)
-  end
-
-  def create_players
-    @player_o = Player.create(@request[:player_o][0,1], TTT::CONFIG.pieces[:o])
-    @player_x = Player.create(@request[:player_x][0,1], TTT::CONFIG.pieces[:x])
-    @player_o.ui = self
-    @player_x.ui = self
-    cache = @cache[TTT::CONFIG.boards[@request[:board]][:cache]]
-    @player_o.cache = cache
-    @player_x.cache = cache
-  end
-
-  def start_game
-    @game = Game.new(@player_o, @player_x, @board, self)
-# TODO: Replace with real Scoreboard class
-    @game.scoreboard = NilScoreboard.new
-    @game.non_blocking_play
   end
 end

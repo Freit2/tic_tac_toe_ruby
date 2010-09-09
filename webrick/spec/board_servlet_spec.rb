@@ -2,35 +2,37 @@ require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'board_servlet'
 include TTT
 
-class MockRequest
-  attr_accessor :query, :request_method
-  def initialize
-    @query = {}
-    @request_method = "mock"
-  end
+def cookie(response, name)
+  cookie = response.cookies.find {|c| c.name == name}
+  return cookie.nil? ? nil : cookie.value
 end
 
-class MockResponse
-  attr_accessor :status, :body
-  def initialize
-    @hash = {}
-  end
-  def []=(key, value)
-  end
+def new_get_request(params)
+  request = WEBrick::HTTPRequest.new({})
+  request.cookies << WEBrick::Cookie.new("board_state", params[:board_state])
+  request.cookies << WEBrick::Cookie.new("board", params[:board])
+  request.cookies << WEBrick::Cookie.new("player_o", params[:player_o])
+  request.cookies << WEBrick::Cookie.new("player_x", params[:player_x])
+  request.instance_variable_set("@query", params[:query])
+  request
+end
+
+def new_post_request(params)
+  request = WEBrick::HTTPRequest.new({})
+  request.instance_variable_set("@query", params)
+  request
 end
 
 describe BoardServlet do
   before(:each) do
-    @server = mock("WEBrick::HTTPServer")
-    @server.should_receive(:[])
     initialize_cache
-    @board_servlet = BoardServlet.new(@server, TTT::CONFIG.cache)
+    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
     @request = {}
     @request[:board] = '3x3'
     @request[:player_o] = 'human'
     @request[:player_x] = 'unbeatable'
     @board_servlet.request = @request
-    @response = MockResponse.new
+    @response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
     @x = 'X'
     @o = 'O'
   end
@@ -145,7 +147,7 @@ describe BoardServlet do
     @board_servlet.should_receive(:start_game)
     @board_servlet.should_receive(:generate_body)
 
-    @board_servlet.do_POST(MockRequest.new, @response)
+    @board_servlet.do_POST(new_post_request({:query => {}}), @response)
   end
 
   it "should display message" do
@@ -165,13 +167,13 @@ describe BoardServlet do
     @board_servlet.display_draw_message
   end
 
-  it "should make a move on an empty board" do
-    request = WEBrick::HTTPRequest.new({})
-    request.cookies << WEBrick::Cookie.new("board_state", " , , , , , , , , ")
-    request.cookies << WEBrick::Cookie.new("board", "3x3")
-    request.cookies << WEBrick::Cookie.new("player_x", "human")
-    request.cookies << WEBrick::Cookie.new("player_o", "human")
-    request.instance_variable_set("@query", {'s' => '0'})
+  it "makes a move on an empty board during GET request" do
+    params = { :board_state => " , , , , , , , , ",
+               :board => '3x3',
+               :player_o => 'human',
+               :player_x => 'human',
+               :query => {'s' => '0'} }
+    request = new_get_request(params)
     response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
 
     @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
@@ -179,12 +181,42 @@ describe BoardServlet do
 
     cookie(response, "board_state").should == "O, , , , , , , , "
     cookie(response, "board").should == "3x3"
-    cookie(response, "player_x").should == "human"
     cookie(response, "player_o").should == "human"
+    cookie(response, "player_x").should == "human"
   end
 
-  def cookie(response, name)
-    cookie = response.cookies.find {|c| c.name == name}
-    return cookie.nil? ? nil : cookie.value
+  it "makes a full turn on an empty board during GET request" do
+    params = { :board_state => " , , , , , , , , ",
+               :board => '3x3',
+               :player_o => 'human',
+               :player_x => 'unbeatable',
+               :query => {'s' => '0'} }
+    request = new_get_request(params)
+    response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
+
+    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
+    @board_servlet.do_GET(request, response)
+
+    cookie(response, "board_state").should == "O, , , ,X, , , , "
+    cookie(response, "board").should == "3x3"
+    cookie(response, "player_o").should == "human"
+    cookie(response, "player_x").should == "unbeatable"
+  end
+
+  it "makes a move on an empty board during POST request" do
+    params = { "board" => '3x3',
+               "player_o" => 'easy',
+               "player_x" => 'human' }
+    request = new_post_request(params)
+    response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
+
+    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
+    @board_servlet.do_POST(request, response)
+
+    cookie(response, "board_state").count('O').should == 1
+    cookie(response, "board_state").count(' ').should == 8
+    cookie(response, "board").should == "3x3"
+    cookie(response, "player_o").should == "easy"
+    cookie(response, "player_x").should == "human"
   end
 end
