@@ -41,7 +41,17 @@ See here for more information: http://limelight.8thlight.com/main/download
 
 Once installed, navigate to the cloned repo
 
-To run on WEBrick (WIP)
+To run on WEBrick
 -----------------------
 
 type **ruby webrick/lib/webrick_ttt.rb**
+
+Go to http://localhost:7546/
+
+This should be able to run any Ruby VM.  It supports simultaneous game play.
+
+
+To run on Rails (WIP)
+-----------------------
+
+Navigate to the rails3 dir, and type **rails server**
