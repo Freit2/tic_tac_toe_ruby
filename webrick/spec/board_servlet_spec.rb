@@ -145,7 +145,8 @@ describe BoardServlet do
     @board_servlet.should_receive(:create_board)
     @board_servlet.should_receive(:create_players)
     @board_servlet.should_receive(:start_game)
-    @board_servlet.should_receive(:generate_body)
+    @board_servlet.should_receive(:add_body_response)
+    @board_servlet.should_receive(:create_new_cookies)
 
     @board_servlet.do_POST(new_post_request({:query => {}}), @response)
   end
@@ -168,7 +169,7 @@ describe BoardServlet do
   end
 
   it "makes a move on an empty board during GET request" do
-    params = { :board_state => " , , , , , , , , ",
+    params = { :board_state => "-,-,-,-,-,-,-,-,-",
                :board => '3x3',
                :player_o => 'human',
                :player_x => 'human',
@@ -179,14 +180,14 @@ describe BoardServlet do
     @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
     @board_servlet.do_GET(request, response)
 
-    cookie(response, "board_state").should == "O, , , , , , , , "
+    cookie(response, "board_state").should == "O,-,-,-,-,-,-,-,-"
     cookie(response, "board").should == "3x3"
     cookie(response, "player_o").should == "human"
     cookie(response, "player_x").should == "human"
   end
 
   it "makes a full turn on an empty board during GET request" do
-    params = { :board_state => " , , , , , , , , ",
+    params = { :board_state => "-,-,-,-,-,-,-,-,-",
                :board => '3x3',
                :player_o => 'human',
                :player_x => 'unbeatable',
@@ -197,7 +198,7 @@ describe BoardServlet do
     @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
     @board_servlet.do_GET(request, response)
 
-    cookie(response, "board_state").should == "O, , , ,X, , , , "
+    cookie(response, "board_state").should == "O,-,-,-,X,-,-,-,-"
     cookie(response, "board").should == "3x3"
     cookie(response, "player_o").should == "human"
     cookie(response, "player_x").should == "unbeatable"
@@ -214,7 +215,7 @@ describe BoardServlet do
     @board_servlet.do_POST(request, response)
 
     cookie(response, "board_state").count('O').should == 1
-    cookie(response, "board_state").count(' ').should == 8
+    cookie(response, "board_state").count('-').should == 8
     cookie(response, "board").should == "3x3"
     cookie(response, "player_o").should == "easy"
     cookie(response, "player_x").should == "human"

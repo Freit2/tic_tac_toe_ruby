@@ -35,7 +35,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   end
 
   def create_new_cookies(response)
-    response.cookies.push(WEBrick::Cookie.new("board_state", @board.serialize))
+    response.cookies.push(WEBrick::Cookie.new("board_state", @board.serialize.gsub(/\s/, '-')))
     response.cookies.push(WEBrick::Cookie.new("board", @request[:board]))
     response.cookies.push(WEBrick::Cookie.new("player_o", @request[:player_o]))
     response.cookies.push(WEBrick::Cookie.new("player_x", @request[:player_x]))
@@ -45,7 +45,8 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     @request = {:board => cookie_value(request, "board"),
                 :player_o => cookie_value(request, "player_o"),
                 :player_x => cookie_value(request, "player_x")}
-    @board = Board.parse(cookie_value(request, "board_state"))
+    board_state = cookie_value(request, "board_state").gsub(/-/, ' ')
+    @board = Board.parse(board_state)
     create_players
     start_game
 
@@ -68,7 +69,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
     create_board
     create_players
     start_game
-    
+
     add_body_response(response)
     create_new_cookies(response)
   end
