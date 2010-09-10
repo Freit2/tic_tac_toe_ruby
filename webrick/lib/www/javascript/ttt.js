@@ -9,22 +9,18 @@ TTT = function() {
       mouseOutSquare;
 
   currentPiece = "";
-  isPlayerAllowed = false;
 
   return {
     setCurrentPiece : function(player) {
       currentPiece = player;
     },
-    setPlayerAllowed : function(bool) {
-      isPlayerAllowed = bool;
-    },
     mouseOverSquare : function(element) {
-      if (element.src.match(/empty_square/) && isPlayerAllowed) {
+      if (element.src.match(/empty_square/) && currentPiece) {
         element.src = "/images/pieces/" + currentPiece + "_dim.png";
       }
     },
     mouseOutSquare : function(element) {
-      if (element.src.match(/_dim/) && isPlayerAllowed) {
+      if (element.src.match(/_dim/)) {
         element.src = "/images/pieces/empty_square.png";
       }
     }

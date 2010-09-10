@@ -6,8 +6,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
   <title><%= title %></title>
   <script type="text/javascript" src="javascript/ttt.js"></script>
-  <script type="text/javascript">TTT.setCurrentPiece("<%= @current_player.piece.downcase %>");</script>
-  <script type="text/javascript">TTT.setPlayerAllowed(<%= true %>);</script>
+  <script type="text/javascript">TTT.setCurrentPiece("<%= @game && @game.current_player.piece.downcase %>");</script>
   <link rel="stylesheet" href="/css/screen.css" type="text/css" media="screen, projection" />
 </head>
 <body>

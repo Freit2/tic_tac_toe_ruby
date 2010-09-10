@@ -47,14 +47,16 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
                 :player_x => cookie_value(request, "player_x")}
     board_state = cookie_value(request, "board_state").gsub(/-/, ' ')
     @board = Board.parse(board_state)
-    create_players
-    start_game
+    if !@board.game_over?
+      create_players
+      start_game
 
-    if request.query['s']
-      @move = request.query['s'].to_i
-      if @board.valid_move?(@move)
-        @board.move(@move, @game.current_player.piece)
-        @game.non_blocking_play
+      if request.query['s']
+        @move = request.query['s'].to_i
+        if @board.valid_move?(@move)
+          @board.move(@move, @game.current_player.piece)
+          @game.non_blocking_play
+        end
       end
     end
     add_body_response(response)
@@ -106,9 +108,9 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   end
 
   def generate_quit_html
-    return ("<form method='GET' action='/'>" +
-            "<input type=\"submit\" value=\"Return to Options\" />" +
-            "</form>")
+    "<form method='GET' action='/'>" +
+      "<input type=\"submit\" value=\"Return to Options\" />" +
+      "</form>"
   end
 
   def generate_status_html
@@ -142,9 +144,9 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
       a_start = a_end = on_mouse_over = on_mouse_out = ""
       image = "#{@board[s].downcase}.png"
     end
-    return ("#{a_start}<img border=\"1\" src=\"/images/pieces/#{image}\" " +
+    "#{a_start}<img border=\"1\" src=\"/images/pieces/#{image}\" " +
       "alt=\"square\" width=\"130\" height=\"130\" " +
-      "#{on_mouse_over} #{on_mouse_out}/>#{a_end}")
+      "#{on_mouse_over} #{on_mouse_out}/>#{a_end}"
   end
 
   def generate_board_html

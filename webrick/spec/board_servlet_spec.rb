@@ -198,6 +198,9 @@ describe BoardServlet do
     @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
     @board_servlet.do_GET(request, response)
 
+    @board_servlet.game.should_not be_nil
+    @board_servlet.player_o.should_not be_nil
+    @board_servlet.player_x.should_not be_nil
     cookie(response, "board_state").should == "O,-,-,-,X,-,-,-,-"
     cookie(response, "board").should == "3x3"
     cookie(response, "player_o").should == "human"
@@ -219,5 +222,26 @@ describe BoardServlet do
     cookie(response, "board").should == "3x3"
     cookie(response, "player_o").should == "easy"
     cookie(response, "player_x").should == "human"
+  end
+
+  it "does not create players and game when board is game over" do
+    params = { :board_state => "O,O,-,X,X,X,-,-,O",
+               :board => '3x3',
+               :player_o => 'human',
+               :player_x => 'unbeatable',
+               :query => {'s' => '2'} }
+    request = new_get_request(params)
+    response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
+
+    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
+    @board_servlet.do_GET(request, response)
+
+    @board_servlet.game.should be_nil
+    @board_servlet.player_o.should be_nil
+    @board_servlet.player_x.should be_nil
+    cookie(response, "board_state").should == "O,O,-,X,X,X,-,-,O"
+    cookie(response, "board").should == "3x3"
+    cookie(response, "player_o").should == "human"
+    cookie(response, "player_x").should == "unbeatable"
   end
 end
