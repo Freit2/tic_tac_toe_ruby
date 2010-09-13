@@ -1,0 +1,49 @@
+body {
+  background-image:url("../../../webrick/lib/www/images/background/background_tile.jpg");
+  font-family: Georgia, Arial, Sans-serif;
+  font-size: 17px;
+  line-height: 1.7em;
+  padding: 0;
+}
+a{
+  color: #3B3A40;
+}
+a:hover{
+  color: #3B3A40;
+  text-decoration: none;
+}
+h1,h2,h3,h4{
+  font-family: Sans-serif;
+  font-weight: normal;
+  line-height: 1em;
+}
+h1 a, h2 a, h3 a, h4 a{
+  color: #3B3A40;
+  text-decoration: none;
+}
+h1{
+  font-size: 42px;
+  border-bottom: 1px solid #eee;
+  margin-bottom: .25em;
+  padding-bottom: 8px;
+}
+.select{
+  padding-left: 50px;
+}
+#content {
+  width: 500px;
+  margin: 0 auto;
+  padding: 15px;
+}
+#board_content {
+  width: 543px;
+  margin: 0 auto;
+  padding: 15px;
+}
+#button {
+  padding-left: 200px;
+}
+#quit {
+  position:absolute;
+  right:50px;
+}
