@@ -1,6 +1,5 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'board_servlet'
-include TTT
 
 def cookie(response, name)
   cookie = response.cookies.find {|c| c.name == name}
@@ -25,7 +24,7 @@ end
 
 describe BoardServlet do
   before(:each) do
-    initialize_cache
+    TTT.initialize_cache
     @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
     @request = {}
     @request[:board] = '3x3'

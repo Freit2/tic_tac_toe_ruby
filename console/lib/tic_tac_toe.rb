@@ -2,7 +2,6 @@ require File.expand_path(File.dirname(__FILE__)) + "/init"
 require 'std_ui'
 
 class TicTacToe
-  include TTT
 
   attr_reader :ui, :player_o, :player_x, :cache, :scoreboard
   attr_accessor :game, :board, :board_selection
@@ -10,7 +9,7 @@ class TicTacToe
   def initialize(ui = StdUI.new)
     @ui = ui
     @scoreboard = Scoreboard.new
-    initialize_cache
+    TTT.initialize_cache
   end
 
   def player(piece)

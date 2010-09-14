@@ -10,7 +10,7 @@ describe TicTacToe do
     @output = StringIO.new
     @ui = StdUI.new(@input, @output)
     @ttt = TicTacToe.new(@ui)
-    @ttt.initialize_cache
+    TTT.initialize_cache
   end
   
   it "should be able to create a new instance" do

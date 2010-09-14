@@ -6,10 +6,6 @@ describe WEBrickTTT do
     @webrick_ttt = WEBrickTTT.new
   end
 
-  it "should include TTT" do
-    WEBrickTTT.should include(TTT)
-  end
-
   it "should set defaults" do
     @webrick_ttt.port.should_not be_nil
     @webrick_ttt.document_root.should_not be_nil

@@ -56,7 +56,7 @@ module TTT
 
   CONFIG = Config.new
 
-  def self.add_cache(key)
+  def add_cache(key)
     case CONFIG.boards[key][:cache]
     when :hash
       CONFIG.cache.update!({:hash => HashCache.new})
@@ -71,7 +71,7 @@ module TTT
     end
   end
 
-  def self.initialize_cache
+  def initialize_cache
     CONFIG.boards.active.each do |key|
       add_cache(key)
     end

@@ -4,7 +4,6 @@
 
 module Production
   require File.expand_path(File.dirname(__FILE__)) + "/init"
-  include TTT
 
   attr_reader :boards, :players, :cache, :images_path
   attr_accessor :board_selection, :player_selection, :player_o, :player_x, :scoreboard
@@ -36,7 +35,7 @@ module Production
       close
     end
     @scoreboard = Scoreboard.new
-    initialize_cache
+    TTT.initialize_cache
     @board_selection = TTT::CONFIG.boards.active.first
     @player_selection = [{:id => TTT::CONFIG.pieces[:o], :name => TTT::CONFIG.players.keys.first.to_s,
                           :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]},

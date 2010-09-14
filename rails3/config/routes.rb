@@ -1,4 +1,8 @@
 Rails3::Application.routes.draw do
+  match '/' => 'game#new'
+  match '/game/new' => 'game#new'
+  match '/game/start' => 'game#start'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

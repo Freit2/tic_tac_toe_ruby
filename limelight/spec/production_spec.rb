@@ -41,8 +41,8 @@ describe "Production" do
     production.player_selection.last[:value].should == "unbeatable"
   end
 
-  it "should call production.initialize_cache" do
-    production.should_receive(:initialize_cache)
+  it "should call TTT.initialize_cache" do
+    TTT.should_receive(:initialize_cache)
     production.production_loaded
   end
 
@@ -57,19 +57,19 @@ describe "Production" do
 
   it "should deactivate 4x4 if MongoDB is not found" do
     MongoCache.should_receive(:db_installed?).and_return(false)
-    production.initialize_cache
+    TTT.initialize_cache
     TTT::CONFIG.boards['4x4'][:active].should == false
   end
 
   it "should create an instance of MongoCache" do
     MongoCache.should_receive(:db_installed?).and_return(true)
     MongoCache.should_receive(:new).and_return(mongo_cache = mock("mongo_cache"))
-    production.initialize_cache
+    TTT.initialize_cache
     TTT::CONFIG.cache[:mongo].should equal(mongo_cache)
   end
 
   it "should create an instance of HashCache" do
-    production.initialize_cache
+    TTT.initialize_cache
     TTT::CONFIG.cache[:hash].class.should == HashCache
   end
 end
