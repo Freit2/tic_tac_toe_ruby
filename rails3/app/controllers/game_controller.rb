@@ -56,6 +56,7 @@ class GameController < ApplicationController
   end
 
   def initialize_cache
+    return if TTT_CONFIG[:cache].keys.size > 0
     active_boards.each do |key|
       add_cache(key)
     end

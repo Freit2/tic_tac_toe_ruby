@@ -40,14 +40,12 @@ module TicTacToeEngine
     end
 
     def current_player
-      if @current_player.nil?
-        @current_player = @board.move_list.size.even? ? @player_o : @player_x
-      end
-      return @current_player
+      @current_player = @board.moves_made.even? ? @player_o : @player_x
+      @current_player
     end
 
     def switch_player
-      @current_player = @current_player == @player_o ? @player_x : @player_o
+      current_player
       @ui.current_player = @current_player
     end
 

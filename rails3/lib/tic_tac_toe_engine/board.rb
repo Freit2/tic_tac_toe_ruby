@@ -58,6 +58,10 @@ module TicTacToeEngine
       return @move_list.join(',')
     end
 
+    def moves_made
+      return @size - @move_list.count(' ')
+    end
+
     def index(piece)
       return @move_list.index(piece)
     end

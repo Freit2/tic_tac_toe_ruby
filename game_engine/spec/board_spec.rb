@@ -162,4 +162,11 @@ describe Board do
     new_board = Board.parse(string_value)
     new_board.move_list.should == [@o, @x, @o, @o, @x, @o, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
   end
+
+  it "returns moves made" do
+    @board.move(0, @o)
+    @board.move(1, @x)
+    @board.move(2, @o)
+    @board.moves_made.should == 3
+  end
 end
