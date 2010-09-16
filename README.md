@@ -48,10 +48,14 @@ type **ruby webrick/lib/webrick_ttt.rb**
 
 Go to http://localhost:7546/
 
-This should be able to run any Ruby VM.  It supports simultaneous game play.
+This should run on any Ruby VM.  It supports simultaneous game play.
 
 
-To run on Rails (WIP)
+To run on Rails
 -----------------------
 
 Navigate to the rails3 dir, and type **rails server**
+
+Go to http://localhost:3000/ unless otherwise noted
+
+This should run on any Ruby VM.  It supports simultaneous game play.
