@@ -1,3 +1,40 @@
+GIT
+  remote: git://github.com/rspec/rspec-core.git
+  revision: 6557d682a99e8992c06775b6f102dc4aa293257e
+  specs:
+    rspec-core (2.0.0.beta.22)
+
+GIT
+  remote: git://github.com/rspec/rspec-expectations.git
+  revision: de19d980515c5127726658bf68bf58e5b0d50d62
+  specs:
+    rspec-expectations (2.0.0.beta.22)
+      diff-lcs (>= 1.1.2)
+
+GIT
+  remote: git://github.com/rspec/rspec-mocks.git
+  revision: e1e288b664ed0e001fc2ce0a31783901579e3f79
+  specs:
+    rspec-mocks (2.0.0.beta.22)
+      rspec-core (= 2.0.0.beta.22)
+      rspec-expectations (= 2.0.0.beta.22)
+
+GIT
+  remote: git://github.com/rspec/rspec-rails.git
+  revision: 6caa5156424dd6342260404fb1ba2336a818a133
+  specs:
+    rspec-rails (2.0.0.beta.22)
+      rspec (= 2.0.0.beta.22)
+
+GIT
+  remote: git://github.com/rspec/rspec.git
+  revision: 3df49f5942c29aa3eaff80f5904e0b3d4b4f6fed
+  specs:
+    rspec (2.0.0.beta.22)
+      rspec-core (= 2.0.0.beta.22)
+      rspec-expectations (= 2.0.0.beta.22)
+      rspec-mocks (= 2.0.0.beta.22)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -63,18 +100,6 @@ GEM
       rake (>= 0.8.4)
       thor (~> 0.14.0)
     rake (0.8.7)
-    rspec (2.0.0.beta.22)
-      rspec-core (= 2.0.0.beta.22)
-      rspec-expectations (= 2.0.0.beta.22)
-      rspec-mocks (= 2.0.0.beta.22)
-    rspec-core (2.0.0.beta.22)
-    rspec-expectations (2.0.0.beta.22)
-      diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0.beta.22)
-      rspec-core (= 2.0.0.beta.22)
-      rspec-expectations (= 2.0.0.beta.22)
-    rspec-rails (2.0.0.beta.22)
-      rspec (= 2.0.0.beta.22)
     thor (0.14.0)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
@@ -86,4 +111,8 @@ PLATFORMS
 DEPENDENCIES
   mongo (>= 1.0.8)
   rails (= 3.0.0)
-  rspec-rails (>= 2.0.0.beta.22)
+  rspec!
+  rspec-core!
+  rspec-expectations!
+  rspec-mocks!
+  rspec-rails!
