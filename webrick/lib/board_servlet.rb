@@ -2,12 +2,6 @@ require 'webrick'
 require 'erb'
 require 'webrick_ui'
 
-# TODO: Replace with real Scoreboard class
-class NilScoreboard
-  def add_scores(w)
-  end
-end
-
 class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
   include WEBrickUI
 
@@ -46,7 +40,7 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
                 :player_o => cookie_value(request, "player_o"),
                 :player_x => cookie_value(request, "player_x")}
     board_state = cookie_value(request, "board_state").gsub(/-/, ' ')
-    @board = Board.parse(board_state)
+    @board = TicTacToeEngine::Board.parse(board_state)
     if !@board.game_over?
       create_players
       start_game
@@ -78,23 +72,23 @@ class BoardServlet < WEBrick::HTTPServlet::AbstractServlet
 
   def create_board
     board_size = @request[:board][0,1].to_i ** 2
-    @board = Board.new(board_size)
+    @board = TicTacToeEngine::Board.new(board_size)
   end
 
   def create_players
-    @player_o = Player.create(@request[:player_o][0,1], TTT::CONFIG.pieces[:o])
-    @player_x = Player.create(@request[:player_x][0,1], TTT::CONFIG.pieces[:x])
+    @player_o = TicTacToeEngine::Player.create(@request[:player_o][0,1], TicTacToeEngine::TTT::CONFIG.pieces[:o])
+    @player_x = TicTacToeEngine::Player.create(@request[:player_x][0,1], TicTacToeEngine::TTT::CONFIG.pieces[:x])
     @player_o.ui = self
     @player_x.ui = self
-    cache = @cache[TTT::CONFIG.boards[@request[:board]][:cache]]
+    cache = @cache[TicTacToeEngine::TTT::CONFIG.boards[@request[:board]][:cache]]
     @player_o.cache = cache
     @player_x.cache = cache
   end
 
   def start_game
-    @game = Game.new(@player_o, @player_x, @board, self)
+    @game = TicTacToeEngine::Game.new(@player_o, @player_x, @board, self)
 # TODO: Replace with real Scoreboard class
-    @game.scoreboard = NilScoreboard.new
+    @game.scoreboard = TicTacToeEngine::NilScoreboard.new
     @game.non_blocking_play
   end
 

@@ -24,8 +24,8 @@ end
 
 describe BoardServlet do
   before(:each) do
-    TTT.initialize_cache
-    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
+    TicTacToeEngine::TTT.initialize_cache
+    @board_servlet = BoardServlet.new({}, TicTacToeEngine::TTT::CONFIG.cache)
     @request = {}
     @request[:board] = '3x3'
     @request[:player_o] = 'human'
@@ -37,21 +37,21 @@ describe BoardServlet do
   end
 
   it "should set defaults" do
-    @board_servlet.cache.should == TTT::CONFIG.cache
+    @board_servlet.cache.should == TicTacToeEngine::TTT::CONFIG.cache
     @board_servlet.template.should == "board_template.rhtml"
     @board_servlet.title.should == "WEBrick Tic Tac Toe!"
   end
 
   it "should create board" do
     @board_servlet.create_board
-    @board_servlet.board.class.should == Board
+    @board_servlet.board.class.should == TicTacToeEngine::Board
     @board_servlet.board.size.should == 9
   end
 
   it "should create players" do
     @board_servlet.create_players
-    @board_servlet.player_o.class.should == HumanPlayer
-    @board_servlet.player_x.class.should == NegamaxPlayer
+    @board_servlet.player_o.class.should == TicTacToeEngine::HumanPlayer
+    @board_servlet.player_x.class.should == TicTacToeEngine::NegamaxPlayer
   end
 
   it "should add UI to players" do
@@ -62,8 +62,8 @@ describe BoardServlet do
 
   it "should add cache to players" do
     @board_servlet.create_players
-    @board_servlet.player_o.cache.class.should == HashCache
-    @board_servlet.player_x.cache.class.should == HashCache
+    @board_servlet.player_o.cache.class.should == TicTacToeEngine::HashCache
+    @board_servlet.player_x.cache.class.should == TicTacToeEngine::HashCache
   end
 
   it "should generate quit html" do
@@ -86,7 +86,7 @@ describe BoardServlet do
     array = [].fill(0, 9) { " " }
     array[0] = 'X'
     array[1] = 'O'
-    @board_servlet.board = Board.from_moves(array)
+    @board_servlet.board = TicTacToeEngine::Board.from_moves(array)
     
     @board_servlet.generate_square_html(0).should ==
       "<img border=\"1\" src=\"/images/pieces/x.png\" " +
@@ -104,7 +104,7 @@ describe BoardServlet do
 
   it "should generate board html" do
     array = [].fill(0, 9) { " " }
-    @board_servlet.board = Board.from_moves(array)
+    @board_servlet.board = TicTacToeEngine::Board.from_moves(array)
     mock_row_html = "mock_row_html"
     @board_servlet.should_receive(:generate_square_html).exactly(9).and_return(mock_row_html)
 
@@ -134,7 +134,7 @@ describe BoardServlet do
   end
 
   it "should create game" do
-    Game.should_receive(:new).and_return(@board_servlet.game = mock("game"))
+    TicTacToeEngine::Game.should_receive(:new).and_return(@board_servlet.game = mock("game"))
     @board_servlet.game.should_receive(:scoreboard=)
     @board_servlet.game.should_receive(:non_blocking_play)
     @board_servlet.start_game
@@ -176,7 +176,7 @@ describe BoardServlet do
     request = new_get_request(params)
     response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
 
-    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
+    @board_servlet = BoardServlet.new({}, TicTacToeEngine::TTT::CONFIG.cache)
     @board_servlet.do_GET(request, response)
 
     cookie(response, "board_state").should == "O,-,-,-,-,-,-,-,-"
@@ -194,7 +194,7 @@ describe BoardServlet do
     request = new_get_request(params)
     response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
 
-    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
+    @board_servlet = BoardServlet.new({}, TicTacToeEngine::TTT::CONFIG.cache)
     @board_servlet.do_GET(request, response)
 
     @board_servlet.game.should_not be_nil
@@ -213,7 +213,7 @@ describe BoardServlet do
     request = new_post_request(params)
     response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
 
-    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
+    @board_servlet = BoardServlet.new({}, TicTacToeEngine::TTT::CONFIG.cache)
     @board_servlet.do_POST(request, response)
 
     cookie(response, "board_state").count('O').should == 1
@@ -232,7 +232,7 @@ describe BoardServlet do
     request = new_get_request(params)
     response = WEBrick::HTTPResponse.new({:HTTPVersion => "1.0"})
 
-    @board_servlet = BoardServlet.new({}, TTT::CONFIG.cache)
+    @board_servlet = BoardServlet.new({}, TicTacToeEngine::TTT::CONFIG.cache)
     @board_servlet.do_GET(request, response)
 
     @board_servlet.game.should be_nil

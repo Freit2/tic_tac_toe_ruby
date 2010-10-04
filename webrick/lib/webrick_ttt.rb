@@ -12,12 +12,12 @@ class WEBrickTTT < WEBrickServer
     @document_root = "#{File.dirname(__FILE__)}/www/"
     @rhtml_path = "#{File.dirname(__FILE__)}/rhtml/"
     super
-    @board_selection = TTT::CONFIG.boards.active.first
-    @player_selection_o = TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]
-    @player_selection_x = TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]
-    TTT.initialize_cache
+    @board_selection = TicTacToeEngine::TTT::CONFIG.boards.active.first
+    @player_selection_o = TicTacToeEngine::TTT::CONFIG.players[TicTacToeEngine::TTT::CONFIG.players.keys.first][:value]
+    @player_selection_x = TicTacToeEngine::TTT::CONFIG.players[TicTacToeEngine::TTT::CONFIG.players.keys.last][:value]
+    TicTacToeEngine::TTT.initialize_cache
     mount("/", WEBrick::HTTPServlet::FileHandler, @document_root)
-    mount("/new", BoardServlet, TTT::CONFIG.cache)
+    mount("/new", BoardServlet, TicTacToeEngine::TTT::CONFIG.cache)
   end
 
   def start
@@ -27,7 +27,7 @@ class WEBrickTTT < WEBrickServer
 
   def options_for_board
     options = ""
-    TTT::CONFIG.boards.active.each do |board|
+    TicTacToeEngine::TTT::CONFIG.boards.active.each do |board|
       if board == @board_selection
         options += "<option selected=\"selected\">#{board}</option>"
       else
@@ -39,7 +39,7 @@ class WEBrickTTT < WEBrickServer
 
   def options_for_player(default_selection)
     options = ""
-    TTT::CONFIG.players.values.each do |hash|
+    TicTacToeEngine::TTT::CONFIG.players.values.each do |hash|
       if hash[:value] == default_selection
         options += "<option selected=\"selected\">#{hash[:value]}</option>"
       else
