@@ -1,7 +1,5 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'tic_tac_toe'
-require 'human_player'
-require 'cpu_player'
 require 'std_ui'
 
 describe TicTacToe do
@@ -10,7 +8,7 @@ describe TicTacToe do
     @output = StringIO.new
     @ui = StdUI.new(@input, @output)
     @ttt = TicTacToe.new(@ui)
-    TTT.initialize_cache
+    TicTacToeEngine::TTT.initialize_cache
   end
   
   it "should be able to create a new instance" do
@@ -19,13 +17,13 @@ describe TicTacToe do
 
   it "should return player" do
     @ttt.ui.input.string = "h"
-    @ttt.player('O').instance_of?(HumanPlayer)
+    @ttt.player('O').instance_of?(TicTacToeEngine::HumanPlayer)
     @ttt.ui.input.string = "e"
-    @ttt.player('X').instance_of?(EasyCpuPlayer)
+    @ttt.player('X').instance_of?(TicTacToeEngine::EasyCpuPlayer)
     @ttt.ui.input.string = "m"
-    @ttt.player('X').instance_of?(CpuPlayer)
+    @ttt.player('X').instance_of?(TicTacToeEngine::CpuPlayer)
     @ttt.ui.input.string = "u"
-    @ttt.player('X').instance_of?(NegamaxPlayer)
+    @ttt.player('X').instance_of?(TicTacToeEngine::NegamaxPlayer)
   end
 
   it "should create players" do
@@ -50,7 +48,7 @@ describe TicTacToe do
   it "should play game" do
     @ttt.should_receive(:board).and_return(@ttt.board = mock("board"))
     @ttt.should_receive(:create_players)
-    Game.should_receive(:new).and_return(@ttt.game = mock("game"))
+    TicTacToeEngine::Game.should_receive(:new).and_return(@ttt.game = mock("game"))
     @ttt.game.should_receive(:scoreboard=)
     @ttt.game.should_receive(:play)
     @ttt.should_receive(:play_again?).and_return(false)

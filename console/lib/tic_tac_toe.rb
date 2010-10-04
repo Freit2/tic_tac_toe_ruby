@@ -8,8 +8,8 @@ class TicTacToe
 
   def initialize(ui = StdUI.new)
     @ui = ui
-    @scoreboard = Scoreboard.new
-    TTT.initialize_cache
+    @scoreboard = TicTacToeEngine::Scoreboard.new
+    TicTacToeEngine::TTT.initialize_cache
   end
 
   def player(piece)
@@ -18,7 +18,7 @@ class TicTacToe
       player_type = @ui.player_type(piece)
       break if player_type =~ /^h$|^e$|^m$|^u$/
     end
-    return Player.create(player_type, piece)
+    return TicTacToeEngine::Player.create(player_type, piece)
   end
 
   def create_players
@@ -26,7 +26,7 @@ class TicTacToe
     @player_x = player('X')
     @player_o.ui = @ui
     @player_x.ui = @ui
-    cache = TTT::CONFIG.cache[TTT::CONFIG.boards[@board_selection][:cache]]
+    cache = TicTacToeEngine::TTT::CONFIG.cache[TicTacToeEngine::TTT::CONFIG.boards[@board_selection][:cache]]
     @player_o.cache = cache
     @player_x.cache = cache
   end
@@ -34,15 +34,15 @@ class TicTacToe
   def board
     board_type = ""
     loop do
-      board_type = @ui.board_type(TTT::CONFIG.boards.active)
+      board_type = @ui.board_type(TicTacToeEngine::TTT::CONFIG.boards.active)
       break if board_type =~ /^3$|^4$/
     end
     if board_type == '4'
       @board_selection = '4x4'
-      return Board.new(16)
+      return TicTacToeEngine::Board.new(16)
     else
       @board_selection = '3x3'
-      return Board.new
+      return TicTacToeEngine::Board.new
     end
   end
   
@@ -50,7 +50,7 @@ class TicTacToe
     loop do
       @board = board
       create_players
-      @game = Game.new(@player_o, @player_x, @board, @ui)
+      @game = TicTacToeEngine::Game.new(@player_o, @player_x, @board, @ui)
       @game.scoreboard = @scoreboard
       @game.play
       break if !play_again?
@@ -71,7 +71,7 @@ end
 
 if $0 == __FILE__
   ttt = TicTacToe.new
-  if TTT::CONFIG.boards.active.size == 0
+  if TicTacToeEngine::TTT::CONFIG.boards.active.size == 0
     puts "***Error***: No active boards found"
     exit
   end

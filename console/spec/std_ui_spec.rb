@@ -44,7 +44,7 @@ describe StdUI do
   end
 
   it "should return board" do
-    board = Board.from_moves([].fill(0, 9) { @x })
+    board = TicTacToeEngine::Board.from_moves([].fill(0, 9) { @x })
     board_line = "\n---+---+---\n"
     message = "\n\n #{board[0..2].join(' | ')} " +
       "#{board_line} #{board[3..5].join(' | ')} " +
@@ -52,7 +52,7 @@ describe StdUI do
 
     @ui.board_layout(board).should == message
 
-    board_2 = Board.from_moves([].fill(0, 16) { @x })
+    board_2 = TicTacToeEngine::Board.from_moves([].fill(0, 16) { @x })
     board_line = "\n---+---+---+---\n"
     message = "\n\n #{board_2[0..3].join(' | ')} " +
       "#{board_line} #{board_2[4..7].join(' | ')} " +
@@ -75,7 +75,7 @@ describe StdUI do
   end
 
   it "should display scores" do
-    scoreboard = Scoreboard.new("test.csv")
+    scoreboard = TicTacToeEngine::Scoreboard.new("test.csv")
     scoreboard.scores = {:o => {:wins => 2, :losses => 1, :draws => 1},
                   :x => {:wins => 1, :losses => 2, :draws => 1}}
 
