@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 
-describe NilCache do
-  let(:nil_cache) { NilCache.new }
+describe TicTacToeEngine::NilCache do
+  let(:nil_cache) { TicTacToeEngine::NilCache.new }
 
   it "should return nil" do
     nil_cache.score("XOXOXO", "O").should == nil

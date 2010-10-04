@@ -14,7 +14,7 @@
         <img src="/images/labels/player_o.png" alt="Player O"/>
       </label>
       <select name="player_o" id="player_o" size="4">
-        <%= options_for_player(TTT_CONFIG[:players][TTT_CONFIG[:players].keys.first][:value]).html_safe %>
+        <%= options_for_player(TicTacToeEngine::TTT::CONFIG[:players][TicTacToeEngine::TTT::CONFIG[:players].keys.first][:value]).html_safe %>
       </select>
     </p>
     <p>
@@ -22,7 +22,7 @@
         <img src="/images/labels/player_x.png" alt="Player X"/>
       </label>
       <select name="player_x" id="player_x" size="4">
-        <%= options_for_player(TTT_CONFIG[:players][TTT_CONFIG[:players].keys.last][:value]).html_safe %>
+        <%= options_for_player(TicTacToeEngine::TTT::CONFIG[:players][TicTacToeEngine::TTT::CONFIG[:players].keys.last][:value]).html_safe %>
       </select>
     </p>
     <p id="button">

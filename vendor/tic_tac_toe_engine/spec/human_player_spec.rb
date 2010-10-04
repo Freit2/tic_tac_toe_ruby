@@ -2,17 +2,17 @@ require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'human_player'
 require 'std_ui'
 
-describe HumanPlayer do
+describe TicTacToeEngine::HumanPlayer do
   before(:each) do
     @input = StringIO.new
     @output = StringIO.new
     @ui = StdUI.new(@input, @output)
-    @human = HumanPlayer.new('O')
+    @human = TicTacToeEngine::HumanPlayer.new('O')
     @human.ui = @ui
   end
 
   it "should inherit from Player" do
-    HumanPlayer.ancestors.include?(Player).should == true
+    TicTacToeEngine::HumanPlayer.ancestors.include?(TicTacToeEngine::Player).should == true
   end
 
   it "should not make a nil move" do

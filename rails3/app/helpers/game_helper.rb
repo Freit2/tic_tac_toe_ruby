@@ -1,16 +1,8 @@
-module GameHelper
-  def active_boards
-    actives = []
-    TTT_CONFIG[:boards].keys.each do |key|
-      actives << key if TTT_CONFIG[:boards][key][:active]
-    end
-  end
-  
+module GameHelper  
   def options_for_board
     options = ""
-    boards = active_boards
-    boards.each do |board|
-      if board == boards.first
+    TicTacToeEngine::TTT::CONFIG.boards.active.each do |board|
+      if board == TicTacToeEngine::TTT::CONFIG.boards.active.first
         options += "<option selected=\"selected\">#{board}</option>"
       else
         options += "<option>#{board}</option>"
@@ -21,7 +13,7 @@ module GameHelper
 
   def options_for_player(default_selection)
     options = ""
-    TTT_CONFIG[:players].values.each do |hash|
+    TicTacToeEngine::TTT::CONFIG[:players].values.each do |hash|
       if hash[:value] == default_selection
         options += "<option selected=\"selected\">#{hash[:value]}</option>"
       else

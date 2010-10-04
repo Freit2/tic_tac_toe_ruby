@@ -19,7 +19,8 @@ module Rails3
 
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
-    config.autoload_paths += %W(#{config.root}/lib)
+    #config.autoload_paths += %W(#{config.root}/lib)
+    config.autoload_paths += [File.expand_path("#{config.root}/../vendor/tic_tac_toe_engine/lib")]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.

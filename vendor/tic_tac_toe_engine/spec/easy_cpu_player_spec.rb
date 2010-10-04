@@ -2,17 +2,17 @@ require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'easy_cpu_player'
 require 'std_ui'
 
-describe EasyCpuPlayer do
+describe TicTacToeEngine::EasyCpuPlayer do
   before(:each) do
     @ui = StdUI.new(StringIO.new, StringIO.new)
-    @easy_cpu = EasyCpuPlayer.new('X')
+    @easy_cpu = TicTacToeEngine::EasyCpuPlayer.new('X')
     @easy_cpu.ui = @ui
-    @board = Board.new
+    @board = TicTacToeEngine::Board.new
     @easy_cpu.board = @board
   end
 
   it "should inherit from Player" do
-    EasyCpuPlayer.ancestors.include?(Player).should == true
+    TicTacToeEngine::EasyCpuPlayer.ancestors.include?(TicTacToeEngine::Player).should == true
   end
 
   it "should not make a nil move" do

@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 
-describe HashCache do
-  let(:hash_cache) { HashCache.new }
+describe TicTacToeEngine::HashCache do
+  let(:hash_cache) { TicTacToeEngine::HashCache.new }
 
   it "creates an empty hash collection" do
     hash_cache.collection.class.should == Array

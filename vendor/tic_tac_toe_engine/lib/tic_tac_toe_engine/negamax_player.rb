@@ -60,11 +60,11 @@ module TicTacToeEngine
 
     def indexes_of_max(array)
       max = array.max
-      returning [] do |indexes|
-        array.each_with_index do |e, i|
-          indexes << i if e == max
-        end
+      indexes = []
+      array.each_with_index do |e, i|
+        indexes << i if e == max
       end
+      indexes
     end
 
     def best_random_move

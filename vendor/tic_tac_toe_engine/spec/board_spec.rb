@@ -1,15 +1,15 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 
-describe Board do
+describe TicTacToeEngine::Board do
   before(:each) do
-    @board = Board.new
+    @board = TicTacToeEngine::Board.new
     @x = 'X'
     @o = 'O'
   end
 
   it "should set winning patterns" do
     @board.winning_patterns.size.should == 16
-    board = Board.new(16)
+    board = TicTacToeEngine::Board.new(16)
     board.winning_patterns.size.should == 20
   end
 
@@ -18,29 +18,29 @@ describe Board do
   end
 
   it "should return size for board" do
-    board = Board.new(16)
+    board = TicTacToeEngine::Board.new(16)
     board.size.should == 16
   end
 
   it "should return row size for board" do
     @board.row_size.should == 3
 
-    board_2 = Board.new(16)
+    board_2 = TicTacToeEngine::Board.new(16)
     board_2.row_size.should == Math.sqrt(16).to_i
   end
 
   it "should return ranges for board" do
     @board.ranges.should == [(0...3), (3...6), (6...9)]
     
-    board = Board.new(16)
+    board = TicTacToeEngine::Board.new(16)
     board.ranges.should == [(0...4), (4...8), (8...12), (12...16)]
   end
 
   it "should return board rows in array" do
-    board = Board.from_moves([@x, @o, @x, @o, @x, @o, @o, @o, @x])
+    board = TicTacToeEngine::Board.from_moves([@x, @o, @x, @o, @x, @o, @o, @o, @x])
     board.rows.should == [[@x, @o, @x], [@o, @x, @o], [@o, @o, @x]]
 
-    board_2 = Board.from_moves([@x, @o, @x, @o, @x, @o, @o, @x,
+    board_2 = TicTacToeEngine::Board.from_moves([@x, @o, @x, @o, @x, @o, @o, @x,
                          @x, @o, @x, @o, @x, @o, @o, @x])
     board_2.rows.should == [[@x, @o, @x, @o], [@x, @o, @o, @x],
                             [@x, @o, @x, @o], [@x, @o, @o, @x]]
@@ -48,7 +48,7 @@ describe Board do
 
   it "should accept existing board array" do
     board = [@x, @o, @x, @o, @x, @o, @o, @o, @x]
-    new_board = Board.from_moves(board)
+    new_board = TicTacToeEngine::Board.from_moves(board)
     new_board.to_s.should == "XOXOXOOOX"
   end
 
@@ -145,12 +145,12 @@ describe Board do
     @board.move(2, @o)
     string_value = @board.serialize
 
-    new_board = Board.parse(string_value)
+    new_board = TicTacToeEngine::Board.parse(string_value)
     new_board.move_list.should == [@o, @x, @o, ' ', ' ', ' ', ' ', ' ', ' ']
   end
 
   it "parses a string representation of a 4x4 board" do
-    board = Board.new(16)
+    board = TicTacToeEngine::Board.new(16)
     board.move(0, @o)
     board.move(1, @x)
     board.move(2, @o)
@@ -159,7 +159,7 @@ describe Board do
     board.move(5, @o)
     string_value = board.serialize
 
-    new_board = Board.parse(string_value)
+    new_board = TicTacToeEngine::Board.parse(string_value)
     new_board.move_list.should == [@o, @x, @o, @o, @x, @o, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
   end
 

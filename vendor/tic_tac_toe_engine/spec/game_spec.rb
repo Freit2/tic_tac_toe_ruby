@@ -3,19 +3,19 @@ require 'human_player'
 require 'cpu_player'
 require 'std_ui'
 
-describe Game do
+describe TicTacToeEngine::Game do
   before(:each) do
     File.delete("test.csv") if File.exists?("test.csv")
     @input = StringIO.new
     @output = StringIO.new
-    @board = Board.new
+    @board = TicTacToeEngine::Board.new
     @ui = StdUI.new(@input, @output)
-    @player_o = HumanPlayer.new('O')
-    @player_x = CpuPlayer.new('X')
+    @player_o = TicTacToeEngine::HumanPlayer.new('O')
+    @player_x = TicTacToeEngine::CpuPlayer.new('X')
     @player_o.ui = @ui
     @player_x.ui = @ui
-    @scoreboard = Scoreboard.new("test.csv")
-    @game = Game.new(@player_o, @player_x, @board, @ui)
+    @scoreboard = TicTacToeEngine::Scoreboard.new("test.csv")
+    @game = TicTacToeEngine::Game.new(@player_o, @player_x, @board, @ui)
     @game.scoreboard = @scoreboard
   end
 

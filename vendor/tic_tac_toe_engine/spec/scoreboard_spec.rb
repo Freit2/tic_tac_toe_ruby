@@ -2,10 +2,10 @@ require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'scoreboard'
 require 'std_ui'
 
-describe Scoreboard do
+describe TicTacToeEngine::Scoreboard do
   before(:each) do
     File.delete("test.csv") if File.exists?("test.csv")
-    @scoreboard = Scoreboard.new("test.csv")
+    @scoreboard = TicTacToeEngine::Scoreboard.new("test.csv")
   end
 
   after(:all) do
@@ -54,7 +54,7 @@ describe Scoreboard do
   end
 
   it "should return player's hash" do
-    TTT::CONFIG.pieces.values.each do |p|
+    TicTacToeEngine::TTT::CONFIG.pieces.values.each do |p|
       @scoreboard.add_scores(p)
       p = p.downcase
       @scoreboard[p][:wins].should == @scoreboard.wins(p)
@@ -76,7 +76,7 @@ describe Scoreboard do
   it "should write the scores to csv" do
     scores = {:o => { :wins => 2, :draws => 1, :losses => 0},
               :x => { :wins => 0, :draws => 1, :losses => 2}}
-    scoreboard = Scoreboard.new("test.csv")
+    scoreboard = TicTacToeEngine::Scoreboard.new("test.csv")
     scoreboard.scores = scores
     scoreboard.write_scores
     scoreboard.read_scores

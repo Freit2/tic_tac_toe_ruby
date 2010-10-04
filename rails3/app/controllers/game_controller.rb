@@ -1,11 +1,8 @@
 class GameController < ApplicationController
   attr_accessor :current_player
 
-  def new
-    initialize_cache
-  end
-
   def start
+    TicTacToeEngine::TTT.initialize_cache if TicTacToeEngine::TTT::CONFIG.cache.length == 0
     @current_player = nil
     if params[:s]
       @request = {:board => cookies[:board],
@@ -40,46 +37,17 @@ class GameController < ApplicationController
     cookies[:player_x] = @request[:player_x]
   end
 
-  def add_cache(key)
-    case TTT_CONFIG[:boards][key][:cache]
-    when :hash
-      TTT_CONFIG[:cache].merge!({:hash => TicTacToeEngine::HashCache.new})
-    when :mongo
-      if TicTacToeEngine::MongoCache.db_installed?
-        TTT_CONFIG[:cache].merge!({:mongo => TicTacToeEngine::MongoCache.new})
-      else
-        TTT_CONFIG[:boards][key][:active] = false
-      end
-    else
-      TTT_CONFIG[:cache].merge!({TTT_CONFIG.boards[key][:cache] => TicTacToeEngine::NilCache.new})
-    end
-  end
-
-  def initialize_cache
-    return if TTT_CONFIG[:cache].keys.size > 0
-    active_boards.each do |key|
-      add_cache(key)
-    end
-  end
-
-  def active_boards
-    actives = []
-    TTT_CONFIG[:boards].keys.each do |key|
-      actives << key if TTT_CONFIG[:boards][key][:active]
-    end
-  end
-
   def create_board
     board_size = @request[:board][0,1].to_i ** 2
     @board = TicTacToeEngine::Board.new(board_size)
   end
 
   def create_players
-    @player_o = TicTacToeEngine::Player.create(@request[:player_o][0,1], TTT_CONFIG[:pieces][:o])
-    @player_x = TicTacToeEngine::Player.create(@request[:player_x][0,1], TTT_CONFIG[:pieces][:x])
+    @player_o = TicTacToeEngine::Player.create(@request[:player_o][0,1], TicTacToeEngine::TTT::CONFIG[:pieces][:o])
+    @player_x = TicTacToeEngine::Player.create(@request[:player_x][0,1], TicTacToeEngine::TTT::CONFIG[:pieces][:x])
     @player_o.ui = self
     @player_x.ui = self
-    cache = TTT_CONFIG[:cache][TTT_CONFIG[:boards][@request[:board].to_sym][:cache]]
+    cache = TicTacToeEngine::TTT::CONFIG.cache[TicTacToeEngine::TTT::CONFIG[:boards][@request[:board].to_sym][:cache]]
     @player_o.cache = cache
     @player_x.cache = cache
   end

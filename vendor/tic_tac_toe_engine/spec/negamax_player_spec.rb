@@ -2,22 +2,22 @@ require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 require 'negamax_player.rb'
 require 'std_ui'
 
-describe NegamaxPlayer do
+describe TicTacToeEngine::NegamaxPlayer do
   before(:each) do
     @x = 'X'
     @o = 'O'
     @b = ' '
     @ui = StdUI.new(StringIO.new, StringIO.new)
-    @cache = HashCache.new
-    @board = Board.new
-    @negamax = NegamaxPlayer.new(@x)
+    @cache = TicTacToeEngine::HashCache.new
+    @board = TicTacToeEngine::Board.new
+    @negamax = TicTacToeEngine::NegamaxPlayer.new(@x)
     @negamax.ui = @ui
     @negamax.cache = @cache
     @negamax.board = @board
   end
 
   it "should inherit from Player" do
-    NegamaxPlayer.ancestors.include?(Player).should == true
+    TicTacToeEngine::NegamaxPlayer.ancestors.include?(TicTacToeEngine::Player).should == true
   end
 
   it "should return correct opponent" do
@@ -82,7 +82,7 @@ describe NegamaxPlayer do
   end
 
   it "should return 0 if no one is winner" do
-    board = Board.from_moves([@x, @x, @o, @o, @x, @x, @x, @o, @o])
+    board = TicTacToeEngine::Board.from_moves([@x, @x, @o, @o, @x, @x, @x, @o, @o])
     @negamax.evaluate_score(board, @x, 5).should == 0
   end
 
@@ -141,7 +141,7 @@ describe NegamaxPlayer do
   end
 
   it "should make winning move, scenario 6" do
-    board = Board.new(16)
+    board = TicTacToeEngine::Board.new(16)
     @negamax.board = board
     board.move(0, @o)
     board.move(1, @x)
@@ -184,7 +184,7 @@ describe NegamaxPlayer do
   end
 
   it "should make blocking move, scenario 4" do
-    board = Board.new(16)
+    board = TicTacToeEngine::Board.new(16)
     @negamax.board = board
     board.move(0, @o)
     board.move(1, @x)
@@ -209,9 +209,9 @@ describe NegamaxPlayer do
   end
 
   it "should return a move fast, scenario 2" do
-    negamax = NegamaxPlayer.new(@o)
+    negamax = TicTacToeEngine::NegamaxPlayer.new(@o)
     negamax.ui = @ui
-    negamax.cache = HashCache.new
+    negamax.cache = TicTacToeEngine::HashCache.new
     negamax.board = @board
 
     pending("Takes longer since it's using new hash")

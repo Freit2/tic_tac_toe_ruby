@@ -1,18 +1,18 @@
 require File.expand_path(File.dirname(__FILE__)) + "/spec_helper"
 
-describe MongoCache do
-  let(:mongo_cache) { MongoCache.new }
+describe TicTacToeEngine::MongoCache do
+  let(:mongo_cache) { TicTacToeEngine::MongoCache.new }
 
   it "returns false if MongoDB is not installed" do
     Mongo::Connection.should_receive(:new).and_raise(Mongo::ConnectionFailure)
     
-    MongoCache.db_installed?.should == false
+    TicTacToeEngine::MongoCache.db_installed?.should == false
   end
 
   it "returns true if MongoDB is installed" do
     Mongo::Connection.should_receive(:new)
 
-    MongoCache.db_installed?.should == true
+    TicTacToeEngine::MongoCache.db_installed?.should == true
   end
 
   it "creates a collection instance to db 'ttt', collection 'boards'" do
