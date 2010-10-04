@@ -6,7 +6,6 @@ module TicTacToeEngine
 
     def initialize(csv_path=nil)
       @csv_path = csv_path || File.expand_path(File.dirname(__FILE__) + "/../../../../assets/db/scoreboard.csv")
-puts @csv_path
       @scores = {:o => { :wins => 0, :draws => 0, :losses => 0},
                  :x => { :wins => 0, :draws => 0, :losses => 0}}
       read_scores

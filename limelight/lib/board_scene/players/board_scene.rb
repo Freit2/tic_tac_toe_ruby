@@ -170,24 +170,24 @@ module BoardScene
   def create_players
     player_o = production.player_selection.first
     player_x = production.player_selection.last
-    @player_o = Player.create(player_o[:value][0,1], player_o[:id])
-    @player_x = Player.create(player_x[:value][0,1], player_x[:id])
+    @player_o = TicTacToeEngine::Player.create(player_o[:value][0,1], player_o[:id])
+    @player_x = TicTacToeEngine::Player.create(player_x[:value][0,1], player_x[:id])
     @player_o.ui = self
     @player_x.ui = self
-    cache = TTT::CONFIG.cache[TTT::CONFIG.boards[production.board_selection][:cache]]
+    cache = TicTacToeEngine::TTT::CONFIG.cache[TicTacToeEngine::TTT::CONFIG.boards[production.board_selection][:cache]]
     @player_o.cache = cache
     @player_x.cache = cache
   end
 
   def create_board
     board_size = production.board_selection[0,1].to_i ** 2
-    @board = Board.new(board_size)
+    @board = TicTacToeEngine::Board.new(board_size)
   end
 
   def start_game_thread
     @thread = Thread.new do
       begin
-        @game = Game.new(@player_o, @player_x, @board, self)
+        @game = TicTacToeEngine::Game.new(@player_o, @player_x, @board, self)
         @game.scoreboard = production.scoreboard
         @game.play
       rescue StandardError => e

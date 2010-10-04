@@ -8,7 +8,7 @@ module ScoreboardScene
   end
 
   def display_scores
-    TTT::CONFIG.pieces.values.each do |p|
+    TicTacToeEngine::TTT::CONFIG.pieces.values.each do |p|
       %w(wins losses draws).each do |s|
         find("player_#{p.downcase}_#{s}").text = production.scoreboard[p.downcase][s.to_sym]
       end

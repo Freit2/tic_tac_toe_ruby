@@ -39,7 +39,7 @@ describe "Options Scene" do
   end
 
   it "should not build board if not active in config" do
-    TTT::CONFIG.boards['4x4'][:active] = false
+    TicTacToeEngine::TTT::CONFIG.boards['4x4'][:active] = false
     scene.find("board_4x4").should == nil
   end
 

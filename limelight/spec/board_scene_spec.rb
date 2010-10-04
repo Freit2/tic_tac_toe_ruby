@@ -111,8 +111,8 @@ describe "Board Scene" do
   it "should create player instances" do
     scene.create_players
 
-    scene.player_o.class.name.should == 'HumanPlayer'
-    scene.player_x.class.name.should == 'NegamaxPlayer'
+    scene.player_o.class.name.should == 'TicTacToeEngine::HumanPlayer'
+    scene.player_x.class.name.should == 'TicTacToeEngine::NegamaxPlayer'
   end
 
   it "should have player hold board_scene UI" do
@@ -156,7 +156,7 @@ describe "Board Scene" do
   end
 
   it "should create game on new thread" do
-    Game.should_receive(:new).and_return(scene.game = mock("game"))
+    TicTacToeEngine::Game.should_receive(:new).and_return(scene.game = mock("game"))
     scene.game.should_receive(:scoreboard=)
     scene.game.should_receive(:play)
     scene.start_game_thread
@@ -178,7 +178,7 @@ describe "Board Scene" do
   end
 
   it "should still be animating" do
-    scene.board = Board.new
+    scene.board = TicTacToeEngine::Board.new
     scene.build_squares
     scene.board.move(0, 'X')
     scene.board.move(1, 'X')

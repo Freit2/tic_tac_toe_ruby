@@ -30,17 +30,17 @@ module Production
 #  # Hook #2.  Called after internal gems have been loaded and stages have been instantiated, yet before
 #  # any scenes have been opened.
   def production_loaded
-    if TTT::CONFIG.boards.active.size == 0
+    if TicTacToeEngine::TTT::CONFIG.boards.active.size == 0
       puts "***Error***: No active boards found"
       close
     end
-    @scoreboard = Scoreboard.new
-    TTT.initialize_cache
-    @board_selection = TTT::CONFIG.boards.active.first
-    @player_selection = [{:id => TTT::CONFIG.pieces[:o], :name => TTT::CONFIG.players.keys.first.to_s,
-                          :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.first][:value]},
-                         {:id => TTT::CONFIG.pieces[:x], :name => TTT::CONFIG.players.keys.last.to_s,
-                          :value => TTT::CONFIG.players[TTT::CONFIG.players.keys.last][:value]}]
+    @scoreboard = TicTacToeEngine::Scoreboard.new
+    TicTacToeEngine::TTT.initialize_cache
+    @board_selection = TicTacToeEngine::TTT::CONFIG.boards.active.first
+    @player_selection = [{:id => TicTacToeEngine::TTT::CONFIG.pieces[:o], :name => TicTacToeEngine::TTT::CONFIG.players.keys.first.to_s,
+                          :value => TicTacToeEngine::TTT::CONFIG.players[TicTacToeEngine::TTT::CONFIG.players.keys.first][:value]},
+                         {:id => TicTacToeEngine::TTT::CONFIG.pieces[:x], :name => TicTacToeEngine::TTT::CONFIG.players.keys.last.to_s,
+                          :value => TicTacToeEngine::TTT::CONFIG.players[TicTacToeEngine::TTT::CONFIG.players.keys.last][:value]}]
   end
 
 #  # Hook #3.  Called when the production, and all the scenes, have fully opened.

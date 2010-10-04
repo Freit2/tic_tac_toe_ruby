@@ -16,7 +16,7 @@ module OptionsScene
 
 # TODO: contains monkey patch until LL bug is fixed with hover.background_image
   def build_scene
-    boards = TTT::CONFIG.boards
+    boards = TicTacToeEngine::TTT::CONFIG.boards
     scene.build do
       menu do
         label
@@ -38,21 +38,21 @@ module OptionsScene
   end
 
   def initialize_board_option
-    TTT::CONFIG.boards.keys.each do |key|
-      if TTT::CONFIG.boards[key][:active]
+    TicTacToeEngine::TTT::CONFIG.boards.keys.each do |key|
+      if TicTacToeEngine::TTT::CONFIG.boards[key][:active]
         prop = find("board_#{key.to_s}")
-        prop.style.background_image = "#{production.images_path}/props/#{TTT::CONFIG.boards[key][:off]}"
-        prop.hover_style.background_image = "#{production.images_path}/props/#{TTT::CONFIG.boards[key][:on]}"
+        prop.style.background_image = "#{production.images_path}/props/#{TicTacToeEngine::TTT::CONFIG.boards[key][:off]}"
+        prop.hover_style.background_image = "#{production.images_path}/props/#{TicTacToeEngine::TTT::CONFIG.boards[key][:on]}"
       end
     end
   end
 
   def initialize_player_options
-    TTT::CONFIG.pieces.values.each do |p|
-      TTT::CONFIG.players.keys.each do |key|
+    TicTacToeEngine::TTT::CONFIG.pieces.values.each do |p|
+      TicTacToeEngine::TTT::CONFIG.players.keys.each do |key|
         prop = find("player_#{p.downcase}_#{key.to_s}")
-        prop.style.background_image = "#{production.images_path}/props/#{TTT::CONFIG.players[key][:off]}"
-        prop.hover_style.background_image = "#{production.images_path}/props/#{TTT::CONFIG.players[key][:on]}"
+        prop.style.background_image = "#{production.images_path}/props/#{TicTacToeEngine::TTT::CONFIG.players[key][:off]}"
+        prop.hover_style.background_image = "#{production.images_path}/props/#{TicTacToeEngine::TTT::CONFIG.players[key][:on]}"
       end
     end
   end
