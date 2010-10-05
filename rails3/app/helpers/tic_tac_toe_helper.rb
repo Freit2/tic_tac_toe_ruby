@@ -1,4 +1,4 @@
-module GameHelper  
+module TicTacToeHelper
   def options_for_board
     options = ""
     TicTacToeEngine::TTT::CONFIG.boards.active.each do |board|
@@ -30,18 +30,18 @@ module GameHelper
   end
 
   def generate_status_html
-    if @status
-      return "<img src=\"#{@status}\" alt=\"status\" width=\"502\" height=\"75\"/>"
+    if @ttt.status
+      return "<img src=\"#{@ttt.status}\" alt=\"status\" width=\"502\" height=\"75\"/>"
     end
     return ""
   end
 
   def generate_try_again_html
-    if @board.game_over?
+    if @ttt.board.game_over?
       return ("<form method='POST' action='/game/start'>" +
-            "<input type=\"hidden\" name=\"board\" value=\"#{@request[:board]}\">" +
-            "<input type=\"hidden\" name=\"player_o\" value=\"#{@request[:player_o]}\">" +
-            "<input type=\"hidden\" name=\"player_x\" value=\"#{@request[:player_x]}\">" +
+            "<input type=\"hidden\" name=\"board\" value=\"#{@ttt.request[:board]}\">" +
+            "<input type=\"hidden\" name=\"player_o\" value=\"#{@ttt.request[:player_o]}\">" +
+            "<input type=\"hidden\" name=\"player_x\" value=\"#{@ttt.request[:player_x]}\">" +
             "<img src=\"/images/labels/try_again.png\">" +
             "<input type=\"submit\" value=\"Yes\" />" +
           "</form>")
@@ -50,7 +50,7 @@ module GameHelper
   end
 
   def generate_square_html(s)
-    if @board.empty_squares.include?(s)
+    if @ttt.board.empty_squares.include?(s)
       a_start = "<a href=\"/game/start?s=#{s}\">"
       a_end = "</a>"
       image = "empty_square.png"
@@ -58,7 +58,7 @@ module GameHelper
       on_mouse_out = "onmouseout=\"TTT.mouseOutSquare(this)\""
     else
       a_start = a_end = on_mouse_over = on_mouse_out = ""
-      image = "#{@board[s].downcase}.png"
+      image = "#{@ttt.board[s].downcase}.png"
     end
     "#{a_start}<img border=\"1\" src=\"/images/pieces/#{image}\" " +
       "alt=\"square\" width=\"130\" height=\"130\" " +
@@ -67,7 +67,7 @@ module GameHelper
 
   def generate_board_html
     board_html = ""
-    @board.ranges.each do |r|
+    @ttt.board.ranges.each do |r|
       html = ""
       r.each do |s|
         html += generate_square_html(s)

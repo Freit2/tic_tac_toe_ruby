@@ -1,4 +1,4 @@
-<script type="text/javascript">TTT.setCurrentPiece("<%= @game && @game.current_player.piece.downcase %>");</script>
+<script type="text/javascript">TTT.setCurrentPiece("<%= @ttt.game && @ttt.game.current_player.piece.downcase %>");</script>
 <div id="quit">
   <%= generate_quit_html.html_safe %>
 </div>
