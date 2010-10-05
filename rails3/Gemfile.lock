@@ -1,39 +1,39 @@
 GIT
   remote: git://github.com/rspec/rspec-core.git
-  revision: 6557d682a99e8992c06775b6f102dc4aa293257e
+  revision: c5e6bc031404762edcda7789ecc04c6d340c8ef6
   specs:
-    rspec-core (2.0.0.beta.22)
+    rspec-core (2.0.0.rc)
 
 GIT
   remote: git://github.com/rspec/rspec-expectations.git
-  revision: de19d980515c5127726658bf68bf58e5b0d50d62
+  revision: b1a6c848265c9912a1bb49afbae0e6cb1e50f3fd
   specs:
-    rspec-expectations (2.0.0.beta.22)
+    rspec-expectations (2.0.0.rc)
       diff-lcs (>= 1.1.2)
 
 GIT
   remote: git://github.com/rspec/rspec-mocks.git
-  revision: e1e288b664ed0e001fc2ce0a31783901579e3f79
+  revision: 361f31542f8ef4aa1a0cb8102893627022fcc88b
   specs:
-    rspec-mocks (2.0.0.beta.22)
-      rspec-core (= 2.0.0.beta.22)
-      rspec-expectations (= 2.0.0.beta.22)
+    rspec-mocks (2.0.0.rc)
+      rspec-core (= 2.0.0.rc)
+      rspec-expectations (= 2.0.0.rc)
 
 GIT
   remote: git://github.com/rspec/rspec-rails.git
-  revision: 6caa5156424dd6342260404fb1ba2336a818a133
+  revision: 17816d29ecbae6c2337ae7e20487e6fbb8a1c733
   specs:
-    rspec-rails (2.0.0.beta.22)
-      rspec (= 2.0.0.beta.22)
+    rspec-rails (2.0.0.rc)
+      rspec (= 2.0.0.rc)
 
 GIT
   remote: git://github.com/rspec/rspec.git
-  revision: 3df49f5942c29aa3eaff80f5904e0b3d4b4f6fed
+  revision: bf20df3f6652f15f014c7d6d546edd9456749196
   specs:
-    rspec (2.0.0.beta.22)
-      rspec-core (= 2.0.0.beta.22)
-      rspec-expectations (= 2.0.0.beta.22)
-      rspec-mocks (= 2.0.0.beta.22)
+    rspec (2.0.0.rc)
+      rspec-core (= 2.0.0.rc)
+      rspec-expectations (= 2.0.0.rc)
+      rspec-mocks (= 2.0.0.rc)
 
 GEM
   remote: http://rubygems.org/
@@ -67,7 +67,7 @@ GEM
     activesupport (3.0.0)
     arel (1.0.1)
       activesupport (~> 3.0.0)
-    bson (1.0.9)
+    bson (1.1)
     builder (2.1.2)
     diff-lcs (1.1.2)
     erubis (2.6.6)
@@ -78,13 +78,13 @@ GEM
       mime-types
       treetop (>= 1.4.5)
     mime-types (1.16)
-    mongo (1.0.9)
+    mongo (1.1)
       bson (>= 1.0.5)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
-    rack-test (0.5.4)
+    rack-test (0.5.6)
       rack (>= 1.0)
     rails (3.0.0)
       actionmailer (= 3.0.0)
@@ -100,7 +100,7 @@ GEM
       rake (>= 0.8.4)
       thor (~> 0.14.0)
     rake (0.8.7)
-    thor (0.14.0)
+    thor (0.14.3)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
     tzinfo (0.3.23)
