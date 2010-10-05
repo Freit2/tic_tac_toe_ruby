@@ -2,7 +2,7 @@
 
 * Ruby 1.9.2 has a different CSV class that does not fare well with the Scoreboard class.  Use Ruby versions below in the meantime.
 
-* 4x4 board option requires MongoDB.  To install, go here: http://www.mongodb.org/downloads or if you have [homebrew](http://github.com/mxcl/homebrew) installed, type <code>brew install mongodb</code>
+* 4x4 board option requires MongoDB.  To install, go [here](http://www.mongodb.org/downloads) or if you have [homebrew](http://github.com/mxcl/homebrew) installed, type <code>brew install mongodb</code>
 
 To run on console
 ---------------
@@ -39,16 +39,16 @@ You must have the following installed:
 * Limelight gem
 * Limelight binary (*.dmg, *.exe)
 
-See here for more information: http://limelight.8thlight.com/main/download
+Visit [Limelight's website](http://limelight.8thlight.com/main/download) for more information.
 
 To run on WEBrick
 -----------------------
 
 type <code>ruby webrick/lib/webrick\_ttt.rb</code>
 
-Go to http://localhost:7546/
+Go to [http://localhost:7546/](http://localhost:7546/)
 
-This should run on any Ruby VM.  It supports simultaneous games via cookies.
+It supports simultaneous games via cookies.
 
 
 To run on Rails
@@ -61,6 +61,6 @@ You must have the following installed:
 * Ruby 1.8.7 or 1.9.2
 * rails gem
 
-Go to http://localhost:3000/ unless otherwise noted
+Go to [http://localhost:3000/](http://localhost:3000/) unless otherwise noted
 
-This should run on any Ruby VM.  It supports simultaneous games via cookies.
+It supports simultaneous games via cookies.
