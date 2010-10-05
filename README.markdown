@@ -51,7 +51,7 @@ Go to [http://localhost:7546/](http://localhost:7546/)
 It supports simultaneous games via cookies.
 
 
-To run on Rails
+To run on Rails 3
 -----------------------
 
 Navigate to the rails3 directory, and type </code>rails server</code>
