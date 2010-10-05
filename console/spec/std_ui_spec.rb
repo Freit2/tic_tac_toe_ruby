@@ -81,9 +81,9 @@ describe StdUI do
 
     @ui.display_scores(scoreboard)
     line =   "\n-----------------------------------\n"
-    columns =  "          | wins | losses | draws |\n"
-    player_o = "player O     2   |   1    |  1    |\n"
-    player_x = "player X     1   |   2    |  1    |\n"
+    columns =  "            wins   losses   draws  \n"
+    player_o = "player O     2       1       1     \n"
+    player_x = "player X     1       2       1     \n"
     @ui.output.string.should == "\n" + line + columns + player_o + player_x + line
   end
 end
