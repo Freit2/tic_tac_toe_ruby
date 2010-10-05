@@ -66,9 +66,9 @@ class StdUI
     o = scores[:o]
     x = scores[:x]
     line =   "\n-----------------------------------\n"
-    columns =  "          | wins | losses | draws |\n"
-    player_o = "player O     #{o[:wins]}   |   #{o[:losses]}    |  #{o[:draws]}    |\n"
-    player_x = "player X     #{x[:wins]}   |   #{x[:losses]}    |  #{x[:draws]}    |\n"
+    columns =  "            wins   losses   draws  \n"
+    player_o = "player O     #{o[:wins]}       #{o[:losses]}       #{o[:draws]}     \n"
+    player_x = "player X     #{x[:wins]}       #{x[:losses]}       #{x[:draws]}     \n"
     return "\n" + line + columns + player_o + player_x + line
   end
 

@@ -4,12 +4,12 @@ require 'std_ui'
 
 describe TicTacToeEngine::Scoreboard do
   before(:each) do
-    File.delete("test.csv") if File.exists?("test.csv")
-    @scoreboard = TicTacToeEngine::Scoreboard.new("test.csv")
+    File.delete("test.yaml") if File.exists?("test.yaml")
+    @scoreboard = TicTacToeEngine::Scoreboard.new("test.yaml")
   end
 
   after(:all) do
-    File.delete("test.csv") if File.exists?("test.csv")
+    File.delete("test.yaml") if File.exists?("test.yaml")
   end
 
   it "should hold a hash in instance variable" do
@@ -63,24 +63,24 @@ describe TicTacToeEngine::Scoreboard do
     end
   end
 
-  it "should store csv path" do
-    @scoreboard.csv_path.should_not be_nil
+  it "should store yaml path" do
+    @scoreboard.yaml_path.should_not be_nil
   end
 
-  it "should read the scores from csv" do
+  it "should read the scores from yaml" do
     @scoreboard.read_scores
     @scoreboard.scores.keys.include?(:o).should be_true
     @scoreboard.scores.keys.include?(:x).should be_true
   end
 
-  it "should write the scores to csv" do
+  it "should write the scores to yaml" do
     scores = {:o => { :wins => 2, :draws => 1, :losses => 0},
               :x => { :wins => 0, :draws => 1, :losses => 2}}
-    scoreboard = TicTacToeEngine::Scoreboard.new("test.csv")
+    scoreboard = TicTacToeEngine::Scoreboard.new("test.yaml")
     scoreboard.scores = scores
     scoreboard.write_scores
     scoreboard.read_scores
     scoreboard.scores.should == scores
-    File.delete("test.csv") if File.exists?("test.csv")
+    File.delete("test.yaml") if File.exists?("test.yaml")
   end
 end

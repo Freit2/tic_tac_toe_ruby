@@ -1,23 +1,19 @@
-require 'csv'
+require 'yaml'
 
 module TicTacToeEngine
   class Scoreboard
-    attr_accessor :csv_path, :scores
+    attr_accessor :yaml_path, :scores
 
-    def initialize(csv_path=nil)
-      @csv_path = csv_path || File.expand_path(File.dirname(__FILE__) + "/../../../../assets/db/scoreboard.csv")
+    def initialize(yaml_path=nil)
+      @yaml_path = yaml_path || File.expand_path(File.dirname(__FILE__) + "/../../../../assets/db/scoreboard.yaml")
       @scores = {:o => { :wins => 0, :draws => 0, :losses => 0},
                  :x => { :wins => 0, :draws => 0, :losses => 0}}
       read_scores
     end
 
     def read_scores
-      return if !File.exists?(@csv_path)
-      CSV.open(@csv_path, 'r', ';') do |row|
-        @scores[row[0].to_sym][:wins] = row[1].to_i
-        @scores[row[0].to_sym][:draws] = row[2].to_i
-        @scores[row[0].to_sym][:losses] = row[3].to_i
-      end
+      return if !File.exists?(@yaml_path)
+      @scores = YAML::load_file(@yaml_path)
     end
 
     def loser(piece)
@@ -36,12 +32,10 @@ module TicTacToeEngine
     end
 
     def write_scores
-      File.delete(@csv_path) if File.exists?(@csv_path)
-      CSV.open(@csv_path, 'w', ';') do |writer|
-        writer << ["o", @scores[:o][:wins], @scores[:o][:draws], @scores[:o][:losses]]
-        writer << ["x", @scores[:x][:wins], @scores[:x][:draws], @scores[:x][:losses]]
-        writer.close
-      end
+      File.delete(@yaml_path) if File.exists?(@yaml_path)
+      File.open(@yaml_path, 'w') do |f|
+        f.write(YAML::dump @scores)
+      end      
     end
 
     def [](player)

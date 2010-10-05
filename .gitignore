@@ -5,4 +5,4 @@ ttt.iml
 .idea
 projectFilesBackup
 devtool
-assets/db/scoreboard.csv
+assets/db/scoreboard.yaml
