@@ -1,50 +1,13 @@
-GIT
-  remote: git://github.com/rspec/rspec-core.git
-  revision: 7e40fb82099ca9a2de58e7c95d6567e965e13896
-  specs:
-    rspec-core (2.0.0)
-
-GIT
-  remote: git://github.com/rspec/rspec-expectations.git
-  revision: 6dffc93471ad31cdb846a02a28fc79df95ab65d5
-  specs:
-    rspec-expectations (2.0.0)
-      diff-lcs (>= 1.1.2)
-
-GIT
-  remote: git://github.com/rspec/rspec-mocks.git
-  revision: 4830d09ac955b15f0b6155c6b87a12912e94f60c
-  specs:
-    rspec-mocks (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
-
-GIT
-  remote: git://github.com/rspec/rspec-rails.git
-  revision: 1b82c1f9af0465ccf039546733a25b09c7563d99
-  specs:
-    rspec-rails (2.0.0)
-      rspec (= 2.0.0)
-
-GIT
-  remote: git://github.com/rspec/rspec.git
-  revision: 18b895444cd9d30b8b8b8c8a6aee24452e5b73fc
-  specs:
-    rspec (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
-      rspec-mocks (= 2.0.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
-    actionmailer (3.0.0)
-      actionpack (= 3.0.0)
+    actionmailer (3.0.1)
+      actionpack (= 3.0.1)
       mail (~> 2.2.5)
-    actionpack (3.0.0)
-      activemodel (= 3.0.0)
-      activesupport (= 3.0.0)
+    actionpack (3.0.1)
+      activemodel (= 3.0.1)
+      activesupport (= 3.0.1)
       builder (~> 2.1.2)
       erubis (~> 2.6.6)
       i18n (~> 0.4.1)
@@ -52,22 +15,22 @@ GEM
       rack-mount (~> 0.6.12)
       rack-test (~> 0.5.4)
       tzinfo (~> 0.3.23)
-    activemodel (3.0.0)
-      activesupport (= 3.0.0)
+    activemodel (3.0.1)
+      activesupport (= 3.0.1)
       builder (~> 2.1.2)
       i18n (~> 0.4.1)
-    activerecord (3.0.0)
-      activemodel (= 3.0.0)
-      activesupport (= 3.0.0)
+    activerecord (3.0.1)
+      activemodel (= 3.0.1)
+      activesupport (= 3.0.1)
       arel (~> 1.0.0)
       tzinfo (~> 0.3.23)
-    activeresource (3.0.0)
-      activemodel (= 3.0.0)
-      activesupport (= 3.0.0)
-    activesupport (3.0.0)
+    activeresource (3.0.1)
+      activemodel (= 3.0.1)
+      activesupport (= 3.0.1)
+    activesupport (3.0.1)
     arel (1.0.1)
       activesupport (~> 3.0.0)
-    bson (1.1)
+    bson (1.1.1)
     builder (2.1.2)
     diff-lcs (1.1.2)
     erubis (2.6.6)
@@ -78,28 +41,40 @@ GEM
       mime-types
       treetop (>= 1.4.5)
     mime-types (1.16)
-    mongo (1.1)
-      bson (>= 1.0.5)
+    mongo (1.1.1)
+      bson (>= 1.1.1)
     polyglot (0.3.1)
     rack (1.2.1)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.6)
       rack (>= 1.0)
-    rails (3.0.0)
-      actionmailer (= 3.0.0)
-      actionpack (= 3.0.0)
-      activerecord (= 3.0.0)
-      activeresource (= 3.0.0)
-      activesupport (= 3.0.0)
+    rails (3.0.1)
+      actionmailer (= 3.0.1)
+      actionpack (= 3.0.1)
+      activerecord (= 3.0.1)
+      activeresource (= 3.0.1)
+      activesupport (= 3.0.1)
       bundler (~> 1.0.0)
-      railties (= 3.0.0)
-    railties (3.0.0)
-      actionpack (= 3.0.0)
-      activesupport (= 3.0.0)
+      railties (= 3.0.1)
+    railties (3.0.1)
+      actionpack (= 3.0.1)
+      activesupport (= 3.0.1)
       rake (>= 0.8.4)
       thor (~> 0.14.0)
     rake (0.8.7)
+    rspec (2.0.0)
+      rspec-core (= 2.0.0)
+      rspec-expectations (= 2.0.0)
+      rspec-mocks (= 2.0.0)
+    rspec-core (2.0.0)
+    rspec-expectations (2.0.0)
+      diff-lcs (>= 1.1.2)
+    rspec-mocks (2.0.0)
+      rspec-core (= 2.0.0)
+      rspec-expectations (= 2.0.0)
+    rspec-rails (2.0.1)
+      rspec (~> 2.0.0)
     thor (0.14.3)
     treetop (1.4.8)
       polyglot (>= 0.3.1)
@@ -110,9 +85,9 @@ PLATFORMS
 
 DEPENDENCIES
   mongo (>= 1.0.9)
-  rails (= 3.0.0)
-  rspec!
-  rspec-core!
-  rspec-expectations!
-  rspec-mocks!
-  rspec-rails!
+  rails (= 3.0.1)
+  rspec (>= 2.0.0)
+  rspec-core (>= 2.0.0)
+  rspec-expectations (>= 2.0.0)
+  rspec-mocks (>= 2.0.0)
+  rspec-rails (>= 2.0.0)
