@@ -25,9 +25,9 @@ gem 'mongo', '>= 1.0.9'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
-  gem "rspec-rails",         :git => "git://github.com/rspec/rspec-rails.git",        :branch => "2-0-stable"
-  gem "rspec",               :git => "git://github.com/rspec/rspec.git",              :branch => "2-0-stable"
-  gem "rspec-core",          :git => "git://github.com/rspec/rspec-core.git",         :branch => "2-0-stable"
-  gem "rspec-expectations",  :git => "git://github.com/rspec/rspec-expectations.git", :branch => "2-0-stable"
-  gem "rspec-mocks",         :git => "git://github.com/rspec/rspec-mocks.git",        :branch => "2-0-stable"
+  gem "rspec-rails",         '>= 2.1.0'
+  gem "rspec",               '>= 2.1.0'
+  gem "rspec-core",          '>= 2.1.0'
+  gem "rspec-expectations",  '>= 2.1.0'
+  gem "rspec-mocks",         '>= 2.1.0'
 end
