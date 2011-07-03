@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.3'
-gem 'mongo', '>= 1.2.0'
+gem 'rails', '3.0.9'
+gem 'mongo'
 
 group :development, :test do
-  gem "rspec-rails", :git => "https://github.com/rspec/rspec-rails.git"
+  gem "rspec-rails"
 end
